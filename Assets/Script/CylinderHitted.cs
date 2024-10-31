@@ -26,6 +26,19 @@ public class CylinderMovement : MonoBehaviour
     // 碰撞檢測
     void OnCollisionEnter(Collision collision)
     {
+        // 如果正在被推動並且撞到非預期物體時，進行反彈
+        if (isPushed && collision.gameObject.tag != "PlayerHit")
+        {
+            Vector3 collisionNormal = collision.contacts[0].normal; // 獲取碰撞法線方向
+            pushDirection = Vector3.Reflect(pushDirection, collisionNormal); // 根據碰撞法線反射推動方向
+
+            // 將剩餘的推力當作反彈力
+            float remainingPushTime = pushEndTime - Time.time;
+            pushEndTime = Time.time + remainingPushTime; // 更新反彈的結束時間
+
+            return;
+        }
+
         // 檢查碰撞對象是否是玩家的手或其他需要觸發的對象
         if (collision.gameObject.tag == "PlayerHit")
         {
@@ -52,8 +65,16 @@ public class CylinderMovement : MonoBehaviour
         else if (isPushed && Time.time > pushEndTime)
         {
             // 停止推動
-            isPushed = false;
-            // 停止特效（如果需要，可以選擇在推動結束後停止特效）
+            StopPush();
+        }
+    }
+
+    // 停止推動的方法
+    private void StopPush()
+    {
+        isPushed = false;
+        if (specialEffect != null)
+        {
             specialEffect.SetActive(false);  // 停止特效
         }
     }
