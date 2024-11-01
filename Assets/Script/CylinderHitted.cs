@@ -57,10 +57,14 @@ public class CylinderMovement : MonoBehaviour
     void Update()
     {
         // 如果正在被推動，並且還沒有達到推動結束的時間
-        if (isPushed && Time.time <= pushEndTime)
+         if (isPushed && Time.time <= pushEndTime)
         {
-            // 持續施加力使物體相反方向移動
-            rb.MovePosition(rb.position + pushDirection * pushForce * Time.deltaTime);
+            // 保持 y 軸的值不變，僅更新 x 和 z 軸位置
+            pushDirection.y = 0;
+            Vector3 newPosition = rb.position + pushDirection * pushForce * Time.deltaTime;
+            newPosition.y = rb.position.y; // 確保 y 軸位置不變
+
+            rb.MovePosition(newPosition);
         }
         else if (isPushed && Time.time > pushEndTime)
         {

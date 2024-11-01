@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public float rotationSpeed = 720.0f;
     public float detectionRadius = 45.0f; // 偵測範圍的半徑
 
+    public float customGravity = 30.0f;
+
     private Rigidbody rb;
     private Animator animator;
     private Transform target; // 當前偵測的目標物體
@@ -27,6 +29,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // 自定義重力
+        rb.AddForce(Vector3.down * customGravity, ForceMode.Acceleration);
         // 獲取輸入
         float moveX = 0; // 左右移動 (A/D 或 左右方向鍵)
         float moveZ = 0;   // 前後移動 (W/S 或 上下方向鍵)
@@ -49,7 +53,7 @@ public class PlayerController : MonoBehaviour
         {
             moveZ = -1;
         }
-        
+
         Vector3 move = new Vector3(-moveX, 0, -moveZ).normalized;
 
         bool isMoving = move.magnitude > 0.1f;

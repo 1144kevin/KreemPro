@@ -792,7 +792,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: ae4e5ec868eec924ead5364860a8cef1,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.81
+      value: 17.73
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ae4e5ec868eec924ead5364860a8cef1,
         type: 3}
@@ -1056,12 +1056,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 1
-  JumpHeight: 2
   GroundDistance: 0.2
-  DashDistance: 0.25
   Ground:
     serializedVersion: 2
     m_Bits: 0
+  customGravity: 30
 --- !u!65 &712111672
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1175,6 +1174,7 @@ MonoBehaviour:
   mouseMovementThreshold: 0.1
   lineLength: 5
   lineColor: {r: 1, g: 0, b: 0, a: 1}
+  MushroomCamera: {fileID: 963194227}
 --- !u!1 &720649356
 GameObject:
   m_ObjectHideFlags: 0

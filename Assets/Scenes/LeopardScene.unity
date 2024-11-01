@@ -5658,7 +5658,7 @@ PrefabInstance:
     - target: {fileID: 1233010467109672509, guid: 4aa9f30a28a77224ba84b2a2c334c71b,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 16.2
+      value: -332
       objectReference: {fileID: 0}
     - target: {fileID: 1233010467109672509, guid: 4aa9f30a28a77224ba84b2a2c334c71b,
         type: 3}
@@ -5869,8 +5869,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5084111, y: 0.31027684, z: 1.5439767}
-  m_Center: {x: -0.04719166, y: -0.80514884, z: -0.35089898}
+  m_Size: {x: 0.5084111, y: 0.31027684, z: 0.98143595}
+  m_Center: {x: -0.047191672, y: -0.8051488, z: -0.63217}
 --- !u!54 &595418382
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -12449,7 +12449,7 @@ PrefabInstance:
     - target: {fileID: 4596544553357837919, guid: 8eb503696b886e04faff8fc0f480d473,
         type: 3}
       propertyPath: looping
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4596544553357837919, guid: 8eb503696b886e04faff8fc0f480d473,
         type: 3}
@@ -12482,7 +12482,7 @@ GameObject:
   - component: {fileID: 1342886186}
   m_Layer: 0
   m_Name: AttackArea
-  m_TagString: PlayerHit
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13141,7 +13141,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1363995556}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4653fc8fefc2e684ba7e3ea899a9852e, type: 3}
   m_Name: 
@@ -13249,8 +13249,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6932be53e2151a54e9a46451b3630b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 100
-  pushDuration: 8
+  pushForce: 250
+  pushDuration: 1
   specialEffect: {fileID: 507815871}
 --- !u!1 &1741053801
 GameObject:
