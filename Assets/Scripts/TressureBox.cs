@@ -8,16 +8,21 @@ public class TreasureBox : MonoBehaviour
     public GameObject explodeVFX;
     public GameObject laserObject;
     public GameObject specialItem;
+    public GameObject outline;
+   
+
     public float explode_minforce;
     public float explode_maxforce;
     public float explode_radius;
        void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("PlayerHit"))
         {
             Debug.Log("hit");
             Explode();
+      
         }
+        
     }
 
    void Explode()
@@ -39,7 +44,8 @@ public class TreasureBox : MonoBehaviour
 
         // Cleanup
         Destroy(OriginalBox);
-        // Destroy(brokenBox, 15f);
+        Destroy(outline);
+        Destroy(brokenBox, 3f);
         Destroy(vfx, 5f);
      
     }
