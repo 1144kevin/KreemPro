@@ -11,12 +11,7 @@ public class TreasureBox : MonoBehaviour
     public float explode_minforce;
     public float explode_maxforce;
     public float explode_radius;
-    [SerializeField]
-    private bool setTriggersOnStart = true;
-    [SerializeField]
-    private bool includeInactiveObjects = false;
-
-    void OnCollisionEnter(Collision collision)
+       void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
@@ -43,9 +38,10 @@ public class TreasureBox : MonoBehaviour
         }
 
         // Cleanup
-        Destroy(brokenBox, 5f);
+        Destroy(OriginalBox);
+        // Destroy(brokenBox, 15f);
         Destroy(vfx, 5f);
-        OriginalBox.SetActive(false);
+     
     }
 }
 
