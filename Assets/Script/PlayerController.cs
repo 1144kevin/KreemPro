@@ -28,11 +28,28 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // 獲取輸入
-        float moveX = Input.GetAxis("Horizontal"); // 左右移動 (A/D 或 左右方向鍵)
-        float moveZ = Input.GetAxis("Vertical");   // 前後移動 (W/S 或 上下方向鍵)
+        float moveX = 0; // 左右移動 (A/D 或 左右方向鍵)
+        float moveZ = 0;   // 前後移動 (W/S 或 上下方向鍵)
 
         // 移動方向
-        rb.AddForce(Vector3.down * 30, ForceMode.Acceleration);
+        if (Input.GetKey(KeyCode.LeftArrow))
+        {
+            moveX = -1;
+        }
+        else if (Input.GetKey(KeyCode.RightArrow))
+        {
+            moveX = 1;
+        }
+
+        if (Input.GetKey(KeyCode.UpArrow))
+        {
+            moveZ = 1;
+        }
+        else if (Input.GetKey(KeyCode.DownArrow))
+        {
+            moveZ = -1;
+        }
+        
         Vector3 move = new Vector3(-moveX, 0, -moveZ).normalized;
 
         bool isMoving = move.magnitude > 0.1f;
