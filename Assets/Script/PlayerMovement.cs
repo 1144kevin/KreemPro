@@ -32,26 +32,8 @@ public class PlayerMovement : MonoBehaviour
         {print("Hit");}
 
         _inputs = Vector3.zero;
-        _inputs.x = 0f;
-        _inputs.z = 0f;
-
-        if (Input.GetKey(KeyCode.W))
-        {
-            _inputs.z = 1f;
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            _inputs.z = -1f;
-        }
-
-        if (Input.GetKey(KeyCode.A))
-        {
-            _inputs.x = -1f;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            _inputs.x = 1f;
-        }
+        _inputs.x = Input.GetAxis("Horizontal");
+        _inputs.z = Input.GetAxis("Vertical");
        
         if (_inputs != Vector3.zero)
         {

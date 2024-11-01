@@ -11,7 +11,7 @@ public class LaserShooting : MonoBehaviour
     void Start()
     {
         spwanedLaser = Instantiate(LaserPrefab,Firepoint.transform);
-         DisableLaser();
+        DisableLaser();
 
         
     }
