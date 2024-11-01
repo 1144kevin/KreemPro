@@ -6,6 +6,10 @@ TagManager:
   tags:
   - PlayerHit
   - Target
+  - Ground
+  - Laser
+  - Bullet
+  - BrokenBox
   layers:
   - Default
   - TransparentFX
@@ -13,9 +17,9 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
+  - Boxes
+  - BrokenPiece
+  - Player
   - 
   - 
   - 
