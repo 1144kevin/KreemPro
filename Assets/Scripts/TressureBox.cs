@@ -43,7 +43,7 @@ public class TreasureBox : MonoBehaviour
         }
 
         // Cleanup
-        Destroy(brokenBox, 100f);
+        Destroy(brokenBox, 5f);
         Destroy(vfx, 5f);
         OriginalBox.SetActive(false);
     }
