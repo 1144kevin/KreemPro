@@ -28,6 +28,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
+    - _QueueControl: 0
     - _Shading: 0.1
     - _Shading_1: 0
     m_Colors:
