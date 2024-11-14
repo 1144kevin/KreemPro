@@ -30,7 +30,7 @@ public class Aiming : MonoBehaviour
         lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
         lineRenderer.startColor = lineColor;
         lineRenderer.endColor = lineColor;
-        lineRenderer.positionCount = 2;
+        lineRenderer.positionCount  = 2;
     }
 
     private void Update()
