@@ -96,14 +96,14 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetTrigger("unAttack");
         }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            animator.SetTrigger("isTrick");
-        }
-        else
-        {
-            animator.SetTrigger("unTrick");
-        }
+        // if (Input.GetKeyDown(KeyCode.Q))
+        // {
+        //     animator.SetTrigger("isTrick");
+        // }
+        // else
+        // {
+        //     animator.SetTrigger("unTrick");
+        // }
     }
 
     // 偵測目標物體進入範圍

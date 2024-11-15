@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SmoothCameraFollow : MonoBehaviour
+public class CameraFollower : MonoBehaviour
 {
     #region Variables
     
