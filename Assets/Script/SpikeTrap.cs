@@ -21,11 +21,11 @@ public class SpikeTrap : MonoBehaviour
         ListCharacters.Clear();
         ListSpikes.Clear();
 
-        Spike[] arr = this.gameObject.GetComponentsInChildren<Spike>();
-        foreach (Spike s in arr)
-        {
-            ListSpikes.Add(s);
-        }
+        // Spike[] arr = this.gameObject.GetComponentsInChildren<Spike>();
+        // foreach (Spike s in arr)
+        // {
+        //     ListSpikes.Add(s);
+        // }
 
     }
 
