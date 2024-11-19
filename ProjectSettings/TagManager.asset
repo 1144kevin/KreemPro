@@ -11,6 +11,7 @@ TagManager:
   - Bullet
   - BrokenBox
   - Coin
+  - Trap
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Boxes
   - BrokenPiece
   - Player
-  - 
+  - Trap
   - 
   - 
   - 
