@@ -11,6 +11,8 @@ TagManager:
   - Bullet
   - BrokenBox
   - Coin
+  - Booster
+  - Mine
   layers:
   - Default
   - TransparentFX
@@ -21,8 +23,8 @@ TagManager:
   - Boxes
   - BrokenPiece
   - Player
-  - 
-  - 
+  - Booster
+  - Mine
   - 
   - 
   - 
