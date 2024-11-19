@@ -78,8 +78,8 @@ public class PlayerController : MonoBehaviour
 
             rb.velocity = new Vector3(0, rb.velocity.y, 0); // 停止水平移動，但保留 Y 軸速度
             animator.SetBool("isMoving", false);
-            // 立即觸發攻擊動畫
-            animator.SetTrigger("isAttack");
+            // // 立即觸發攻擊動畫
+            // animator.SetTrigger("isAttack");
         }
         else
         {

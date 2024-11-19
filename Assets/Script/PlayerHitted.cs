@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CylinderMovement : MonoBehaviour
+public class PlayerHitted : MonoBehaviour
 {
     public float pushForce = 10f;  // 控制後退的力度
     public float pushDuration = 2f; // 持續時間2秒
@@ -8,18 +8,17 @@ public class CylinderMovement : MonoBehaviour
     private Vector3 pushDirection;
     private bool isPushed = false;
     private float pushEndTime;
-
-    // 子物件上的特效（例如一個粒子系統）
-    public GameObject specialEffect;  // 指向包含特效的子物件
+    public ParticleSystem HittedEffect;
 
     void Start()
     {
         // 獲取圓柱體的剛體組件
         rb = GetComponent<Rigidbody>();
         // 停止特效，確保它在開始時不運行
-        if (specialEffect != null)
+
+        if (HittedEffect != null)
         {
-            specialEffect.SetActive(false);  // 確保特效開始時是關閉的
+            HittedEffect.Stop();  // 確保特效開始時是關閉的
         }
     }
 
@@ -27,7 +26,7 @@ public class CylinderMovement : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         // 如果正在被推動並且撞到非預期物體時，進行反彈
-        if (isPushed && collision.gameObject.tag != "PlayerHit")
+        if (isPushed && collision.gameObject.tag != "Bullet")
         {
             Vector3 collisionNormal = collision.contacts[0].normal; // 獲取碰撞法線方向
             pushDirection = Vector3.Reflect(pushDirection, collisionNormal); // 根據碰撞法線反射推動方向
@@ -40,7 +39,7 @@ public class CylinderMovement : MonoBehaviour
         }
 
         // 檢查碰撞對象是否是玩家的手或其他需要觸發的對象
-        if (collision.gameObject.tag == "PlayerHit")
+        if (collision.gameObject.tag == "Bullet")
         {
             Debug.Log("hit");
             // 計算碰撞方向（從碰撞點推開圓柱體）
@@ -49,7 +48,7 @@ public class CylinderMovement : MonoBehaviour
 
             // 開始施加推力
             isPushed = true;
-            specialEffect.SetActive(true);  // 啟動特效
+            HittedEffect.Play();  // 啟動特效
             pushEndTime = Time.time + pushDuration; // 設定結束時間
         }
     }
@@ -77,9 +76,9 @@ public class CylinderMovement : MonoBehaviour
     private void StopPush()
     {
         isPushed = false;
-        if (specialEffect != null)
+        if (HittedEffect != null)
         {
-            specialEffect.SetActive(false);  // 停止特效
+            HittedEffect.Stop();  // 停止特效
         }
     }
 }
