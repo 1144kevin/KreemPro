@@ -7,7 +7,7 @@ using UnityEngine;
 public class SpikeTrap : MonoBehaviour
 {
     public List<PlayerController> ListCharacters = new List<PlayerController>();
-    public List<Spike> ListSpikes = new List<Spike>();
+    // public List<Spike> ListSpikes = new List<Spike>();
     [SerializeField] private int damage = 10;
     [SerializeField] private Animator animator;
 
@@ -19,7 +19,7 @@ public class SpikeTrap : MonoBehaviour
         SpikeTriggerRoutine = null;
         SpikesReload = true;
         ListCharacters.Clear();
-        ListSpikes.Clear();
+        // ListSpikes.Clear();
 
         // Spike[] arr = this.gameObject.GetComponentsInChildren<Spike>();
         // foreach (Spike s in arr)
