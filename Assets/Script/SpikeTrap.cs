@@ -6,14 +6,19 @@ using UnityEngine;
 
 public class SpikeTrap : MonoBehaviour
 {
+    [SerializeField] private int damage = 10; // 将damage改为int并赋值默认值
     public List<PlayerController> ListCharacters = new List<PlayerController>();
     // public List<Spike> ListSpikes = new List<Spike>();
     [SerializeField] private int damage = 10;
     [SerializeField] private Animator animator;
+    [SerializeField] private float pushForce = 5f; // 玩家被推的力量
 
-    Coroutine SpikeTriggerRoutine;
-    bool SpikesReload;
-
+    public float pushDuration = 2f; // 持續時間2秒
+    private Rigidbody rb;
+    private Vector3 pushDirection;
+    private bool isPushed = false;
+    private float pushEndTime;
+    // public ParticleSystem HittedEffect;
     private void Start()
     {
         SpikeTriggerRoutine = null;
@@ -24,86 +29,72 @@ public class SpikeTrap : MonoBehaviour
         // Spike[] arr = this.gameObject.GetComponentsInChildren<Spike>();
         // foreach (Spike s in arr)
         // {
-        //     ListSpikes.Add(s);
+        //     ListCharacters.Add(control);
         // }
-
-    }
-
-    private void Update()
-    {
-        if (ListCharacters.Count != 0)
+        if (isPushed == false)
         {
-            foreach (PlayerController control in ListCharacters)
+            if (control != null && control.CompareTag("Player"))
             {
-                if (SpikeTriggerRoutine == null && SpikesReload == true)
-                {
-                    SpikeTriggerRoutine = StartCoroutine(_TriggerSpikes(control));
-                }
+                isPushed = true;
+                animator.SetBool("TrapTrigger", true);
+                StartCoroutine(TriggerTrap(other));
+                Debug.Log("TriggerTrap");
             }
+
         }
+
     }
 
-    IEnumerator _TriggerSpikes(PlayerController control)
-    {
-        // SpikesReload = false;
-        // Debug.Log("spike triggered");
+    // void OnCollisionEnter(Collision collision)
+    // {
+    //     // 檢查碰撞對象是否是玩家
+    //     if (collision.gameObject.CompareTag("Player"))
+    //     {
+    //         Debug.Log("Player hit!");
 
-        // for (int i = 0; i < ListSpikes.Count; i++)// foreach (Spike s in ListSpikes)//spike升起
-        // {
-        //     Debug.Log("spike triggered");
-        //     Spike s = ListSpikes[i];
-        //     s.Shoot();
-        // }
-        if (control.CompareTag("Player"))//扣血
+    //         // 獲取玩家的 Rigidbody
+    //         Rigidbody playerRigidbody = collision.gameObject.GetComponent<Rigidbody>();
+
+    //         if (playerRigidbody != null)
+    //         {
+    //             // 計算推動方向（從碰撞點推開玩家）
+    //             Vector3 pushDirection = collision.contacts[0].point - transform.position;
+    //             pushDirection = -pushDirection.normalized; // 反向推動方向，使玩家遠離
+
+    //             // 施加推力
+    //             float pushForce = 10f; // 可調整的推力大小
+    //             playerRigidbody.AddForce(pushDirection * pushForce, ForceMode.Impulse);
+    //         }
+    //     }
+    // }
+
+    private IEnumerator TriggerTrap(Collider other)
+    {
+        // yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.0f);
+        if (other.CompareTag("Player"))
         {
-            Health playerHealth = control.GetComponent<Health>();
-            if (playerHealth != null) // 检查是否找到Health组件
+            Health playerHealth = other.GetComponent<Health>();
+            if (playerHealth != null)
             {
                 playerHealth.TakeDamage(damage);
-
             }
-        }
-        yield return new WaitForSeconds(1f);
-        // for (int i = 0; i < ListSpikes.Count; i++)//spike降下
-        // {
-        //     Spike s = ListSpikes[i];
-        //     s.Retract();
-        // }
-        yield return new WaitForSeconds(1f);
 
-        // SpikeTriggerRoutine = null;
-        // SpikesReload = true;
-    }
-
-    public static bool IsTrap(GameObject obj)//這邊他有在一個地方改了一個東西不知道可不可行
-    {
-        if (obj.transform.root.gameObject.GetComponent<SpikeTrap>() == null)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        PlayerController control = other.gameObject.transform.root.gameObject.GetComponent<PlayerController>();
-
-        if (control != null)
-        {
-            if (!ListCharacters.Contains(control))
+            // 給玩家一個推力
+            Rigidbody playerRigidbody = other.GetComponent<Rigidbody>();
+            if (playerRigidbody != null)
             {
-                ListCharacters.Add(control);
-            }
-        }
-        if (control.CompareTag("Player"))
-        {
-            animator.SetBool("TrapTrigger", true);
 
+                // 計算推力方向（使玩家遠離陷阱中心）
+                Vector3 pushDirection = (other.transform.position - transform.position).normalized;
+
+                // 施加推力
+                playerRigidbody.AddForce(pushDirection * pushForce, ForceMode.Force);
+                isPushed = false;
+            }
+            yield break;
         }
+
     }
     private void OnTriggerExit(Collider other)
     {
@@ -116,54 +107,43 @@ public class SpikeTrap : MonoBehaviour
                 ListCharacters.Remove(control);
             }
         }
-                if (control.CompareTag("Player"))
+        if (control.CompareTag("Player"))
         {
             animator.SetBool("TrapTrigger", false);
 
         }
 
     }
-
 }
-//     if(control.damageDetector.DamageTaken==0)
-//     {
-//         if(SpikeTriggerRoutine==null&&SpikesReload==true)
-//         {
-//             SpikeTriggerRoutine=StartCoroutine(_TriggerSpikes());
-//         }
-
-//     }
-// }
-
-
-// public class SpikeTrap : MonoBehaviour
+// private void OnTriggerEnter(Collider other)
 // {
-//     [SerializeField] private int damage = 10; // 将damage改为int并赋值默认值
-//      [SerializeField] private float yOffset = 1.0f; // Y軸位移的數值，可在Inspector中調整
 
-//      [SerializeField] private GameObject spike;
+//     PlayerController control = other.gameObject.transform.root.gameObject.GetComponent<PlayerController>();
 
-
-//     private void OnTriggerEnter(Collider other)
+//     if (control != null)
 //     {
-//         if (other.CompareTag("Player"))
+//         if (!ListCharacters.Contains(control))
 //         {
-//             Health playerHealth = other.GetComponent<Health>();
-//             if (playerHealth != null) // 检查是否找到Health组件
-//             {
-//                 playerHealth.TakeDamage(damage);
-//             }
+//             ListCharacters.Add(control);
 //         }
-//                 // 修改 spike 的 Y 軸位置
-//             if (spike != null)
-//             {
-//                 Vector3 newPosition = spike.transform.position; // 獲取當前位置
-//                 newPosition.y += yOffset; // 增加 Y 軸位移
-//                 spike.transform.position = newPosition; // 設置新位置
-//             }
-//             else
-//             {
-//                 Debug.LogWarning("Spike GameObject is not assigned!");
-//             }
 //     }
+//     if (control.CompareTag("Player"))
+//     {
+//         animator.SetBool("TrapTrigger", true);
+
+//     }       
+
+//      yield return new WaitForSeconds(1f);
+
+//      if (other.CompareTag("Player"))
+//     {
+//         Health playerHealth = other.GetComponent<Health>();
+//         if (playerHealth != null) // 检查是否找到Health组件
+//         {
+//             playerHealth.TakeDamage(damage);
+//         }
+//     }
+
+
+
 // }
