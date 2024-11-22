@@ -11,6 +11,8 @@ TagManager:
   - Bullet
   - BrokenBox
   - Coin
+  - Booster
+  - Mine
   - Trap
   layers:
   - Default
@@ -23,7 +25,8 @@ TagManager:
   - BrokenPiece
   - Player
   - Trap
-  - 
+  - Booster
+  - Mine
   - 
   - 
   - 
