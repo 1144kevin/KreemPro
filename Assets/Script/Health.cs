@@ -2,33 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// public class Health : MonoBehaviour
-// {
-//     public int maxHealth=100;
-//     private int currentHealth;
-//     public HealthBar healthBar;
-
-//     void Start (){
-//         currentHealth = maxHealth;
-//         healthBar.SetMaxHealth(maxHealth);
-//     }
-//     void Update () {
-//         if(Input.GetKeyDown(KeyCode.Space)){
-//             TakeDamage(20);
-//         }
-//     }
-//     void TakeDamage(int damage){
-//         currentHealth-=damage;
-//         healthBar.SetHealth(currentHealth);
-//     }
-
-
-// }
 public class Health : MonoBehaviour
 {
     public int maxHealth = 100;
     private int currentHealth;
     public HealthBar healthBar;
+
+    public GameObject gameObject;
+    [SerializeField] private GameObject Kreem;
 
     void Start()
     {
@@ -64,7 +45,14 @@ public class Health : MonoBehaviour
 
     private void Die()
     {
-        // Debug.Log($"{gameObject.name} has died!");
-        // 在这里可以处理玩家死亡的逻辑，比如重置关卡或播放动画。
+        // 獲取玩家當前的位置和旋轉
+        Vector3 playerPosition = transform.position;
+        Quaternion playerRotation = transform.rotation;
+
+        // 隱藏玩家物件
+        gameObject.SetActive(false);
+
+        // 在玩家位置生成 Kreem
+        Instantiate(Kreem, playerPosition, playerRotation);
     }
 }
