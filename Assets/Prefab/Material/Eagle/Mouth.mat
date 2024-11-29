@@ -41,6 +41,7 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
+    - _QueueControl: 0
     - _Shading: 0.1
     m_Colors:
     - _BaseColor: {r: 0.85660374, g: 0.7657827, b: 0.25698105, a: 1}
