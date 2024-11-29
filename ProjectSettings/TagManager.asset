@@ -12,6 +12,7 @@ TagManager:
   - BrokenBox
   - Coin
   - Trap
+  - Kreem
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - BrokenPiece
   - Player
   - Trap
-  - 
+  - OutlineStuff
   - 
   - 
   - 
