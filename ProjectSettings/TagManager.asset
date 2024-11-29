@@ -14,6 +14,7 @@ TagManager:
   - Booster
   - Mine
   - Trap
+  - Kreem
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - BrokenPiece
   - Player
   - Trap
-  - Booster
+  - OutlineStuffBooster
   - Mine
   - 
   - 
