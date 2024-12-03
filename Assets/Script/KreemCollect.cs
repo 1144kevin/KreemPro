@@ -3,7 +3,7 @@ using UnityEngine;
 public class KreemCollect : MonoBehaviour
 {
     public GameObject Kreem;
-    private float KreemCount = 0;
+    public int KreemCount = 0;
 
     private void OnTriggerEnter(Collider collider)
     {

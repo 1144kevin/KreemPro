@@ -4620,16 +4620,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackEffect: {fileID: 3302266349121316365, guid: 479d3063f084fa849b60b319ea6b3a7b,
     type: 3}
-  attackEffect2: {fileID: 0}
-  runAttackEffect: {fileID: 0}
-  runAttackEffect2: {fileID: 0}
-  leftShootPoint: {fileID: 0}
-  rightShootPoint: {fileID: 0}
-  leftRunShootPoint: {fileID: 0}
-  rightRunShootPoint: {fileID: 0}
-  bulletPrefab: {fileID: 0}
-  target: {fileID: 0}
-  bulletSpawnDelay: 1.5
 --- !u!114 &442549923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4644,7 +4634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pushForce: 10
   pushDuration: 2
-  HittedEffect: {fileID: 4596544552307233757}
+  specialEffect: {fileID: 0}
 --- !u!135 &442549924
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -14557,6 +14547,25 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 930932549}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &944781006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ee2034758d6f2e44ea6323c007a8f330,
+    type: 3}
+  m_PrefabInstance: {fileID: 948173108}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 948173109}
+  - component: {fileID: 948173111}
+  - component: {fileID: 948173110}
+  m_Layer: 0
+  m_Name: KreemTower
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1001 &948173108
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14670,12 +14679,77 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ee2034758d6f2e44ea6323c007a8f330, type: 3}
---- !u!4 &948173109 stripped
+--- !u!4 &948173109
 Transform:
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ee2034758d6f2e44ea6323c007a8f330,
     type: 3}
   m_PrefabInstance: {fileID: 948173108}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944781006}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -316.08893, y: 1155, z: 670.3576}
+  m_LocalScale: {x: 45, y: 45, z: 45}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 776455146}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &948173110
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: ee2034758d6f2e44ea6323c007a8f330,
+    type: 3}
+  m_PrefabInstance: {fileID: 948173108}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944781006}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 84838a4855680d645b72ffc6c0fac081, type: 2}
+  - {fileID: 2100000, guid: 2372b4e159bb961428903cd9b63bc3fe, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &948173111
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: -5754084199372789682, guid: ee2034758d6f2e44ea6323c007a8f330,
+    type: 3}
+  m_PrefabInstance: {fileID: 948173108}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 944781006}
+  m_Mesh: {fileID: 4493585093827132993, guid: ee2034758d6f2e44ea6323c007a8f330, type: 3}
 --- !u!1001 &957279443
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14888,12 +14962,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 243133476}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &967711461 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 4596544553357837919, guid: 8eb503696b886e04faff8fc0f480d473,
-    type: 3}
-  m_PrefabInstance: {fileID: 243133476}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1007508590 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 004f8006d2e0373429ba736eca128a44,
@@ -15101,12 +15169,6 @@ Transform:
 --- !u!4 &1060031949 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2452082064152055796, guid: 9b21333b068a5084ba09535839bee3c8,
-    type: 3}
-  m_PrefabInstance: {fileID: 1084027103}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &1060031951 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 484368387861551534, guid: 9b21333b068a5084ba09535839bee3c8,
     type: 3}
   m_PrefabInstance: {fileID: 1084027103}
   m_PrefabAsset: {fileID: 0}
@@ -16457,7 +16519,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pushForce: 300
   pushDuration: 0
-  HittedEffect: {fileID: 2075353146}
+  specialEffect: {fileID: 0}
 --- !u!54 &1190873737
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -17572,7 +17634,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pushForce: 10
   pushDuration: 2
-  HittedEffect: {fileID: 967711461}
+  specialEffect: {fileID: 0}
 --- !u!114 &1352114348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17602,16 +17664,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackEffect: {fileID: 1379504316740510952}
-  attackEffect2: {fileID: 0}
-  runAttackEffect: {fileID: 0}
-  runAttackEffect2: {fileID: 0}
-  leftShootPoint: {fileID: 0}
-  rightShootPoint: {fileID: 0}
-  leftRunShootPoint: {fileID: 0}
-  rightRunShootPoint: {fileID: 0}
-  bulletPrefab: {fileID: 0}
-  target: {fileID: 0}
-  bulletSpawnDelay: 1.5
 --- !u!54 &1352114350
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -17933,12 +17985,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 493545486}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &1433480047 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 484368387861551534, guid: 9b21333b068a5084ba09535839bee3c8,
-    type: 3}
-  m_PrefabInstance: {fileID: 493545486}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1444570168
 GameObject:
   m_ObjectHideFlags: 0
@@ -18100,6 +18146,13 @@ MonoBehaviour:
   m_Script: {fileID: -1199893898, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _printedInterestGroupsWarning: 0
+  _connectionToken: []
+  _remotePrefabsWaitingForSpawnedCallback: []
+  <IsHostMigrationEnabled>k__BackingField: 0
+  <HostMigrationSnapshotDelay>k__BackingField: 0
+  <GameMode>k__BackingField: 0
+  _tempWordsCapacity: 0
 --- !u!4 &1464244471
 Transform:
   m_ObjectHideFlags: 0
@@ -18130,7 +18183,9 @@ MonoBehaviour:
   _mouseSensitivity: 10
   _networkRunner: {fileID: 1464244470}
   _playerPrefab:
-    RawGuidValue: 07bf8166815b739469b8bdae89be45af
+    RawGuidValue:
+    - -7749749922445803769
+    - -5817033845127661463
 --- !u!1001 &1499681511
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24488,7 +24543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pushForce: 10
   pushDuration: 2
-  HittedEffect: {fileID: 0}
+  specialEffect: {fileID: 0}
 --- !u!114 &1752301370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24502,17 +24557,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackEffect: {fileID: 1628588518}
-  attackEffect2: {fileID: 0}
-  runAttackEffect: {fileID: 0}
-  runAttackEffect2: {fileID: 0}
-  leftShootPoint: {fileID: 0}
-  rightShootPoint: {fileID: 1628588516}
-  leftRunShootPoint: {fileID: 0}
-  rightRunShootPoint: {fileID: 0}
-  bulletPrefab: {fileID: 7731386595278410357, guid: 923ed07651f17224f81fc25cbf824b00,
-    type: 3}
-  target: {fileID: 1979287527}
-  bulletSpawnDelay: 1
 --- !u!114 &1752301371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24629,12 +24673,6 @@ Transform:
 --- !u!4 &1758198565 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2452082064152055796, guid: 9b21333b068a5084ba09535839bee3c8,
-    type: 3}
-  m_PrefabInstance: {fileID: 725826292}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &1758198567 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 484368387861551534, guid: 9b21333b068a5084ba09535839bee3c8,
     type: 3}
   m_PrefabInstance: {fileID: 725826292}
   m_PrefabAsset: {fileID: 0}
@@ -27040,7 +27078,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pushForce: 10
   pushDuration: 0
-  HittedEffect: {fileID: 967711461}
+  specialEffect: {fileID: 0}
 --- !u!114 &2004688695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27054,17 +27092,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackEffect: {fileID: 1299191249}
-  attackEffect2: {fileID: 1758198567}
-  runAttackEffect: {fileID: 1433480047}
-  runAttackEffect2: {fileID: 1060031951}
-  leftShootPoint: {fileID: 1758198565}
-  rightShootPoint: {fileID: 1299191247}
-  leftRunShootPoint: {fileID: 1060031949}
-  rightRunShootPoint: {fileID: 1433480045}
-  bulletPrefab: {fileID: 1263444183870942694, guid: 15d07db39931fe0418d7a4bf8d00af9c,
-    type: 3}
-  target: {fileID: 82410887}
-  bulletSpawnDelay: 0
 --- !u!114 &2004688696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27612,12 +27639,6 @@ PrefabInstance:
 --- !u!4 &2075353144 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3986179179329749341, guid: 8eb503696b886e04faff8fc0f480d473,
-    type: 3}
-  m_PrefabInstance: {fileID: 2075353142}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &2075353146 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 4596544553357837919, guid: 8eb503696b886e04faff8fc0f480d473,
     type: 3}
   m_PrefabInstance: {fileID: 2075353142}
   m_PrefabAsset: {fileID: 0}
@@ -37914,12 +37935,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!198 &4596544552307233757 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 1441302940585475241, guid: 579f0f2f41f121945a5a88c11db1a2df,
-    type: 3}
-  m_PrefabInstance: {fileID: 2194279064276790716}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4710742910788866337
 PrefabInstance:
   m_ObjectHideFlags: 0
