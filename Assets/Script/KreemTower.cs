@@ -37,12 +37,9 @@ public class KreemTower : MonoBehaviour
 
         while (stayTime < 3f)
         {
-            // 如果玩家離開，則停止檢查
             yield return new WaitForSeconds(0.1f);
             stayTime += 0.1f;
-            Debug.Log("1");
         }
-        int KreemCount = kreemCollect.KreemCount;
 
         // 檢查該玩家是否有 KreemCount >= 1
         if (KreemCount >= 1)

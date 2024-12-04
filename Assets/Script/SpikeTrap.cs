@@ -78,11 +78,5 @@ public class SpikeTrap : MonoBehaviour
                 ListCharacters.Remove(control);
             }
         }
-        if (control.CompareTag("Player"))
-        {
-            animator.SetBool("TrapTrigger", false);
-
-        }
-
     }
 }
