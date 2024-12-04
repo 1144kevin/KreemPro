@@ -14,6 +14,7 @@ TagManager:
   - Booster
   - Mine
   - Trap
+  - MineEffect
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,6 @@ TagManager:
   - Trap
   - Booster
   - Mine
-  - 
   - 
   - 
   - 
