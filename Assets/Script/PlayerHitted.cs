@@ -26,20 +26,22 @@ public class PlayerHitted : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         // 如果正在被推動並且撞到非預期物體時，進行反彈
-        if (isPushed && collision.gameObject.tag != "Bullet")
+        if (isPushed)
         {
-            Vector3 collisionNormal = collision.contacts[0].normal; // 獲取碰撞法線方向
-            pushDirection = Vector3.Reflect(pushDirection, collisionNormal); // 根據碰撞法線反射推動方向
+            if (collision.gameObject.tag != "Bullet" || collision.gameObject.tag != "Trap")
+            {
+                Vector3 collisionNormal = collision.contacts[0].normal; // 獲取碰撞法線方向
+                pushDirection = Vector3.Reflect(pushDirection, collisionNormal); // 根據碰撞法線反射推動方向
 
-            // 將剩餘的推力當作反彈力
-            float remainingPushTime = pushEndTime - Time.time;
-            pushEndTime = Time.time + remainingPushTime; // 更新反彈的結束時間
-
+                // 將剩餘的推力當作反彈力
+                float remainingPushTime = pushEndTime - Time.time;
+                pushEndTime = Time.time + remainingPushTime; // 更新反彈的結束時間
+            }
             return;
         }
 
         // 檢查碰撞對象是否是玩家的手或其他需要觸發的對象
-        if (collision.gameObject.tag == "Bullet")
+        if (collision.gameObject.tag == "Bullet" )
         {
             Debug.Log("hit");
             // 計算碰撞方向（從碰撞點推開圓柱體）
@@ -56,7 +58,7 @@ public class PlayerHitted : MonoBehaviour
     void Update()
     {
         // 如果正在被推動，並且還沒有達到推動結束的時間
-         if (isPushed && Time.time <= pushEndTime)
+        if (isPushed && Time.time <= pushEndTime)
         {
             // 保持 y 軸的值不變，僅更新 x 和 z 軸位置
             pushDirection.y = 0;

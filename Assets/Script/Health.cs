@@ -8,7 +8,7 @@ public class Health : MonoBehaviour
     private int currentHealth;
     public HealthBar healthBar;
 
-    public GameObject gameObject;
+    public GameObject GameObject;
     [SerializeField] private GameObject Kreem;
 
     void Start()
@@ -50,7 +50,7 @@ public class Health : MonoBehaviour
         Quaternion playerRotation = transform.rotation;
 
         // 隱藏玩家物件
-        gameObject.SetActive(false);
+        GameObject.SetActive(false);
 
         // 在玩家位置生成 Kreem
         Instantiate(Kreem, playerPosition, playerRotation);
