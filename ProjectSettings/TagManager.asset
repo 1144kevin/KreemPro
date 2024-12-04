@@ -14,7 +14,7 @@ TagManager:
   - Booster
   - Mine
   - Trap
-  - Kreem
+  - MineEffect
   layers:
   - Default
   - TransparentFX
@@ -28,7 +28,6 @@ TagManager:
   - Trap
   - OutlineStuffBooster
   - Mine
-  - 
   - 
   - 
   - 

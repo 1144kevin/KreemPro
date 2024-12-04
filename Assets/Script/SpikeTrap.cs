@@ -7,7 +7,9 @@ using UnityEngine;
 public class SpikeTrap : MonoBehaviour
 {
     [SerializeField] private int damage = 10; // 将damage改为int并赋值默认值
+    [SerializeField] private int damage = 10; // 将damage改为int并赋值默认值
     public List<PlayerController> ListCharacters = new List<PlayerController>();
+
 
     [SerializeField] private Animator animator;
     [SerializeField] private float pushForce = 5f; // 玩家被推的力量
