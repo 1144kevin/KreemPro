@@ -7,7 +7,6 @@ using UnityEngine;
 public class SpikeTrap : MonoBehaviour
 {
     [SerializeField] private int damage = 10; // 将damage改为int并赋值默认值
-    [SerializeField] private int damage = 10; // 将damage改为int并赋值默认值
     public List<PlayerController> ListCharacters = new List<PlayerController>();
 
 
