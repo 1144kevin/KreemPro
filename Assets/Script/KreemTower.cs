@@ -5,67 +5,81 @@ using System.Collections.Generic;
 public class KreemTower : MonoBehaviour
 {
     // 用於儲存每個玩家在 KreemTower 的吸收數量
-    private Dictionary<GameObject, int>  RecordKreem = new Dictionary<GameObject, int>();
+    private Dictionary<GameObject, int> RecordKreem = new Dictionary<GameObject, int>();
+private Coroutine currentCoroutine;
 
-    public GameObject player;
-
-
-    
-
-    private void OnTriggerEnter(Collider collider)
+private void OnTriggerEnter(Collider collider)
+{
+    if (currentCoroutine != null)
     {
-        if (collider.tag == "Player")
-        {
-            StartCoroutine(HandlePlayerInteraction(collider.gameObject));
-        }
+        StopCoroutine(currentCoroutine); // 停止之前的協程
     }
+    currentCoroutine = StartCoroutine(HandlePlayerInteraction(collider.gameObject));
+}
 
-    private void OnTriggerExit(Collider collider)
+private void OnTriggerExit(Collider collider)
+{
+    if (currentCoroutine != null)
     {
-        if (collider.tag == "Player")
-        {
-            // 停止檢查該玩家的停留狀態
-            StopAllCoroutines();
-        }
+        StopCoroutine(currentCoroutine); // 停止協程
+        currentCoroutine = null;
     }
+}
 
-    private IEnumerator HandlePlayerInteraction(GameObject other)
+
+    private IEnumerator HandlePlayerInteraction(GameObject player)
     {
-        KreemCollect kreemCollect = other.GetComponent<KreemCollect>();
+        KreemCollect kreemCollect = player.GetComponent<KreemCollect>();
+        if (kreemCollect == null)
+        {
+            Debug.LogWarning($"{player.name} 沒有kreem");
+            yield break;
+        }
+
         // 停留時間計時
-        float stayTime = 0f;
+        float stayTime = 1.0f;
 
-        while (stayTime < 3f)
+        while (stayTime <= 3f)
         {
-            yield return new WaitForSeconds(0.1f);
-            stayTime += 0.1f;
+            yield return new WaitForSeconds(1.0f);
+            
+            if (stayTime == 1){
+                Debug.Log("1");stayTime += 1.0f;
+            }
+            else if (stayTime == 2){
+                Debug.Log("2");stayTime += 1.0f;
+            }
+            else{
+                Debug.Log("3");break;
+            }
         }
+
+        int KreemCount = kreemCollect.KreemCount;
 
         // 檢查該玩家是否有 KreemCount >= 1
         if (KreemCount >= 1)
         {
-            // 確保玩家在字典中初始化
-            if (! RecordKreem.ContainsKey(player))
+            // 初始化該玩家的記錄
+            if (!RecordKreem.ContainsKey(player))
             {
-                 RecordKreem[player] = 0;
+                RecordKreem[player] = 0;
             }
 
-            // 吸收玩家的 KreemCount
-             RecordKreem[player] += KreemCount;
-            Debug.Log($"Player {player.name}'s KreemCount Record: {RecordKreem[player]}");
+            // 吸收玩家的 KreemCount 並更新記錄
+            RecordKreem[player] += KreemCount;
+            Debug.Log($"{player.name}已蒐集{RecordKreem[player]}個kreem");
 
-            // 玩家身上的 KreemCount 歸零
-            KreemCount = 0;
+            // 將玩家的 KreemCount 歸零
+            kreemCollect.KreemCount = 0;
+            Debug.Log($"{player.name}的kreem已被歸零:{kreemCollect.KreemCount}");
 
-            // 檢查該玩家的吸收總數是否達到 3
+            // 如果吸收總數 >= 3，觸發特效並重置記錄
             if (RecordKreem[player] >= 3)
             {
-                // 啟動特效（需替換為實際特效觸發邏輯）
-                Debug.Log($" special effect!");
-
-                // 重置該玩家的吸收記錄
+                Debug.Log($"{player.name}啟動kreem大招!");
                 RecordKreem[player] = 0;
             }
         }
     }
 }
+
