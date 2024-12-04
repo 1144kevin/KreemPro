@@ -4499,7 +4499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushForce: 10
-  pushDuration: 2
+  pushDuration: 0.1
   HittedEffect: {fileID: 4596544552307233757}
 --- !u!135 &442549924
 SphereCollider:
@@ -9909,7 +9909,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 502317845}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
@@ -16311,8 +16311,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6932be53e2151a54e9a46451b3630b26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 300
-  pushDuration: 0
+  pushForce: 10
+  pushDuration: 0.1
   HittedEffect: {fileID: 2075353146}
 --- !u!54 &1190873737
 Rigidbody:
@@ -17427,7 +17427,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushForce: 10
-  pushDuration: 2
+  pushDuration: 0.1
   HittedEffect: {fileID: 967711461}
 --- !u!114 &1352114348
 MonoBehaviour:
@@ -17983,10 +17983,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6516585e0a86b54082ff8fd1a7ea815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mouseSensitivity: 10
-  _networkRunner: {fileID: 1464244470}
-  _playerPrefab:
-    RawGuidValue: 07bf8166815b739469b8bdae89be45af
 --- !u!1001 &1499681511
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18494,7 +18490,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1567967491}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
@@ -24343,7 +24339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushForce: 10
-  pushDuration: 2
+  pushDuration: 0.1
   HittedEffect: {fileID: 0}
 --- !u!114 &1752301370
 MonoBehaviour:
@@ -24376,7 +24372,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1752301368}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4653fc8fefc2e684ba7e3ea899a9852e, type: 3}
   m_Name: 
@@ -24404,7 +24400,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 5
+  m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &1752301373
 BoxCollider:
@@ -26894,7 +26890,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushForce: 10
-  pushDuration: 0
+  pushDuration: 0.1
   HittedEffect: {fileID: 967711461}
 --- !u!114 &2004688695
 MonoBehaviour:
@@ -26927,7 +26923,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2004688693}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4653fc8fefc2e684ba7e3ea899a9852e, type: 3}
   m_Name: 
@@ -26955,7 +26951,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 5
+  m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!65 &2004688698
 BoxCollider:
@@ -27427,6 +27423,11 @@ PrefabInstance:
     - target: {fileID: 4596544553357837919, guid: 8eb503696b886e04faff8fc0f480d473,
         type: 3}
       propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4596544553357837919, guid: 8eb503696b886e04faff8fc0f480d473,
+        type: 3}
+      propertyPath: prewarm
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4596544553357837919, guid: 8eb503696b886e04faff8fc0f480d473,
