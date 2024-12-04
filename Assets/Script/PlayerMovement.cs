@@ -38,19 +38,19 @@ public class PlayerMovement : MonoBehaviour
         // Use specific keys for movement
         if (Input.GetKey(KeyCode.D))
         {
-            _inputs.x = -1;
+            _inputs.x = 1;
         }
         if (Input.GetKey(KeyCode.A))
         {
-            _inputs.x = 1;
+            _inputs.x = -1;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            _inputs.z = 1;
+            _inputs.z = -1;
         }
         if (Input.GetKey(KeyCode.W))
         {
-            _inputs.z = -1;
+            _inputs.z = 1;
         }
 
         if (_inputs != Vector3.zero)
