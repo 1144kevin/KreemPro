@@ -10,6 +10,14 @@ public class PlayerHitted : MonoBehaviour
     private float pushEndTime;
     public ParticleSystem HittedEffect;
 
+
+    [Header("HeathBar Settings")]
+    public HealthBar2 healthbar;  // Changed to public so we can assign it in inspector
+    public float damageCooldown = 1f;
+    private bool canTakeDamage = true;
+    private float cooldownTimer = 0f;
+
+
     void Start()
     {
         // 獲取圓柱體的剛體組件
@@ -19,6 +27,10 @@ public class PlayerHitted : MonoBehaviour
         if (HittedEffect != null)
         {
             HittedEffect.Stop();  // 確保特效開始時是關閉的
+        }
+        if (healthbar == null)
+        {
+            Debug.LogError("HealthBar2 component is not assigned to PlayerGotHit!");
         }
     }
 
@@ -37,7 +49,7 @@ public class PlayerHitted : MonoBehaviour
                 float remainingPushTime = pushEndTime - Time.time;
                 pushEndTime = Time.time + remainingPushTime; // 更新反彈的結束時間
             }
-            return;
+            
         }
 
         // 檢查碰撞對象是否是玩家的手或其他需要觸發的對象
@@ -52,6 +64,35 @@ public class PlayerHitted : MonoBehaviour
             isPushed = true;
             HittedEffect.Play();  // 啟動特效
             pushEndTime = Time.time + pushDuration; // 設定結束時間
+
+            if (healthbar != null)
+            {
+                healthbar.TakeDamage(30);
+                Debug.Log($"Current health after damage: {healthbar.GetCurrentHealth()}");  // Debug log
+                
+                // Start damage cooldown
+                canTakeDamage = false;
+                cooldownTimer = damageCooldown;
+            }
+        }
+    }
+
+     public void OnTriggerEnter(Collider other)
+    {
+        // Debug.Log($"Collision detected with: {other.gameObject.tag}");  // Debug log
+        
+        if (other.gameObject.CompareTag("MineEffect") && canTakeDamage)
+        {
+            Debug.Log("Player hit by mine!");
+            if (healthbar != null)
+            {
+                healthbar.TakeDamage(30);
+                Debug.Log($"Current health after damage: {healthbar.GetCurrentHealth()}");  // Debug log
+                
+                // Start damage cooldown
+                canTakeDamage = false;
+                cooldownTimer = damageCooldown;
+            }
         }
     }
 
@@ -71,6 +112,14 @@ public class PlayerHitted : MonoBehaviour
         {
             // 停止推動
             StopPush();
+        }
+        if (!canTakeDamage)
+        {
+            cooldownTimer -= Time.deltaTime;
+            if (cooldownTimer <= 0)
+            {
+                canTakeDamage = true;
+            }
         }
     }
 
