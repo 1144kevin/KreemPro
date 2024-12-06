@@ -13,7 +13,7 @@ public class AttackEffect : MonoBehaviour
     public Transform rightRunShootPoint;
     public GameObject bulletPrefab;
     public Transform target; // 子彈射擊目標
-     public float bulletSpawnDelay = 1.5f; // 子彈生成延遲時間
+    public float bulletSpawnDelay = 1.5f; // 子彈生成延遲時間
 
     // 發射右手攻擊
     public void PlayAttackEffect()
