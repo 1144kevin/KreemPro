@@ -2,6 +2,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
+
+
 public class FortuneWheelSpinner : MonoBehaviour
 {
     public Image CircleBase;
@@ -18,6 +20,8 @@ public class FortuneWheelSpinner : MonoBehaviour
     [HideInInspector]
     public int rewardNumber = -1;
 
+
+ public PlayerController playerController;
 
     private void Start()
     {
@@ -57,6 +61,9 @@ public class FortuneWheelSpinner : MonoBehaviour
                 // 顯示獎勵面板
                 rewardFinalImage.sprite = RewardPictures[rewardNumber].sprite;
                 Rewardpanel.gameObject.SetActive(true);
+
+                 // 處理獎勵
+                HandleReward(); // 確保這裡調用了獎勵邏輯
             }
         }
         else
@@ -75,6 +82,7 @@ public class FortuneWheelSpinner : MonoBehaviour
         if (!isSpinning && rewardNumber != -1)
         {
             rewardNumber = -1; // 重置獎勵編號
+            rewardFinalImage.gameObject.SetActive(true); 
         }
 
         if (!isSpinning && rewardNumber == -1)
@@ -84,4 +92,32 @@ public class FortuneWheelSpinner : MonoBehaviour
             Rewardpanel.gameObject.SetActive(false); // 隱藏獎勵面板
         }
     }
+
+    private void HandleReward()
+    {
+        // 獎勳處理
+        if (rewardNumber == 0) // 假設 element 1 是獎勳 0
+        {
+            if (playerController != null)
+            {
+                playerController.IncreaseSpeed(200); // 增加速度
+                StartCoroutine(HideRewardImageAfterDelay(10f));
+            
+            }
+        
+        }
+        // 可以擴展更多獎勳處理
+    }
+    private IEnumerator HideRewardImageAfterDelay(float delay)
+    {
+        // 等待指定的時間
+        yield return new WaitForSeconds(delay);
+
+        // 隱藏獎勳圖片
+        rewardFinalImage.gameObject.SetActive(false);
+    }
+ 
+  
 }
+
+

@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 5.0f;
+    private float originalSpeed; // 保存初始速度
     public float rotationSpeed = 720.0f;
     public float detectionRadius = 45.0f; // 偵測範圍的半徑
 
@@ -21,6 +22,8 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
 
+        originalSpeed = speed;  // 初始化 originalSpeed
+
         // 添加一個 SphereCollider 作為偵測範圍的觸發區域
         SphereCollider detectionCollider = gameObject.AddComponent<SphereCollider>();
         detectionCollider.isTrigger = true;
@@ -29,6 +32,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        // // 獲取當前動畫狀態
+        // AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0); // 0 為 base layer
+        // bool isInAttackAnimation = stateInfo.IsName("Attack") || stateInfo.IsName("Attack0"); // "Attack" 為動畫狀態名稱，需與 Animator 中一致
+        bool Moving = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) ||
+                   Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow);
         // 自定義重力
         rb.AddForce(Vector3.down * customGravity, ForceMode.Acceleration);
         // 獲取輸入
@@ -78,8 +86,6 @@ public class PlayerController : MonoBehaviour
 
             rb.velocity = new Vector3(0, rb.velocity.y, 0); // 停止水平移動，但保留 Y 軸速度
             animator.SetBool("isMoving", false);
-            // 立即觸發攻擊動畫
-            animator.SetTrigger("isAttack");
         }
         else
         {
@@ -90,19 +96,21 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.K))
         {
-            animator.SetTrigger("isAttack");
+            if (Moving)
+            {
+                // 如果正在移動且按下攻擊鍵，觸發跑攻擊動畫
+                animator.SetTrigger("isRunAttack");
+            }
+            else
+            {
+                // 否則觸發普通攻擊動畫
+                animator.SetTrigger("isAttack");
+            }
         }
         else
         {
             animator.SetTrigger("unAttack");
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            animator.SetTrigger("isTrick");
-        }
-        else
-        {
-            animator.SetTrigger("unTrick");
+            animator.SetTrigger("unRunAttack");
         }
     }
 
@@ -122,5 +130,21 @@ public class PlayerController : MonoBehaviour
         {
             target = null; // 當目標離開範圍時，將目標設為 null
         }
+    }
+
+    public void IncreaseSpeed(float amount)
+    {
+        speed += amount;
+        Debug.Log($"玩家速度增加，當前速度為：{speed}");
+
+         StartCoroutine(RestoreSpeedAfterDelay(10f));
+    }
+
+     private IEnumerator RestoreSpeedAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        speed = originalSpeed;
+        Debug.Log($"玩家速度還原，當前速度為：{speed}");
+
     }
 }

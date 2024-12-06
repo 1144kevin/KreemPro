@@ -6141,6 +6141,7 @@ MonoBehaviour:
   spinSpeed: 0
   spinRotation: 0
   rewardNumber: -1
+  playerController: {fileID: 883175579}
 --- !u!1 &152147289 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 004f8006d2e0373429ba736eca128a44,
