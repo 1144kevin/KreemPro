@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,7 +11,34 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private Animator animator;
     private Transform target; // 當前偵測的目標物體
+    private Vector2 moveInput;
+    private bool attackInput;
+    private bool isAttacking = false; // 防止動畫重複觸發
+    PlayerActions controls;
 
+    void Awake()
+    {
+        // 初始化 Input Actions
+        controls = new PlayerActions();
+
+        // 訂閱移動輸入事件
+        controls.PlayerControls.Movement.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        controls.PlayerControls.Movement.canceled += ctx => moveInput = Vector2.zero;
+
+        // 訂閱攻擊輸入事件
+        controls.PlayerControls.Attack.started += ctx => attackInput = true;
+        controls.PlayerControls.Attack.canceled += ctx => attackInput = false;
+
+    }
+    void OnEnable()
+    {
+        controls.PlayerControls.Enable();
+    }
+
+    void OnDisable()
+    {
+        controls.PlayerControls.Disable();
+    }
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -29,37 +52,9 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // // 獲取當前動畫狀態
-        // AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0); // 0 為 base layer
-        // bool isInAttackAnimation = stateInfo.IsName("Attack") || stateInfo.IsName("Attack0"); // "Attack" 為動畫狀態名稱，需與 Animator 中一致
-        bool Moving = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.DownArrow) ||
-                   Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow);
         // 自定義重力
         rb.AddForce(Vector3.down * customGravity, ForceMode.Acceleration);
-        // 獲取輸入
-        float moveX = 0; // 左右移動 (A/D 或 左右方向鍵)
-        float moveZ = 0;   // 前後移動 (W/S 或 上下方向鍵)
-
-        // 移動方向
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            moveX = -1;
-        }
-        else if (Input.GetKey(KeyCode.RightArrow))
-        {
-            moveX = 1;
-        }
-
-        if (Input.GetKey(KeyCode.UpArrow))
-        {
-            moveZ = 1;
-        }
-        else if (Input.GetKey(KeyCode.DownArrow))
-        {
-            moveZ = -1;
-        }
-
-        Vector3 move = new Vector3(-moveX, 0, -moveZ).normalized;
+        Vector3 move = new Vector3(-moveInput.x, 0, -moveInput.y).normalized;
 
         bool isMoving = move.magnitude > 0.1f;
 
@@ -73,7 +68,7 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector3(transform.forward.x * speed, rb.velocity.y, transform.forward.z * speed);
             animator.SetBool("isMoving", true);
         }
-        else if (target != null && Input.GetKey(KeyCode.K))
+        else if (target != null && attackInput)
         {
             // 當攻擊鍵被按下且有偵測目標時，自動面向目標方向
             Vector3 directionToTarget = (target.position - transform.position).normalized;
@@ -91,30 +86,30 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("isMoving", false);
         }
 
-        if (Input.GetKeyDown(KeyCode.K))
+        if (attackInput && !isAttacking) // 確保攻擊動畫只觸發一次
         {
-            if (Moving)
+            isAttacking = true;
+
+            if (isMoving)
             {
-                // 如果正在移動且按下攻擊鍵，觸發跑攻擊動畫
                 animator.SetTrigger("isRunAttack");
             }
             else
             {
-                // 否則觸發普通攻擊動畫
                 animator.SetTrigger("isAttack");
             }
         }
-        else
+        else if (!attackInput) // 當按鍵釋放時重置狀態
         {
-            animator.SetTrigger("unAttack");
+            isAttacking = false;
+             animator.SetTrigger("unAttack");
             animator.SetTrigger("unRunAttack");
         }
     }
-
     // 偵測目標物體進入範圍
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Target")) // 假設目標物體的 Tag 是 "Target"
+        if (other.CompareTag("Player")) // 假設目標物體的 Tag 是 "Target"
         {
             target = other.transform; // 設定目標為觸發的物體
         }
@@ -123,9 +118,10 @@ public class PlayerController : MonoBehaviour
     // 偵測目標物體離開範圍
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Target") && other.transform == target)
+        if (other.CompareTag("Player") && other.transform == target)
         {
             target = null; // 當目標離開範圍時，將目標設為 null
         }
     }
 }
+

@@ -40,7 +40,7 @@ public class PlayerHitted : MonoBehaviour
         // 如果正在被推動並且撞到非預期物體時，進行反彈
         if (isPushed)
         {
-            if (collision.gameObject.tag != "Bullet" || collision.gameObject.tag != "Trap")
+            if (collision.gameObject.tag != "Bullet")
             {
                 Vector3 collisionNormal = collision.contacts[0].normal; // 獲取碰撞法線方向
                 pushDirection = Vector3.Reflect(pushDirection, collisionNormal); // 根據碰撞法線反射推動方向
