@@ -11,19 +11,23 @@ TagManager:
   - Bullet
   - BrokenBox
   - Coin
+  - Booster
+  - Mine
+  - Trap
+  - MineEffect
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - OutlineObject
   - Water
   - UI
   - Boxes
   - BrokenPiece
   - Player
-  - 
-  - 
-  - 
+  - Trap
+  - OutlineStuffBooster
+  - Mine
   - 
   - 
   - 

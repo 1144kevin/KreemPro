@@ -9,6 +9,7 @@ public class SpikeTrap : MonoBehaviour
     [SerializeField] private int damage = 10; // 将damage改为int并赋值默认值
     public List<PlayerController> ListCharacters = new List<PlayerController>();
 
+
     [SerializeField] private Animator animator;
     [SerializeField] private float pushForce = 5f; // 玩家被推的力量
 
@@ -17,31 +18,34 @@ public class SpikeTrap : MonoBehaviour
     private Vector3 pushDirection;
     private bool isPushed = false;
     private float pushEndTime;
-    // public ParticleSystem HittedEffect;
+    private Coroutine currentCoroutine;
     private void Start()
     {
         isPushed = false;
     }
     private void OnTriggerEnter(Collider other)
+{
+    PlayerController control = other.GetComponent<PlayerController>();
+
+    if (!isPushed)
     {
-        PlayerController control = other.GetComponent<PlayerController>();
-
-        if (isPushed == false)
+        if (currentCoroutine != null)
         {
-            if (control != null && control.CompareTag("Player"))
-            {
-                isPushed = true;
-                animator.SetBool("TrapTrigger", true);
-                StartCoroutine(TriggerTrap(other));
-                Debug.Log("TriggerTrap");
-            }
-
+            StopCoroutine(currentCoroutine); // 停止之前的協程
         }
 
+        if (control != null && control.CompareTag("Player"))
+        {
+            isPushed = true;
+            animator.SetBool("playerOn", true); // 设置动画状态为 true
+            currentCoroutine = StartCoroutine(TriggerTrap(other));
+        }
     }
+}
+    
     private IEnumerator TriggerTrap(Collider other)
     {
-        // yield return new WaitForSeconds(0.5f);
+        
         yield return new WaitForSeconds(1.0f);
         if (other.CompareTag("Player"))
         {
@@ -69,20 +73,17 @@ public class SpikeTrap : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        PlayerController control = other.gameObject.transform.root.gameObject.GetComponent<PlayerController>();
+        PlayerController control = other.GetComponent<PlayerController>();
 
-        if (control != null)
+        if (control != null && control.CompareTag("Player"))
         {
-            if (ListCharacters.Contains(control))
+            isPushed = false;
+            animator.SetBool("playerOn", false); // 设置动画状态为 false
+            if (currentCoroutine != null)
             {
-                ListCharacters.Remove(control);
+                StopCoroutine(currentCoroutine); // 停止協程
+                currentCoroutine = null;
             }
         }
-        if (control.CompareTag("Player"))
-        {
-            animator.SetBool("TrapTrigger", false);
-
-        }
-
     }
 }
