@@ -79,6 +79,7 @@ public class FortuneWheelSpinner : MonoBehaviour
 
     public void Startspin()
     {
+        Debug.Log("Spin");
         if (!isSpinning && rewardNumber != -1)
         {
             rewardNumber = -1; // 重置獎勵編號
