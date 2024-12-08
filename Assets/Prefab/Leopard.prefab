@@ -437,12 +437,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4103702827524256080}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2960596428435426955 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1289543790355709915, guid: b99922c2f59b1a542bdd06ae8bee47ae,
-    type: 3}
-  m_PrefabInstance: {fileID: 4103702827524256080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4184052949290920245
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1395,10 +1389,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5954420d151cc0e4eae2525d06047c06,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3649468479677770676}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5954420d151cc0e4eae2525d06047c06,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 875974506786635258}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5954420d151cc0e4eae2525d06047c06,
         type: 3}
@@ -1478,27 +1468,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 79.14314, y: 118.47446, z: 93.03704}
   m_Center: {x: -3.0228353, y: 58.73723, z: 13.908408}
---- !u!135 &3649468479677770676
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7522787934481020504}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 150
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &875974506786635258
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1580,6 +1549,7 @@ MonoBehaviour:
   rotationSpeed: 720
   detectionRadius: 5
   customGravity: 50
+  playerIndex: 0
 --- !u!114 &3939696130174436367
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1594,7 +1564,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnPosition: {x: 1270, y: 120, z: 1170}
   respawnedObject: {fileID: 7522787934481020504}
-  particleEffectPrefab: {fileID: 2960596428435426955}
 --- !u!1001 &8619946959770925213
 PrefabInstance:
   m_ObjectHideFlags: 0

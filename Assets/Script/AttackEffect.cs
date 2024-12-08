@@ -3,16 +3,16 @@ using System.Collections;
 
 public class AttackEffect : MonoBehaviour
 {
-    public ParticleSystem attackEffect;
-    public ParticleSystem attackEffect2;
-    public ParticleSystem runAttackEffect;
-    public ParticleSystem runAttackEffect2;
-    public Transform leftShootPoint;
-    public Transform rightShootPoint;
-    public Transform leftRunShootPoint;
-    public Transform rightRunShootPoint;
-    public GameObject bulletPrefab;
-    public Transform target; // 子彈射擊目標
+    [SerializeField] private ParticleSystem attackEffect;
+    [SerializeField] private ParticleSystem attackEffect2;
+    [SerializeField] private ParticleSystem runAttackEffect;
+    [SerializeField] private ParticleSystem runAttackEffect2;
+    [SerializeField] private Transform leftShootPoint;
+    [SerializeField] private Transform rightShootPoint;
+    [SerializeField] private Transform leftRunShootPoint;
+    [SerializeField] private Transform rightRunShootPoint;
+    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private Transform target; // 子彈射擊目標
     public float bulletSpawnDelay = 1.5f; // 子彈生成延遲時間
 
     // 發射右手攻擊
@@ -96,6 +96,15 @@ public class AttackEffect : MonoBehaviour
     }
     private void ShootBullet(Transform shootPoint)
     {
+        if (bulletPrefab == null)
+        {
+            return;
+        }
+        if (shootPoint == null)
+        {
+            return;
+        }
+
         // 生成子彈
         GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, Quaternion.identity);
 
