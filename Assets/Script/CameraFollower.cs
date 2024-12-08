@@ -5,7 +5,7 @@ public class CameraFollower : MonoBehaviour
     #region Variables
     
         [SerializeField]private Vector3 _offset;
-        [SerializeField] private Transform target;
+        public Transform target;
         [SerializeField] private float smoothTime;
         private Vector3 _currentVelocity = Vector3.zero;
         
