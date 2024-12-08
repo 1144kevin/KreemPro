@@ -13,7 +13,6 @@ public class BushHide : MonoBehaviour
 
     private void Start()
     {
-
         // 初始化材質（克隆材質，避免影響其他物件）
         Renderer renderer = Bush.GetComponent<Renderer>();
         bushMaterials = renderer.materials;
@@ -24,14 +23,11 @@ public class BushHide : MonoBehaviour
         renderer.materials = bushMaterials;
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            // other.GetComponent<PlayerController>().isHidden = true; // 玩家進入草叢，隱藏
             StartFade(transparentAlpha);
-
         }
     }
 
@@ -39,13 +35,11 @@ public class BushHide : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // other.GetComponent<PlayerController>().isHidden = false; // 玩家離開草叢
             StartFade(1f);
         }
     }
     private void StartFade(float targetAlpha)
     {
-        Debug.Log("do it");
         // 如果有其他漸變在進行，停止它
         if (currentFadeCoroutine != null)
         {

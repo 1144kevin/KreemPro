@@ -43,7 +43,7 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _Shading: 0
-    - _Shading_1: 0.01
+    - _Shading_1: 0
     m_Colors:
     - _BaseColor: {r: 0.6301887, g: 0.6301887, b: 0.6301887, a: 1}
     - _Color: {r: 0.22264141, g: 0.22264141, b: 0.22264141, a: 1}
