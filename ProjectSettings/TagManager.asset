@@ -15,6 +15,9 @@ TagManager:
   - Mine
   - Trap
   - MineEffect
+  - Robot
+  - Kreem
+  - FirstAid
   layers:
   - Default
   - TransparentFX
