@@ -14,9 +14,10 @@ TagManager:
   - Booster
   - Mine
   - Trap
+  - MineEffect
+  - Robot
   - Kreem
-  - Leopard
-  - Eagle
+  - FirstAid
   layers:
   - Default
   - TransparentFX

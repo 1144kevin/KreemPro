@@ -7,27 +7,47 @@ using TMPro;
 
 public class Props : MonoBehaviour
 {
-    private int hp = 0;
+    [Header("Mine")]
     public GameObject mine;
-    private int mineNum = 0;
     public GameObject mineVFX;
+    private int mineNum = 0;
+ 
+    [Header("Health")]
+     private int hp = 0;
+     [SerializeField] private float healthIncreaseAmount = 30f;
+    
+    [Header("Speed")]
     public GameObject speedVFX;
     private GameObject currentSpeedVFX;
-    
     private bool isSpeedBoosted = false;
     public float speedBoostAmount = 5f;
     public float speedBoostDuration = 10f;
     private float speedBoostTimer = 0f;
-    private PlayerMovement player;
-    
-    // Configurable offset for speed VFX
     public Vector3 speedVFXOffset = new Vector3(0, 1, -1); // Adjust this in the inspector
     
-    [SerializeField] private TextMeshProUGUI CoinsText;
+    [Header("Kreem")]
+    private int kreemNum = 0;
 
+    [Header("Coins")]
+    private int coinsNum = 0;
+
+
+    [Header("Reference")]
+    private PlayerMovement player;
+    private BarSection barSection;
+
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI CoinsText;
+    [SerializeField] private TextMeshProUGUI KreemText;
+    [SerializeField] private TextMeshProUGUI HpText;
+
+    
+    
+    
     private void Start()
     {
         player = GetComponent<PlayerMovement>();
+        barSection = GetComponent<BarSection>();
     }
 
     private void Update()
@@ -78,7 +98,9 @@ public class Props : MonoBehaviour
             Destroy(collision.gameObject);
             hp++;
             Debug.Log(hp);
-            CoinsText.text = "Hp: " + hp;
+            HpText.text = "Hp: " + hp;
+            barSection.IncreaseHealth(healthIncreaseAmount);
+
         }
 
         if (collision.gameObject.CompareTag("Booster"))
@@ -93,6 +115,14 @@ public class Props : MonoBehaviour
             Debug.Log("u have Mine");
             mineNum++;
         }
+         if (collision.gameObject.CompareTag("Kreem"))
+        {
+            Destroy(collision.gameObject);
+            kreemNum++;
+            Debug.Log(kreemNum);
+            KreemText.text = "Kreem: " + kreemNum; // Updated to match naming convention
+        }
+
     }
 
     private void ApplySpeedBoost()

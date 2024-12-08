@@ -25,7 +25,7 @@ public class Bullet : MonoBehaviour
 
     // ----------- UI 設定 -----------
     [Header("UI Settings")]
-    public AttackBar attackBar; // 攻擊條（用於顯示子彈數量的 UI）
+    public BarSection attackBar; // 攻擊條（用於顯示子彈數量的 UI）
 
     private void Awake()
     {
@@ -33,7 +33,7 @@ public class Bullet : MonoBehaviour
         bulletsLeft = magazineSize; // 將子彈數量設為彈夾容量
         readyToShoot = true; // 開始時允許射擊
         nextBulletIncreaseTime = Time.time; // 設定下一次子彈回復的初始時間
-        attackBar = GetComponentInChildren<AttackBar>(); // 找到子物件中的攻擊條 UI
+        attackBar = GetComponentInChildren<BarSection>(); // 找到子物件中的攻擊條 UI
     }
 
     private void Update()

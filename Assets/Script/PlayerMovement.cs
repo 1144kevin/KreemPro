@@ -14,9 +14,11 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 _inputs = Vector3.zero;
     private bool _isGrounded = true;
     private Transform _groundChecker;
+    private Animator animator;
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         _body = GetComponent<Rigidbody>();
         _groundChecker = transform.GetChild(0);
         _anim = GetComponent<Animator>();
@@ -36,19 +38,19 @@ public class PlayerMovement : MonoBehaviour
         _inputs = Vector3.zero;
 
         // Use specific keys for movement
-        if (Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             _inputs.x = -1;
         }
-        if (Input.GetKey(KeyCode.A))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
             _inputs.x = 1;
         }
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.DownArrow))
         {
             _inputs.z = 1;
         }
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
             _inputs.z = -1;
         }
@@ -64,17 +66,15 @@ public class PlayerMovement : MonoBehaviour
             _anim.SetBool("Run", false);
         }
 
-        // Uncomment if jump or dash functions are needed
-        /*
-        if (Input.GetButtonDown("Jump") && _isGrounded)
+        if (Input.GetKey(KeyCode.P)) // 確保攻擊動畫只觸發一次
         {
-            _body.AddForce(Vector3.up * Mathf.Sqrt(JumpHeight * -2f * Physics.gravity.y), ForceMode.VelocityChange);
+            animator.SetTrigger("isRunAttack");
+            animator.SetTrigger("isAttack");
         }
-        if (Input.GetButton("Dash"))
+        else// 當按鍵釋放時重置狀態
         {
-            Vector3 dashVelocity = Vector3.Scale(transform.forward, DashDistance * new Vector3(Mathf.Log(1f / (Time.deltaTime * _body.drag + 1)) / -Time.deltaTime, 0, Mathf.Log(1f / (Time.deltaTime * _body.drag + 1)) / -Time.deltaTime));
-            _body.AddForce(dashVelocity, ForceMode.VelocityChange);
+            animator.SetTrigger("unAttack");
+            animator.SetTrigger("unRunAttack");
         }
-        */
     }
 }
