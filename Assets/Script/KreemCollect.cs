@@ -8,7 +8,8 @@ public class KreemCollect : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.isTrigger == false && collision.gameObject.tag == "Player")
+        Debug.Log($"Total Collected");
+        if (collision.gameObject.tag == "Player")
         {
             // 增加收集計數
             KreemCount++;

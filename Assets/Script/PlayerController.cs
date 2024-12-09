@@ -23,9 +23,9 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         originalSpeed = speed;  // 初始化 originalSpeed
 
-        // SphereCollider detectionCollider = gameObject.AddComponent<SphereCollider>();
-        // detectionCollider.isTrigger = true;
-        // detectionCollider.radius = detectionRadius;
+        SphereCollider detectionCollider = gameObject.AddComponent<SphereCollider>();
+        detectionCollider.isTrigger = true;
+        detectionCollider.radius = detectionRadius;
     }
     public int GetPlayerIndex()
     {
@@ -126,6 +126,5 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(delay);
         speed = originalSpeed;
         Debug.Log($"玩家速度還原，當前速度為：{speed}");
-
     }
 }

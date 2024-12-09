@@ -1,4 +1,3 @@
-// BarSection.cs
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,11 +8,10 @@ public class BarSection : MonoBehaviour
     public Slider attackSlider;
     [SerializeField] private GameObject Kreem;
 
-    
-    [Header("Positioning")]
-    public new Camera camera;
-    public Transform target;
-    public Vector3 offset;
+    [Header("UI Scaling")]
+    [SerializeField] private float minScale = 0.5f;
+    [SerializeField] private float maxScale = 1.5f;
+    [SerializeField] private float scaleDistance = 10f;
 
     [Header("Health Settings")]
     [SerializeField] private float currentHealth = 100f;
@@ -22,14 +20,14 @@ public class BarSection : MonoBehaviour
     [SerializeField] private float healthRecoveryDelay = 3f;
     private float lastDamageTime;
     private bool isDead = false;
-    
+
     [Header("Attack Settings")]
     [SerializeField] private float currentAttack = 100f;
     [SerializeField] private float maxAttack = 100f;
     [SerializeField] private float attackRecoveryRate = 10f;
     [SerializeField] private float attackRecoveryDelay = 1f;
     private float lastAttackTime;
-    
+
     [Header("Damage Settings")]
     public float damageCooldown = 1f;
     private bool canTakeDamage = true;
@@ -37,34 +35,60 @@ public class BarSection : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private GameObject playerObject;
+    private Camera mainCamera;
+    private Canvas worldSpaceCanvas;
     private DieRespawn dieRespawn;
     private Renderer[] playerRenderers;
     private bool kreemSpawned = false;
 
     void Start()
     {
+        mainCamera = Camera.main;
+        SetupCanvas();
         
-        playerRenderers = playerObject.GetComponentsInChildren<Renderer>();
+        if (playerObject != null)
+        {
+            playerRenderers = playerObject.GetComponentsInChildren<Renderer>();
+            dieRespawn = playerObject.GetComponent<DieRespawn>();
+            if (dieRespawn == null)
+            {
+                Debug.LogError("DieRespawn component not found on player!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Player object not assigned to BarSection!");
+        }
+
         InitializeSliders();
         UpdateBars();
         lastDamageTime = -healthRecoveryDelay;
         lastAttackTime = -attackRecoveryDelay;
+    }
 
-        if (playerObject == null)
+    private void SetupCanvas()
+    {
+        // Get or create the Canvas component
+        worldSpaceCanvas = GetComponentInChildren<Canvas>();
+        if (worldSpaceCanvas == null)
         {
-            // playerObject = GameObject.FindGameObjectWithTag("Player");
-            if (playerObject == null)
-            {
-                Debug.LogError("Player object not found! Make sure it has the 'Player' tag.");
-                return;
-            }
+            Debug.LogError("No Canvas found in children! Please create a World Space Canvas as a child of this object.");
+            return;
         }
 
-        dieRespawn = playerObject.GetComponent<DieRespawn>();
-        if (dieRespawn == null)
+        // Ensure the canvas is set to World Space
+        if (worldSpaceCanvas.renderMode != RenderMode.WorldSpace)
         {
-            Debug.LogError("DieRespawn component not found on player!");
+            worldSpaceCanvas.renderMode = RenderMode.WorldSpace;
         }
+
+        // Add or get the Billbord script
+        Billbord billbord = worldSpaceCanvas.gameObject.GetComponent<Billbord>();
+        if (billbord == null)
+        {
+            billbord = worldSpaceCanvas.gameObject.AddComponent<Billbord>();
+        }
+        billbord.cam = mainCamera.transform;
     }
 
     private void InitializeSliders()
@@ -121,7 +145,7 @@ public class BarSection : MonoBehaviour
         currentHealth = Mathf.Max(0, currentHealth - damageAmount);
         lastDamageTime = Time.time;
         UpdateHealthBar(currentHealth, maxHealth);
-        
+
         canTakeDamage = false;
         cooldownTimer = damageCooldown;
 
@@ -139,16 +163,15 @@ public class BarSection : MonoBehaviour
     }
 
     public void IncreaseHealth(float amount)
-{
-    if (isDead) return;
-    
-    currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
-    UpdateHealthBar(currentHealth, maxHealth);
-}
+    {
+        if (isDead) return;
+
+        currentHealth = Mathf.Min(maxHealth, currentHealth + amount);
+        UpdateHealthBar(currentHealth, maxHealth);
+    }
 
     public void ResetBarsToFull()
     {
-        //Resetting health/attack bar to full...
         currentHealth = maxHealth;
         UpdateHealthBar(currentHealth, maxHealth);
 
@@ -157,13 +180,11 @@ public class BarSection : MonoBehaviour
         UpdateAttackBar(currentAttack, maxAttack);
 
         isDead = false;
-        Debug.Log("Revive or not");
-         foreach (Renderer renderer in playerRenderers)
+        foreach (Renderer renderer in playerRenderers)
         {
             renderer.enabled = true;
         }
-        //attackSlider.enabled = false;
-         kreemSpawned = false;
+        kreemSpawned = false;
         Debug.Log($"Health reset to: {currentHealth}/{maxHealth}");
     }
 
@@ -173,6 +194,38 @@ public class BarSection : MonoBehaviour
         isDead = true;
     }
 
+    private void HandleDeath()
+    {
+        attackSlider.gameObject.SetActive(false);
+        foreach (Renderer renderer in playerRenderers)
+        {
+            renderer.enabled = false;
+        }
+
+        if (!kreemSpawned && playerObject != null)
+        {
+            GameObject spawnedKreem = Instantiate(Kreem, playerObject.transform.position, playerObject.transform.rotation);
+            kreemSpawned = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.K) && dieRespawn != null)
+        {
+            dieRespawn.DestroyAndRespawn();
+            ResetBarsToFull();
+        }
+    }
+
+    private void UpdateUIScale()
+    {
+        if (mainCamera != null && worldSpaceCanvas != null)
+        {
+            float distanceToCamera = Vector3.Distance(mainCamera.transform.position, transform.position);
+            float scale = Mathf.Lerp(maxScale, minScale, (distanceToCamera / scaleDistance));
+            scale = Mathf.Clamp(scale, minScale, maxScale);
+            worldSpaceCanvas.transform.localScale = Vector3.one * scale;
+        }
+    }
+
     public float GetCurrentHealth() => currentHealth;
     public float GetCurrentAttack() => currentAttack;
 
@@ -180,24 +233,8 @@ public class BarSection : MonoBehaviour
     {
         if (isDead)
         {
-            attackSlider.gameObject.SetActive(false);
-            // Hide all player renderers
-            foreach (Renderer renderer in playerRenderers)
-            {
-                renderer.enabled = false;
-            }
-           if (!kreemSpawned)
-            {
-                GameObject spawnedKreem = Instantiate(Kreem, playerObject.transform.position, playerObject.transform.rotation);
-                kreemSpawned = true;
-            }
-
-            if (Input.GetKeyDown(KeyCode.K) && dieRespawn != null)
-            {
-                dieRespawn.DestroyAndRespawn();
-                ResetBarsToFull();
-            }
-            
+            HandleDeath();
+            return;
         }
 
         // Handle damage cooldown
@@ -210,7 +247,7 @@ public class BarSection : MonoBehaviour
             }
         }
 
-        // Handle health recovery (only if not dead)
+        // Handle health recovery
         if (!isDead && Time.time >= lastDamageTime + healthRecoveryDelay && currentHealth < maxHealth)
         {
             currentHealth = Mathf.Min(maxHealth, currentHealth + (healthRecoveryRate * Time.deltaTime));
@@ -224,12 +261,7 @@ public class BarSection : MonoBehaviour
             UpdateAttackBar(currentAttack, maxAttack);
         }
 
-        // Handle UI positioning
-        if (camera != null && target != null)
-        {
-            transform.rotation = camera.transform.rotation;
-            transform.position = target.position + offset;
-        }
+        UpdateUIScale();
     }
 
     void OnTriggerEnter(Collider other)
