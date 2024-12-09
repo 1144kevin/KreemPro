@@ -60,15 +60,10 @@ public class RobotBullet : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            var playerHitted = collision.gameObject.GetComponent<PlayerHitted>();
-            if (playerHitted != null)
-            {
-                Debug.Log($"Bullet hit player with damage: {damage}");
-            }
+        if (collision.gameObject.tag == "Bullet"){
+            
         }
-        
+        // 銷毀子彈
         Destroy(gameObject);
     }
 }

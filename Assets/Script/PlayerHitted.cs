@@ -10,13 +10,15 @@ public class PlayerHitted : MonoBehaviour
     private float pushEndTime;
     public ParticleSystem HittedEffect;
 
-    [Header("Bar Settings")]
-    public BarSection barSection;  // This should be the BarSection for THIS player
+    public int damageAmount = 20; // 每次被擊中扣的血量
+    private Health playerHealth;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        playerHealth = GetComponent<Health>();
 
+        // 停止特效，確保它在開始時不運行
         if (HittedEffect != null)
         {
             HittedEffect.Stop();
@@ -50,9 +52,16 @@ public class PlayerHitted : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.CompareTag("Bullet"))
+        // 檢查碰撞對象是否是玩家的手或其他需要觸發的對象
+        if (collision.gameObject.tag == "Bullet")
         {
-            Debug.Log($"Hit by bullet on player: {gameObject.name}");
+            Debug.Log("hit");
+            // 如果存在 Health 組件，扣血
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(damageAmount);
+            }
+            // 計算碰撞方向（從碰撞點推開圓柱體）
             pushDirection = transform.position - collision.transform.position;
             pushDirection = pushDirection.normalized;
 

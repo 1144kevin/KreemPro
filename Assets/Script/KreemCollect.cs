@@ -6,21 +6,21 @@ public class KreemCollect : MonoBehaviour
     public int KreemMax = 3;
 
 
-    private void OnTriggerEnter(Collider collider)
+    private void OnCollisionEnter(Collision collision)
     {
-        if (collider.tag == "Kreem")
+        if (collision.collider.isTrigger == false && collision.gameObject.tag == "Player")
         {
             // 增加收集計數
             KreemCount++;
             // 打印收集的物件訊息（可選）
             Debug.Log($"Total Collected: {KreemCount}");
-            if(KreemCount >=3)
+            if (KreemCount >= 3)
             {
-                KreemCount=3;
+                KreemCount = 3;
             }
 
             // 移除物件
-            collider.gameObject.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 }

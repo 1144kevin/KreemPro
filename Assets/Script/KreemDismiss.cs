@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class KreemDismiss : MonoBehaviour
 {
-    public GameObject Kreem;
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.tag == "Player")
         {
             // 移除物件
-            Kreem.SetActive(false);
+            gameObject.SetActive(false);
         }
     }
 }
