@@ -929,7 +929,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: confirm
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1067,11 +1067,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
-    m_FontStyle: 0
+    m_FontSize: 20
+    m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
+    m_MinSize: 7
+    m_MaxSize: 52
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -1503,7 +1503,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: confirm
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3764,7 +3764,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: confirm
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4513,7 +4513,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: confirm
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6295,11 +6295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907b9d6fbd497df4abab458b5161ab9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characters:
-  - {fileID: 825281168}
-  - {fileID: 1937226697}
-  - {fileID: 1875284988}
-  - {fileID: 77407937}
+  characters: []
   characters1: []
   characters2: []
   characters3: []
@@ -6410,11 +6406,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907b9d6fbd497df4abab458b5161ab9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characters:
-  - {fileID: 994700252}
-  - {fileID: 21063203}
-  - {fileID: 835247829}
-  - {fileID: 2060730848}
+  characters: []
   characters1: []
   characters2: []
   characters3: []
@@ -8073,11 +8065,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characters: []
-  characters1:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  characters1: []
   characters2: []
   characters3: []
   charactersname: []
@@ -8375,11 +8363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907b9d6fbd497df4abab458b5161ab9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characters:
-  - {fileID: 266354764}
-  - {fileID: 1435364701}
-  - {fileID: 1969001499}
-  - {fileID: 2037863742}
+  characters: []
   characters1: []
   characters2: []
   characters3: []
@@ -13366,5 +13350,5 @@ SceneRoots:
   - {fileID: 1755978707}
   - {fileID: 1780282172}
   - {fileID: 1105531594}
-  - {fileID: 1201451135}
   - {fileID: 1423200931}
+  - {fileID: 1201451135}
