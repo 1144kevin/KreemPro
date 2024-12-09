@@ -24,16 +24,16 @@ public class PlayerHitted : MonoBehaviour
             HittedEffect.Stop();
         }
         
-        if (barSection == null)
-        {
-            Debug.LogError($"BarSection not assigned to PlayerHitted on GameObject: {gameObject.name}");
-            // Try to find BarSection on this object or its children
-            barSection = GetComponentInChildren<BarSection>();
-            if (barSection == null)
-            {
-                Debug.LogError("Could not find BarSection component automatically!");
-            }
-        }
+        // if (barSection == null)
+        // {
+        //     Debug.LogError($"BarSection not assigned to PlayerHitted on GameObject: {gameObject.name}");
+        //     // Try to find BarSection on this object or its children
+        //     barSection = GetComponentInChildren<BarSection>();
+        //     if (barSection == null)
+        //     {
+        //         Debug.LogError("Could not find BarSection component automatically!");
+        //     }
+        // }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -72,17 +72,17 @@ public class PlayerHitted : MonoBehaviour
             }
             pushEndTime = Time.time + pushDuration;
 
-            if (barSection != null)
-            {
-                float previousHealth = barSection.GetCurrentHealth();
-                barSection.TakeDamage(30);
-                float newHealth = barSection.GetCurrentHealth();
-                Debug.Log($"Player {gameObject.name} - Health changed from {previousHealth} to {newHealth}");
-            }
-            else
-            {
-                Debug.LogError($"BarSection is null on player: {gameObject.name}");
-            }
+            // if (barSection != null)
+            // {
+            //     float previousHealth = barSection.GetCurrentHealth();
+            //     barSection.TakeDamage(30);
+            //     float newHealth = barSection.GetCurrentHealth();
+            //     Debug.Log($"Player {gameObject.name} - Health changed from {previousHealth} to {newHealth}");
+            // }
+            // else
+            // {
+            //     Debug.LogError($"BarSection is null on player: {gameObject.name}");
+            // }
         }
     }
 
@@ -93,17 +93,17 @@ public class PlayerHitted : MonoBehaviour
         if (other.gameObject.CompareTag("MineEffect"))
         {
             Debug.Log($"Mine hit on player: {gameObject.name}");
-            if (barSection != null)
-            {
-                float previousHealth = barSection.GetCurrentHealth();
-                barSection.TakeDamage(30);
-                float newHealth = barSection.GetCurrentHealth();
-                Debug.Log($"Player {gameObject.name} - Health changed from {previousHealth} to {newHealth}");
-            }
-            else
-            {
-                Debug.LogError($"BarSection is null on player: {gameObject.name}");
-            }
+            // if (barSection != null)
+            // {
+            //     float previousHealth = barSection.GetCurrentHealth();
+            //     barSection.TakeDamage(30);
+            //     float newHealth = barSection.GetCurrentHealth();
+            //     Debug.Log($"Player {gameObject.name} - Health changed from {previousHealth} to {newHealth}");
+            // }
+            // else
+            // {
+            //     Debug.LogError($"BarSection is null on player: {gameObject.name}");
+            // }
         }
     }
 
