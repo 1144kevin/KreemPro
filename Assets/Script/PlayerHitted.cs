@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PlayerHitted : MonoBehaviour
 {
-    public float pushForce = 10f;  // 控制後退的力度
-    public float pushDuration = 2f; // 持續時間2秒
+    public float pushForce;
+    public float pushDuration;
     private Rigidbody rb;
     private Vector3 pushDirection;
     private bool isPushed = false;
@@ -15,18 +15,16 @@ public class PlayerHitted : MonoBehaviour
 
     void Start()
     {
-        // 獲取圓柱體的剛體組件
         rb = GetComponent<Rigidbody>();
         playerHealth = GetComponent<Health>();
 
         // 停止特效，確保它在開始時不運行
         if (HittedEffect != null)
         {
-            HittedEffect.Stop();  // 確保特效開始時是關閉的
+            HittedEffect.Stop();
         }
     }
 
-    // 碰撞檢測
     void OnCollisionEnter(Collision collision)
     {
         // 如果正在被推動並且撞到非預期物體時，進行反彈
@@ -66,30 +64,18 @@ public class PlayerHitted : MonoBehaviour
 
     void Update()
     {
-        // 如果正在被推動，並且還沒有達到推動結束的時間
-        if (isPushed && Time.time <= pushEndTime)
+        if (isPushed && Time.time > pushEndTime)
         {
-            // 保持 y 軸的值不變，僅更新 x 和 z 軸位置
-            pushDirection.y = 0;
-            Vector3 newPosition = rb.position + pushDirection * pushForce * Time.deltaTime;
-            newPosition.y = rb.position.y; // 確保 y 軸位置不變
-
-            rb.MovePosition(newPosition);
-        }
-        else if (isPushed && Time.time > pushEndTime)
-        {
-            // 停止推動
             StopPush();
         }
     }
 
-    // 停止推動的方法
     private void StopPush()
     {
         isPushed = false;
         if (HittedEffect != null)
         {
-            HittedEffect.Stop();  // 停止特效
+            HittedEffect.Stop();
         }
     }
 }
