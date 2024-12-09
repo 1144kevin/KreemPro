@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BushHide : MonoBehaviour
+public class KTowerHide : MonoBehaviour
 {
     public GameObject Bush;
     public float fadeDuration = 1f; // 漸變持續時間
