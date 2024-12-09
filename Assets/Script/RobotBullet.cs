@@ -23,6 +23,9 @@ public class RobotBullet : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.tag == "Bullet"){
+            
+        }
         // 銷毀子彈
         Destroy(gameObject);
     }

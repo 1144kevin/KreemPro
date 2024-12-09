@@ -10,12 +10,16 @@ public class PlayerHitted : MonoBehaviour
     private float pushEndTime;
     public ParticleSystem HittedEffect;
 
+    public int damageAmount = 20; // 每次被擊中扣的血量
+    private Health playerHealth;
+
     void Start()
     {
         // 獲取圓柱體的剛體組件
         rb = GetComponent<Rigidbody>();
-        // 停止特效，確保它在開始時不運行
+        playerHealth = GetComponent<Health>();
 
+        // 停止特效，確保它在開始時不運行
         if (HittedEffect != null)
         {
             HittedEffect.Stop();  // 確保特效開始時是關閉的
@@ -41,9 +45,14 @@ public class PlayerHitted : MonoBehaviour
         }
 
         // 檢查碰撞對象是否是玩家的手或其他需要觸發的對象
-        if (collision.gameObject.tag == "Bullet" )
+        if (collision.gameObject.tag == "Bullet")
         {
             Debug.Log("hit");
+            // 如果存在 Health 組件，扣血
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(damageAmount);
+            }
             // 計算碰撞方向（從碰撞點推開圓柱體）
             pushDirection = transform.position - collision.transform.position;
             pushDirection = pushDirection.normalized; // 正規化方向向量

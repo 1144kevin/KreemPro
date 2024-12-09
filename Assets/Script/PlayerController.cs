@@ -23,9 +23,9 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         originalSpeed = speed;  // 初始化 originalSpeed
 
-        SphereCollider detectionCollider = gameObject.AddComponent<SphereCollider>();
-        detectionCollider.isTrigger = true;
-        detectionCollider.radius = detectionRadius;
+        // SphereCollider detectionCollider = gameObject.AddComponent<SphereCollider>();
+        // detectionCollider.isTrigger = true;
+        // detectionCollider.radius = detectionRadius;
     }
     public int GetPlayerIndex()
     {
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) // 假設目標物體的 Tag 是 "Target"
+        if (other.CompareTag("Player")) 
         {
             target = other.transform; // 設定目標為觸發的物體
         }
