@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem; // 引入 Input System
+using UnityEngine.InputSystem;
 
 public class Health : MonoBehaviour
 {
@@ -11,9 +11,18 @@ public class Health : MonoBehaviour
     [SerializeField] private GameObject Kreem;
     private DieRespawn dieRespawn;
     private bool isDead = false;
-    private bool respawnInput = false; // 新增變數儲存復活按鍵輸入
+    private bool respawnInput = false;
 
-    void Start()
+    [Header("Health Recovery Settings")]
+    [SerializeField] private float healthRecoveryRate = 10f;  // Health recovered per second
+    [SerializeField] private float healthRecoveryDelay = 3f;  // Delay before recovery starts after taking damage
+    [SerializeField] private float recoveryTickRate = 0.1f;   // How often recovery occurs (in seconds)
+    private float lastDamageTime;
+    private float nextRecoveryTime;
+    private float cooldownTimer = 0f;
+    public float damageCooldown = 1f;
+
+    private void Start()
     {
         currentHealth = maxHealth;
         if (healthBar != null)
@@ -26,7 +35,28 @@ public class Health : MonoBehaviour
         {
             Debug.LogError("DieRespawn component not found on the GameObject.");
         }
+
+        lastDamageTime = -healthRecoveryDelay;
+        nextRecoveryTime = Time.time;
+        StartCoroutine(HealthRecoveryRoutine());
     }
+
+    private IEnumerator HealthRecoveryRoutine()
+    {
+        WaitForSeconds waitTime = new WaitForSeconds(recoveryTickRate);
+
+        while (true)
+        {
+            if (!isDead && Time.time >= lastDamageTime + healthRecoveryDelay && currentHealth < maxHealth)
+            {
+                float recoveryAmount = healthRecoveryRate * recoveryTickRate;
+                currentHealth = Mathf.Min(maxHealth, currentHealth + Mathf.CeilToInt(recoveryAmount));
+                healthBar.SetHealth(currentHealth);
+            }
+            yield return waitTime;
+        }
+    }
+
     public void SetRespawnInput(bool input)
     {
         respawnInput = input;
@@ -40,25 +70,24 @@ public class Health : MonoBehaviour
             dieRespawn.DestroyAndRespawn();
             ResetBarsToFull();
             isDead = false;
-            respawnInput = false; // 重置输入
+            respawnInput = false;
         }
     }
 
     public void TakeDamage(int damage)
     {
-        if (isDead)
-        {
-            return; // 如果已經死亡，則不處理傷害
-        }
+        if (isDead) return;
 
         currentHealth -= damage;
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth); // 確保血量不小於0
+        lastDamageTime = Time.time;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        
         if (healthBar != null)
         {
+            cooldownTimer = damageCooldown;
             healthBar.SetHealth(currentHealth);
         }
 
-        // 檢查是否死亡
         if (currentHealth <= 0 && !isDead)
         {
             isDead = true;
@@ -72,24 +101,19 @@ public class Health : MonoBehaviour
         {
             healthBar.SetMaxHealth(maxHealth);
         }
-        currentHealth = maxHealth; // 確保復活時血量是滿的
-        isDead = false; // 重置死亡狀態
-
+        currentHealth = maxHealth;
+        isDead = false;
         Debug.Log("Player has respawned with full health: " + currentHealth);
     }
 
     private void Die()
     {
         Debug.Log("Dieeeeeeee");
-        // 獲取玩家當前的位置和旋轉
         Vector3 playerPosition = transform.position;
         Quaternion playerRotation = transform.rotation;
-
-        Vector3 hiddenPosition = new Vector3(1000, -500, 1000); // 或者使用場景中一個隱藏的空物件
-        // 將物件移到隱藏位置
+        Vector3 hiddenPosition = new Vector3(1000, -500, 1000);
         transform.position = hiddenPosition;
 
-        // 在玩家位置生成 Kreem
         if (Kreem != null)
         {
             Instantiate(Kreem, playerPosition, playerRotation);

@@ -7,7 +7,7 @@ public class KTowerALTDamage : MonoBehaviour
     private Coroutine currentCoroutine;
     private void OnTriggerEnter(Collider collider)
     {
-        if (currentCoroutine != null && collider.CompareTag("Player"))
+        if (currentCoroutine != null && collider.CompareTag("Mushroom")||collider.CompareTag("Eagle")||collider.CompareTag("Robot")||collider.CompareTag("Leopard"))
         {
             StopCoroutine(currentCoroutine); // 停止之前的協程
         }

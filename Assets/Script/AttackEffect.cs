@@ -1,3 +1,4 @@
+// AttackEffect.cs
 using UnityEngine;
 using System.Collections;
 
@@ -12,56 +13,69 @@ public class AttackEffect : MonoBehaviour
     [SerializeField] private Transform leftRunShootPoint;
     [SerializeField] private Transform rightRunShootPoint;
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private Transform target; // 子彈射擊目標
-    public float bulletSpawnDelay = 1.5f; // 子彈生成延遲時間
+    [SerializeField] private Transform target;
+    public float bulletSpawnDelay = 1.5f;
+    private Attack attackBar;
+    public float attackLostLp = 10f;
 
-    // 發射右手攻擊
-    public void PlayAttackEffect()
+    void Start()
+{
+    attackBar = transform.GetComponent<Attack>();
+    if (attackBar == null)
     {
-        if (attackEffect != null && !attackEffect.isPlaying)
-        {
-            attackEffect.Play();
-            StartCoroutine(ShootBulletWithDelay(rightShootPoint));
-        }
+        attackBar = transform.GetComponentInParent<Attack>();
     }
+}
 
-    // 發射左手攻擊
+    public void PlayAttackEffect()
+{
+    if (attackEffect != null && !attackEffect.isPlaying && attackBar.CanFire())
+    {
+        attackEffect.Play();
+        
+        // Check player tag and apply attack loss
+        if (gameObject.CompareTag("Eagle") || gameObject.CompareTag("Leopard"))
+        {
+            attackBar.AttackLost(attackLostLp);
+        }
+        
+        StartCoroutine(ShootBulletWithDelay(rightShootPoint));
+    }
+}
+
     public void PlayAttackEffect2()
     {
-        if (attackEffect2 != null && !attackEffect2.isPlaying)
+        if (attackEffect2 != null && !attackEffect2.isPlaying && attackBar.CanFire())
         {
             attackEffect2.Play();
             ShootBullet(leftShootPoint);
         }
     }
 
-    // 發射右手奔跑攻擊
     public void PlayRunAttackEffect()
     {
-        if (runAttackEffect != null && !runAttackEffect.isPlaying)
+        if (runAttackEffect != null && !runAttackEffect.isPlaying && attackBar.CanFire())
         {
             runAttackEffect.Play();
             ShootBullet(rightRunShootPoint);
         }
     }
 
-    // 發射左手奔跑攻擊
     public void PlayRunAttackEffect2()
     {
-        if (runAttackEffect2 != null && !runAttackEffect2.isPlaying)
+        if (runAttackEffect2 != null && !runAttackEffect2.isPlaying && attackBar.CanFire())
         {
             runAttackEffect2.Play();
             ShootBullet(leftRunShootPoint);
         }
     }
 
-    // 可選：添加一個停止特效的方法，如果需要在其他地方手動停止
     public void StopAttackEffect()
     {
         if (attackEffect != null && attackEffect.isPlaying)
         {
             Debug.Log("Stop");
-            attackEffect.Stop();  // 停止播放
+            attackEffect.Stop();
         }
     }
 
@@ -70,48 +84,48 @@ public class AttackEffect : MonoBehaviour
         if (attackEffect2 != null && attackEffect2.isPlaying)
         {
             Debug.Log("Stop");
-            attackEffect2.Stop();  // 停止播放
+            attackEffect2.Stop();
         }
     }
+
     public void StopRunAttackEffect()
     {
         if (runAttackEffect != null && !runAttackEffect.isPlaying)
         {
             Debug.Log("Stop");
-            runAttackEffect.Stop();  // 觸發播放
+            runAttackEffect.Stop();
         }
     }
+
     public void StopRunAttackEffect2()
     {
         if (runAttackEffect2 != null && !runAttackEffect2.isPlaying)
         {
             Debug.Log("Stop");
-            runAttackEffect2.Stop();  // 觸發播放
+            runAttackEffect2.Stop();
         }
     }
+
     private IEnumerator ShootBulletWithDelay(Transform shootPoint)
     {
-        yield return new WaitForSeconds(bulletSpawnDelay); // 等待指定的延遲時間
-        ShootBullet(shootPoint);
+        yield return new WaitForSeconds(bulletSpawnDelay);
+        if (attackBar.CanFire())
+        {
+            ShootBullet(shootPoint);
+        }
     }
+
     private void ShootBullet(Transform shootPoint)
     {
-        if (bulletPrefab == null)
-        {
-            return;
-        }
-        if (shootPoint == null)
+        if (bulletPrefab == null || shootPoint == null)
         {
             return;
         }
 
-        // 生成子彈
         GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, Quaternion.identity);
-
-        // 初始化子彈的目標方向
         if (target != null)
         {
-            bullet.GetComponent<RobotBullet>().Initialize(target.position);
+            bullet.GetComponent<RobotBullet>().Initialize(target.position, attackBar);
         }
         else
         {

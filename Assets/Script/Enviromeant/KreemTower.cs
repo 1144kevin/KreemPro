@@ -6,30 +6,30 @@ public class KreemTower : MonoBehaviour
 {
     // 用於儲存每個玩家在 KreemTower 的吸收數量
     private Dictionary<GameObject, int> RecordKreem = new Dictionary<GameObject, int>();
-private Coroutine currentCoroutine;
+    private Coroutine currentCoroutine;
 
-private void OnTriggerEnter(Collider collider)
-{
-    if (currentCoroutine != null)
+    private void OnTriggerEnter(Collider collider)
     {
-        StopCoroutine(currentCoroutine); // 停止之前的協程
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine); // 停止之前的協程
+        }
+        currentCoroutine = StartCoroutine(HandlePlayerInteraction(collider.gameObject));
     }
-    currentCoroutine = StartCoroutine(HandlePlayerInteraction(collider.gameObject));
-}
 
-private void OnTriggerExit(Collider collider)
-{
-    if (currentCoroutine != null)
+    private void OnTriggerExit(Collider collider)
     {
-        StopCoroutine(currentCoroutine); // 停止協程
-        currentCoroutine = null;
+        if (currentCoroutine != null)
+        {
+            StopCoroutine(currentCoroutine); // 停止協程
+            currentCoroutine = null;
+        }
     }
-}
 
 
     private IEnumerator HandlePlayerInteraction(GameObject player)
     {
-        KreemCollect kreemCollect = player.GetComponent<KreemCollect>();
+        PlayerInventory kreemCollect = player.GetComponent<PlayerInventory>();
         if (kreemCollect == null)
         {
             Debug.LogWarning($"{player.name} 沒有kreem");
@@ -42,19 +42,22 @@ private void OnTriggerExit(Collider collider)
         while (stayTime <= 3f)
         {
             yield return new WaitForSeconds(1.0f);
-            
-            if (stayTime == 1){
-                Debug.Log("1");stayTime += 1.0f;
+
+            if (stayTime == 1)
+            {
+                Debug.Log("1"); stayTime += 1.0f;
             }
-            else if (stayTime == 2){
-                Debug.Log("2");stayTime += 1.0f;
+            else if (stayTime == 2)
+            {
+                Debug.Log("2"); stayTime += 1.0f;
             }
-            else{
-                Debug.Log("3");break;
+            else
+            {
+                Debug.Log("3"); break;
             }
         }
 
-        int KreemCount = kreemCollect.KreemCount;
+        int KreemCount = kreemCollect.CurrentKreem;
 
         // 檢查該玩家是否有 KreemCount >= 1
         if (KreemCount >= 1)
@@ -70,8 +73,8 @@ private void OnTriggerExit(Collider collider)
             Debug.Log($"{player.name}已蒐集{RecordKreem[player]}個kreem");
 
             // 將玩家的 KreemCount 歸零
-            kreemCollect.KreemCount = 0;
-            Debug.Log($"{player.name}的kreem已被歸零:{kreemCollect.KreemCount}");
+            kreemCollect.CurrentKreem = 0;
+            Debug.Log($"{player.name}的kreem已被歸零:{kreemCollect.CurrentKreem}");
 
             // 如果吸收總數 >= 3，觸發特效並重置記錄
             if (RecordKreem[player] >= 3)

@@ -1,29 +1,42 @@
+// RobotBullet.cs
 using UnityEngine;
 
 public class RobotBullet : MonoBehaviour
 {
-    public float speed = 40f;        // 子彈速度
-    public float lifeTime = 2f;     // 子彈存在的時間
-    private Vector3 moveDirection;  // 子彈移動方向
+    public float speed = 40f;
+    public float lifeTime = 2f;
+    public float attackLost = 20f;
+    private Vector3 moveDirection;
+    private Attack playerAttack;
 
-    // 初始化子彈的目標方向
-    public void Initialize(Vector3 targetPosition)
+    private void OnEnable()
+{
+    playerAttack = null;  // Reset reference when bullet is enabled
+}
+
+public void Initialize(Vector3 targetPosition, Attack ownerAttack)
+{
+    if (ownerAttack != null && ownerAttack.CanFire())
     {
-        // 計算方向向量（目標位置 - 子彈生成位置）
+        playerAttack = ownerAttack;
         moveDirection = (targetPosition - transform.position).normalized;
-
-        // 設定子彈自動銷毀
         Destroy(gameObject, lifeTime);
+        playerAttack.AttackLost(attackLost);
     }
+    else
+    {
+        Destroy(gameObject);
+    }
+}
 
     void Update()
-    {
-        // 根據方向向量移動子彈
+    {   
         transform.Translate(moveDirection * speed * Time.deltaTime, Space.World);
     }
+
     void OnCollisionEnter(Collision collision)
     {
-        // 銷毀子彈
+        if (collision.gameObject.tag == "Bullet") { }
         Destroy(gameObject);
     }
 }
