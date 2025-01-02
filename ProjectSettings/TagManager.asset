@@ -15,6 +15,11 @@ TagManager:
   - Mine
   - Trap
   - MineEffect
+  - Kreem
+  - Eagle
+  - Leopard
+  - Mushroom
+  - Robot
   layers:
   - Default
   - TransparentFX

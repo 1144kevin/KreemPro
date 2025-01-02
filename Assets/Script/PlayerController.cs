@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) 
+        if (other.CompareTag("Robot") || other.CompareTag("Mushroom") || other.CompareTag("Leopard") || other.CompareTag("Eagle")) 
         {
             target = other.transform; // 設定目標為觸發的物體
         }
@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviour
     // 偵測目標物體離開範圍
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") && other.transform == target)
+        if ((other.CompareTag("Robot") || other.CompareTag("Mushroom") || other.CompareTag("Leopard") || other.CompareTag("Eagle")) && other.transform == target)
         {
             target = null; // 當目標離開範圍時，將目標設為 null
         }
