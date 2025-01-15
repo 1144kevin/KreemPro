@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
         // Handle movement
         Vector3 move = new Vector3(-moveInput.x, 0, -moveInput.y).normalized;
         bool isMoving = move.magnitude > 0.1f;
-
+ 
         if (isMoving)
         {
             Quaternion targetRotation = Quaternion.LookRotation(move);
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Robot") || other.CompareTag("Mushroom") || other.CompareTag("Leopard") || other.CompareTag("Eagle")) 
+        if (other.CompareTag("Robot") || other.CompareTag("Leopard") || other.CompareTag("Eagle")) 
         {
             target = other.transform; // 設定目標為觸發的物體
         }
