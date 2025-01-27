@@ -61,6 +61,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 480587603253394886}
     m_Modifications:
+    - target: {fileID: 288870621797521097, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
+        type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 1513440282100294752}
     - target: {fileID: 2613412570633119315, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -71,6 +76,16 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2999387400982489980, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
+        type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 1513440282100294752}
+    - target: {fileID: 3349936123760886286, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
+        type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 989176866577924110}
     - target: {fileID: 3615589371918812689, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -79,6 +94,11 @@ PrefabInstance:
     - target: {fileID: 3615589371918812689, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
         type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3756367260778434359, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4351695611204355335, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
@@ -199,6 +219,10 @@ PrefabInstance:
         type: 3}
       insertIndex: 8
       addedObject: {fileID: 1494871329877556233}
+    - targetCorrespondingSourceObject: {fileID: 4351695611204355335, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
+        type: 3}
+      insertIndex: 9
+      addedObject: {fileID: 9208453806118227100}
   m_SourcePrefab: {fileID: 100100000, guid: a893ac4eb73c1ea49b3d26dcc42875ec, type: 3}
 --- !u!114 &3046414755300119342 stripped
 MonoBehaviour:
@@ -242,6 +266,65 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f4da05df36c97a4f9591d5ac60c98eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9208453806118227100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4061687391002170407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 217dea483f191504ca9c0f8d920beca2,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 77c5318c-66d7-48f4-98d3-bd4c7a9f07d8
+    m_ActionName: 'PlayerControls/Attack[/Keyboard/e]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1494871329877556233}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f17e8e07-ccc9-4e37-a500-e562cca1bf46
+    m_ActionName: 'PlayerControls/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 82b5ebfb-78df-420a-b247-1eedc36b4e9e
+    m_ActionName: 'PlayerControls/Respawn[/Keyboard/k]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ae718684-1015-4bff-921b-598afdb271b0
+    m_ActionName: 'PlayerControls/SpinnerButton[/Keyboard/z]'
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: PlayerControls
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!4 &5492088683996029954 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5191954091629016354, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
@@ -377,6 +460,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b6d778c50bf6d3f45bac856613247392, type: 3}
+--- !u!20 &989176866577924110 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2578045407947020984, guid: b6d778c50bf6d3f45bac856613247392,
+    type: 3}
+  m_PrefabInstance: {fileID: 3349919172982938294}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1513440282100294752 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4286754314458889942, guid: b6d778c50bf6d3f45bac856613247392,

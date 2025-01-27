@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Fusion;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,6 +29,7 @@ public class MenuManager : MonoBehaviour
     private Button startBtn;
     [SerializeField]
     private GameObject playerListContent;
+    [SerializeField] private TMP_Text characterName;
 
     private void Start()
     {
@@ -99,6 +102,18 @@ public class MenuManager : MonoBehaviour
             cell.gameObject.SetActive(true);
             cell.SetPlayerName(playerName);
             existingCells.Add(cell);
+        }
+    }
+    public void ChooseCharacter(int characterIndex)
+    {
+        var gameManager = GameManager.Instance;
+
+        if (characterIndex >= 0)
+        {
+            gameManager.SelectedCharacterIndex = characterIndex;
+            GameObject selectedPrefab = gameManager.CharacterPrefabs[characterIndex];
+
+            characterName.text = selectedPrefab.name.Substring(0, selectedPrefab.name.Length - 6);
         }
     }
 

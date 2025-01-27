@@ -15,6 +15,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private NetworkEvents networkEvents;
     public string PlayerName { get; set; }
+    public int SelectedCharacterIndex { get; set; }
+
+    // 新增角色預製體陣列
+    public GameObject[] CharacterPrefabs;
     public string RoomName { get; set; }
 
     [SerializeField]
@@ -45,6 +49,11 @@ public class GameManager : MonoBehaviour
 
     private void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
+        if (!runner.IsServer)
+        {
+            Debug.LogWarning("Only the server can handle player joining!");
+            return;
+        }
         runner.Spawn(playerNetworkDataPrefab, transform.position, Quaternion.identity, player);
 
     }

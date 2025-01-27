@@ -18,24 +18,24 @@ public class AttackHandler : NetworkBehaviour
     }
     public void Attack()
     {
-        if (Runner.LagCompensation.Raycast(
-            CharacterTrans.position, CharacterTrans.forward,
-            Mathf.Infinity,
-            Object.InputAuthority,
-            out LagCompensatedHit hit,
-            HitLayer,
-            HitOptions))
-        {
-            if (hit.GameObject.TryGetComponent<Player>(out var hitPlayer))
-            {
-                // Debug.Log(hitPlayer.gameObject.name);
-                hitPlayer.TakeDamage(damage);
-                // if (Input.GetKey(KeyCode.Space))
-                // {
-                //     hitPlayer.TakeDamage(damage);
-                // }
+        // if (Runner.LagCompensation.Raycast(
+        //     CharacterTrans.position, CharacterTrans.forward,
+        //     Mathf.Infinity,
+        //     Object.InputAuthority,
+        //     out LagCompensatedHit hit,
+        //     HitLayer,
+        //     HitOptions))
+        // {
+        //     if (hit.GameObject.TryGetComponent<Player>(out var hitPlayer))
+        //     {
+        //         // Debug.Log(hitPlayer.gameObject.name);
+        //         hitPlayer.TakeDamage(damage);
+        //         // if (Input.GetKey(KeyCode.Space))
+        //         // {
+        //         //     hitPlayer.TakeDamage(damage);
+        //         // }
 
-            }
-        }
+        //     }
+        // }
     }
 }

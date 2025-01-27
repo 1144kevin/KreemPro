@@ -78,6 +78,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3137459636135066201, guid: 62469b7c713ba14479950ae9ffe62f7e,
         type: 3}
+      propertyPath: playerCamera
+      value: 
+      objectReference: {fileID: 7498079302571883265}
+    - target: {fileID: 3137459636135066201, guid: 62469b7c713ba14479950ae9ffe62f7e,
+        type: 3}
       propertyPath: AttackHandler
       value: 
       objectReference: {fileID: 7425897777219434407}
@@ -91,6 +96,12 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4780691413223191630, guid: 62469b7c713ba14479950ae9ffe62f7e,
+        type: 3}
+      propertyPath: playerInput
+      value: 
+      objectReference: {fileID: 5299558766619019894, guid: 55b57183df5cb9e40977fdab5cf78f44,
+        type: 3}
     - target: {fileID: 5752444072709397172, guid: 62469b7c713ba14479950ae9ffe62f7e,
         type: 3}
       propertyPath: cam
@@ -154,7 +165,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2260385949046508022, guid: 62469b7c713ba14479950ae9ffe62f7e,
+        type: 3}
+      insertIndex: 9
+      addedObject: {fileID: 7557993272147760526}
   m_SourcePrefab: {fileID: 100100000, guid: 62469b7c713ba14479950ae9ffe62f7e, type: 3}
 --- !u!114 &1237672024898624629 stripped
 MonoBehaviour:
@@ -162,10 +177,87 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 230136366834741888}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2048885789007739766}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &2048885789007739766 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2260385949046508022, guid: 62469b7c713ba14479950ae9ffe62f7e,
+    type: 3}
+  m_PrefabInstance: {fileID: 230136366834741888}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7557993272147760526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048885789007739766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 217dea483f191504ca9c0f8d920beca2,
+    type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 77c5318c-66d7-48f4-98d3-bd4c7a9f07d8
+    m_ActionName: 'PlayerControls/Attack[/Keyboard/e]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4713569294300530382}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: OnMove
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: f17e8e07-ccc9-4e37-a500-e562cca1bf46
+    m_ActionName: 'PlayerControls/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 82b5ebfb-78df-420a-b247-1eedc36b4e9e
+    m_ActionName: 'PlayerControls/Respawn[/Keyboard/k]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ae718684-1015-4bff-921b-598afdb271b0
+    m_ActionName: 'PlayerControls/SpinnerButton[/Keyboard/z]'
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: PlayerControls
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &4713569294300530382 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4780691413223191630, guid: 62469b7c713ba14479950ae9ffe62f7e,
+    type: 3}
+  m_PrefabInstance: {fileID: 230136366834741888}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048885789007739766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f4da05df36c97a4f9591d5ac60c98eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &7425897777219434407 stripped
@@ -174,7 +266,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 230136366834741888}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2048885789007739766}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e78550d340810040b2d8cd92eeb25a1, type: 3}
@@ -267,6 +359,12 @@ PrefabInstance:
 --- !u!4 &6391284161654266603 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2104474932244183455, guid: 104a8dcde286fca4d9629ed55d0bade7,
+    type: 3}
+  m_PrefabInstance: {fileID: 5009972939326186356}
+  m_PrefabAsset: {fileID: 0}
+--- !u!20 &7498079302571883265 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 3281005086135425141, guid: 104a8dcde286fca4d9629ed55d0bade7,
     type: 3}
   m_PrefabInstance: {fileID: 5009972939326186356}
   m_PrefabAsset: {fileID: 0}

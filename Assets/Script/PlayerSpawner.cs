@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class PlayerSpawner : NetworkBehaviour
 {
-    [SerializeField]
-    private NetworkPrefabRef _playerPrefab;
-
     public override void Spawned()
     {
         if (!Object.HasStateAuthority)
@@ -13,10 +10,11 @@ public class PlayerSpawner : NetworkBehaviour
 
         var gameManager = GameManager.Instance;
 
-        foreach (var player in gameManager.PlayerList.Keys)
+        foreach (var playerData in gameManager.PlayerList.Values)
         {
-            var spawnPoint = new Vector3(0, 2, 0);
-            Runner.Spawn(_playerPrefab, spawnPoint, Quaternion.identity, player);
+            var spawnPoint = new Vector3(0, 50, 0);
+            var characterPrefab = gameManager.CharacterPrefabs[playerData.SelectedCharacterIndex];
+            Runner.Spawn(characterPrefab, spawnPoint, Quaternion.identity, playerData.Object.InputAuthority);
         }
     }
 }

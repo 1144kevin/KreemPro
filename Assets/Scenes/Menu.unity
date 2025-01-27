@@ -251,7 +251,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1995988838}
-  - {fileID: 1572779014}
   m_Father: {fileID: 156733078}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1012,7 +1011,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &526573315
 MonoBehaviour:
@@ -1219,11 +1218,10 @@ MonoBehaviour:
       - m_Target: {fileID: 1021257139}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: ChooseCharacter
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 9142598267335151591, guid: 8326e6c65d2f2394a817263774a6b805,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1914,8 +1912,6 @@ MonoBehaviour:
   joinBtn: {fileID: 492217789}
   startBtn: {fileID: 1188649570}
   playerListContent: {fileID: 526573313}
-  selectedCharacter: {fileID: 9142598267335151591, guid: 8326e6c65d2f2394a817263774a6b805,
-    type: 3}
   characterName: {fileID: 1982251543}
   playerListCell: {fileID: 2060992966}
 --- !u!1 &1028327001
@@ -2642,12 +2638,11 @@ MonoBehaviour:
       - m_Target: {fileID: 1021257139}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: ChooseCharacter
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 885158983813326049, guid: 5ee10cba20a8e964d90784d86d520a8a,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2776,12 +2771,11 @@ MonoBehaviour:
       - m_Target: {fileID: 1021257139}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: ChooseCharacter
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 1926343973159323948, guid: 0cf7125ea7594f74ea9e876e282711f1,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -2933,7 +2927,7 @@ RectTransform:
   m_Children:
   - {fileID: 724549669}
   - {fileID: 409928775}
-  m_Father: {fileID: 193164876}
+  m_Father: {fileID: 1871068868}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3328,6 +3322,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 772802966}
+  - {fileID: 1572779014}
   m_Father: {fileID: 156733078}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3666,7 +3661,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Robot
+  m_text: Name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4110,12 +4105,11 @@ MonoBehaviour:
       - m_Target: {fileID: 1021257139}
         m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
         m_MethodName: ChooseCharacter
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 6661695535180145100, guid: 3297a6a5ce8249246ada7ef4f16895fb,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
