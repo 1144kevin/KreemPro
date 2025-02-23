@@ -1,39 +1,34 @@
 using UnityEngine;
 using Fusion;
-
+using static UnityEngine.InputSystem.InputAction;
 
 public class InputHandler : NetworkBehaviour
 {
-    
+    private Vector2 moveInput; // 儲存移動輸入
+
     public override void Spawned()
     {
         if (Runner.LocalPlayer != Object.InputAuthority) return;
         var events = Runner.GetComponent<NetworkEvents>();
         events.OnInput.AddListener(OnInput);
     }
+
     public override void Despawned(NetworkRunner runner, bool hasState)
     {
         if (Runner.LocalPlayer != Object.InputAuthority) return;
         var events = Runner.GetComponent<NetworkEvents>();
         events.OnInput.RemoveListener(OnInput);
     }
+    public void OnMove(CallbackContext context)
+    {
+          moveInput = context.ReadValue<Vector2>();
+    }
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        var data = new NetworkInputData();
-
-        if (Input.GetKey(KeyCode.W))
-            data.direction += Vector3.forward;
-
-        if (Input.GetKey(KeyCode.S))
-            data.direction += Vector3.back;
-
-        if (Input.GetKey(KeyCode.A))
-            data.direction += Vector3.left;
-
-        if (Input.GetKey(KeyCode.D))
-            data.direction += Vector3.right;
-
-        data.button.Set(InputButton.ATTACK, Input.GetMouseButton(0));
+        var data = new NetworkInputData
+        {
+            direction = new Vector3(moveInput.x, 0, moveInput.y)
+        };
 
         input.Set(data);
     }

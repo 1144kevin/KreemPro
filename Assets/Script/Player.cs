@@ -3,17 +3,18 @@ using UnityEngine;
 
 public class Player : NetworkBehaviour
 {
-  [SerializeField] private NetworkCharacterController CharacterController;  
+  [SerializeField] private NetworkCharacterController CharacterController;
   [SerializeField] private int MaxHealth = 100;
-  [SerializeField] private HealthBar HealthBar;  
+  [SerializeField] private HealthBar HealthBar;
   [SerializeField] private AttackHandler AttackHandler;
-  [SerializeField] private AnimationHandler AnimationHandler; 
+  [SerializeField] private AnimationHandler AnimationHandler;
   [SerializeField] private float Speed = 500f;
   // [Networked(OnChanged = nameof(HealthChanged))]
   //  private int Health { get; set; }  
   [Networked] private int Health { get; set; }
   private int lastHealth; // 用於檢測健康值是否變化
   [Networked] private NetworkButtons previousButton { get; set; }
+  [SerializeField] private Camera playerCamera;
 
   // [SerializeField] private MeshRenderer[] Visuals;
   // // [SerializeField] private Camera Camera;
@@ -38,6 +39,16 @@ public class Player : NetworkBehaviour
     // {
     //   Camera.enabled = false;
     // }
+    if (Object.HasInputAuthority)
+    {
+      playerCamera.gameObject.SetActive(true);
+      playerCamera.enabled = true;
+    }
+    else
+    {
+      playerCamera.gameObject.SetActive(false);
+      playerCamera.enabled = false;
+    }
 
     Health = MaxHealth;
     lastHealth = Health; // 初始化健康值記錄

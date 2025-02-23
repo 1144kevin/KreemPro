@@ -30926,8 +30926,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5333712606530937135}
   - component: {fileID: 5785875954380978103}
-  - component: {fileID: 282360757989153462}
-  - component: {fileID: 7287476363795797528}
   - component: {fileID: 5830564539760701743}
   - component: {fileID: 3521248739023369447}
   - component: {fileID: 3629384287133229194}
@@ -30993,54 +30991,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!54 &282360757989153462
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4352625153974583448}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 10
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 2
---- !u!65 &7287476363795797528
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4352625153974583448}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 3.9425657, y: 5.91562, z: 3.7315824}
-  m_Center: {x: 0.117791556, y: 2.9201381, z: 0.0038240433}
 --- !u!114 &5830564539760701743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31082,6 +31032,7 @@ MonoBehaviour:
     type: 3}
   target: {fileID: 4822209016247186974}
   bulletSpawnDelay: 2
+  attackLostLp: 10
 --- !u!114 &3629384287133229194
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31127,6 +31078,10 @@ MonoBehaviour:
   maxHealth: 100
   healthBar: {fileID: 2859262985921330002}
   Kreem: {fileID: 389400009104322736, guid: 41508aa1a0f88fc4488ee2b1a0e33296, type: 3}
+  healthRecoveryRate: 10
+  healthRecoveryDelay: 3
+  recoveryTickRate: 0.1
+  damageCooldown: 1
 --- !u!114 &3832922372484578767
 MonoBehaviour:
   m_ObjectHideFlags: 0
