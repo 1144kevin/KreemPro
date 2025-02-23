@@ -43,10 +43,9 @@ Material:
     m_Floats:
     - _QueueControl: 0
     - _Shading: 0.5
-    - _Shading_1: 0.047
-    - _Transparent: 1
+    - _Shading_1: 0.01
     m_Colors:
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 0.87169814, g: 0.87169814, b: 0.87169814, a: 1}
     - _Color: {r: 0.7433963, g: 0.70552516, b: 0.70552516, a: 1}
     - _ShadowColor: {r: 0.6301887, g: 0.6301887, b: 0.6301887, a: 0}
   m_BuildTextureStacks: []

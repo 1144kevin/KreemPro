@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9138915353990702492}
-  - component: {fileID: 4983957491359530417}
   - component: {fileID: 5299558766619019894}
+  - component: {fileID: 1617593245546099519}
+  - component: {fileID: 313307299515103831}
   m_Layer: 0
   m_Name: PlayerInput
   m_TagString: Untagged
@@ -33,18 +34,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4983957491359530417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8922349532611549499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3df8260aaaff0b044beb3b2daffe337a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5299558766619019894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,25 +61,13 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4983957491359530417}
-        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
-        m_MethodName: OnAttack
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: 77c5318c-66d7-48f4-98d3-bd4c7a9f07d8
     m_ActionName: 'PlayerControls/Attack[/Keyboard/e,/DualShock4GamepadHID/buttonSouth,/DualShock4GamepadHID1/buttonSouth]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4983957491359530417}
-        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+      - m_Target: {fileID: 1617593245546099519}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
         m_Arguments:
@@ -105,7 +82,7 @@ MonoBehaviour:
     m_ActionName: 'PlayerControls/Movement[/DualShock4GamepadHID/leftStick,/DualShock4GamepadHID1/leftStick,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4983957491359530417}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
         m_MethodName: OnRespawn
         m_Mode: 0
@@ -117,10 +94,58 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: cf70f05b-d8ca-47b4-82fa-101ae2a17e97
-    m_ActionName: 'PlayerControls/Respawn[/Keyboard/k,/DualShock4GamepadHID/buttonEast]'
+    m_ActionId: 82b5ebfb-78df-420a-b247-1eedc36b4e9e
+    m_ActionName: 'PlayerControls/Respawn[/Keyboard/k]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: PlayerInputHandler, Assembly-CSharp
+        m_MethodName: OnSpin
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ae718684-1015-4bff-921b-598afdb271b0
+    m_ActionName: 'PlayerControls/SpinnerButton[/Keyboard/z]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerControls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1617593245546099519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8922349532611549499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f4da05df36c97a4f9591d5ac60c98eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInput: {fileID: 5299558766619019894}
+--- !u!114 &313307299515103831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8922349532611549499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3720136396
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1617593245546099519}
+  ForceRemoteRenderTimeframe: 0
