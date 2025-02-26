@@ -8,29 +8,43 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
+
+    [SerializeField]
+    private GameObject menuPanel;
+
+    [SerializeField]
+    private GameObject roomPanel;
+
+    [SerializeField]
+    private InputField playerNameInputField;
+
+    [SerializeField]
+    private InputField roomNameInputField;
+
+    [SerializeField]
+    private Button createBtn;
+
+    [SerializeField]
+    private Button joinBtn;
+    [SerializeField]
+    private Button startBtn;
+
+    [SerializeField]
+    private GameObject playerListContent;
+
+    [SerializeField]
+    private TMP_Text characterName;
+
+    [SerializeField]
+    private PlayerListCell playerListCell;
+
+    private List<PlayerListCell> existingCells = new List<PlayerListCell>();
+
     public enum MenuType
     {
         Menu,
         Room
     }
-    [SerializeField]
-    private GameObject menuPanel;
-    [SerializeField]
-    private GameObject roomPanel;
-    [SerializeField]
-    private InputField playerNameInputField;
-    [SerializeField]
-    private InputField roomNameInputField;
-    [SerializeField]
-    private Button createBtn;
-    [SerializeField]
-    private Button joinBtn;
-    [SerializeField]
-    private Button startBtn;
-    [SerializeField]
-    private GameObject playerListContent;
-    [SerializeField] private TMP_Text characterName;
-
     private void Start()
     {
         createBtn.onClick.AddListener(OnCreateBtnClicked);
@@ -56,7 +70,6 @@ public class MenuManager : MonoBehaviour
         GameManager.Instance.PlayerName = playerNameInputField.text;
         GameManager.Instance.RoomName = roomNameInputField.text;
         await GameManager.Instance.JoinRoom();
-
     }
     private void OnStartBtnClicked()
     {
@@ -83,10 +96,6 @@ public class MenuManager : MonoBehaviour
                 break;
         }
     }
-    [SerializeField]
-    private PlayerListCell playerListCell;
-
-    private List<PlayerListCell> existingCells = new List<PlayerListCell>();
 
     public void UpdatePlayerList(List<string> playerNames)
     {

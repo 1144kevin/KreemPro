@@ -9,36 +9,19 @@ public class Player : NetworkBehaviour
   [SerializeField] private AttackHandler AttackHandler;
   [SerializeField] private AnimationHandler AnimationHandler;
   [SerializeField] private float Speed = 500f;
-  // [Networked(OnChanged = nameof(HealthChanged))]
-  //  private int Health { get; set; }  
-  [Networked] private int Health { get; set; }
-  private int lastHealth; // 用於檢測健康值是否變化
-  [Networked] private NetworkButtons previousButton { get; set; }
   [SerializeField] private Camera playerCamera;
 
-  // [SerializeField] private MeshRenderer[] Visuals;
-  // // [SerializeField] private Camera Camera;
-  // [Networked] private Angle Pitch { get; set; }
-  // [Networked] private Angle Yaw { get; set; }
+  [Networked] private int Health { get; set; }
+   [Networked] private NetworkButtons previousButton { get; set; }
+
+  private int lastHealth; // 用於檢測健康值是否變化
+ 
   private void Awake()
   {
     CharacterController = GetComponent<NetworkCharacterController>();
   }
   public override void Spawned()
   {
-    // if (Object.HasInputAuthority)
-    // {
-    //   Camera.enabled = true;
-
-    //   foreach (var visual in Visuals)
-    //   {
-    //     visual.enabled = false;
-    //   }
-    // }
-    // else
-    // {
-    //   Camera.enabled = false;
-    // }
     if (Object.HasInputAuthority)
     {
       playerCamera.gameObject.SetActive(true);
