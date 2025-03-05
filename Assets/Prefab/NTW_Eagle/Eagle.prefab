@@ -21122,20 +21122,14 @@ GameObject:
   - component: {fileID: 5191954091629016354}
   - component: {fileID: 50655341704061770}
   - component: {fileID: 8492753705367531708}
+  - component: {fileID: 3349936123760886286}
   - component: {fileID: 8161039181977602597}
   - component: {fileID: 3128647675998093421}
-  - component: {fileID: 3349936123760886286}
   - component: {fileID: 7680211245562151629}
   - component: {fileID: 6232041213788690486}
-  - component: {fileID: 6189877483336114731}
-  - component: {fileID: 6160750185888569431}
-  - component: {fileID: 1833837993150909453}
-  - component: {fileID: 3267547223753515827}
-  - component: {fileID: 2368351089949381715}
-  - component: {fileID: 2623190858584540817}
-  - component: {fileID: 5274161154487044198}
-  - component: {fileID: 8830897485502465365}
-  - component: {fileID: 8192071252670571350}
+  - component: {fileID: 2460443589096144955}
+  - component: {fileID: 3737381318562010662}
+  - component: {fileID: 9175067724891006128}
   m_Layer: 0
   m_Name: Eagle
   m_TagString: Eagle
@@ -21222,11 +21216,31 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 3128647675998093421}
   - {fileID: 3349936123760886286}
+  - {fileID: 3128647675998093421}
   - {fileID: 6232041213788690486}
-  - {fileID: 6160750185888569431}
+  - {fileID: 2460443589096144955}
+  - {fileID: 9175067724891006128}
   ForceRemoteRenderTimeframe: 0
+--- !u!114 &3349936123760886286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4351695611204355335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e6d88210b7485b468247b4690fc9567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CharacterController: {fileID: 3128647675998093421}
+  MaxHealth: 100
+  HealthBar: {fileID: 7123634256275293172}
+  AttackHandler: {fileID: 0}
+  AnimationHandler: {fileID: 0}
+  Speed: 50
+  playerCamera: {fileID: 0}
 --- !u!143 &8161039181977602597
 CharacterController:
   m_ObjectHideFlags: 0
@@ -21272,25 +21286,6 @@ MonoBehaviour:
   braking: 1000
   maxSpeed: 300
   rotationSpeed: 15
---- !u!114 &3349936123760886286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4351695611204355335}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e6d88210b7485b468247b4690fc9567, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  InputHandler: {fileID: 0}
-  CharacterController: {fileID: 3128647675998093421}
-  MaxHealth: 100
-  HealthBar: {fileID: 7123634256275293172}
-  AttackHandler: {fileID: 6160750185888569431}
-  AnimationHandler: {fileID: 6189877483336114731}
-  Speed: 50
 --- !u!114 &7680211245562151629
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21328,7 +21323,19 @@ MonoBehaviour:
   Offset: {x: 0, y: 1, z: 0}
   GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   Hitboxes: []
---- !u!114 &6189877483336114731
+--- !u!114 &2460443589096144955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4351695611204355335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f4da05df36c97a4f9591d5ac60c98eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3737381318562010662
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21340,8 +21347,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3103e4066bbc22044a6ac80d2dd0f053, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 50655341704061770}
---- !u!114 &6160750185888569431
+  animator: {fileID: 0}
+--- !u!114 &9175067724891006128
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21359,130 +21366,6 @@ MonoBehaviour:
     m_Bits: 0
   HitOptions: 13
   damage: 10
---- !u!114 &1833837993150909453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4351695611204355335}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4653fc8fefc2e684ba7e3ea899a9852e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 500
-  rotationSpeed: 720
-  detectionRadius: 10
-  customGravity: 1500
-  playerIndex: 1
---- !u!114 &3267547223753515827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4351695611204355335}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95e3f5bf9dafba94b962901d3779bf52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackEffect: {fileID: 8852856318312095341}
-  attackEffect2: {fileID: 0}
-  runAttackEffect: {fileID: 0}
-  runAttackEffect2: {fileID: 0}
-  leftShootPoint: {fileID: 0}
-  rightShootPoint: {fileID: 4164761947038062461, guid: 2b8c773f2b6c1c1409e85a35d8ffaa6d,
-    type: 3}
-  leftRunShootPoint: {fileID: 0}
-  rightRunShootPoint: {fileID: 0}
-  bulletPrefab: {fileID: 0}
-  target: {fileID: 4164761947038062461, guid: 2b8c773f2b6c1c1409e85a35d8ffaa6d, type: 3}
-  bulletSpawnDelay: 0
-  attackLostLp: 10
---- !u!114 &2368351089949381715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4351695611204355335}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6932be53e2151a54e9a46451b3630b26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pushForce: 10
-  pushDuration: 0.1
-  HittedEffect: {fileID: 7147794930965994678}
-  damageAmount: 20
---- !u!114 &2623190858584540817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4351695611204355335}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50678a96d4a3aa241b73ec27f4f662f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  respawnPosition: {x: -1300, y: 200, z: -1300}
-  respawnedObject: {fileID: 5994388924949679664}
---- !u!114 &5274161154487044198
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4351695611204355335}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a8b2731aaf597443b9e623c91235ed5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 100
-  healthBar: {fileID: 7123634256275293172}
-  Kreem: {fileID: 389400009104322736, guid: 41508aa1a0f88fc4488ee2b1a0e33296, type: 3}
-  healthRecoveryRate: 10
-  healthRecoveryDelay: 3
-  recoveryTickRate: 0.1
-  damageCooldown: 1
---- !u!114 &8830897485502465365
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4351695611204355335}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3f42bf7f18c1fb4aad882c92fc496f4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CurrentKreem: 0
-  KreemMax: 3
-  TotalKreemCollected: 0
---- !u!114 &8192071252670571350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4351695611204355335}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 66d4349d69336af4580ad02c22d90de2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxAttack: 100
-  attackBar: {fileID: 2629408671965736932}
-  attackRecoveryRate: 10
-  attackRecoveryDelay: 2
-  attackTickRate: 0.1
-  damageCooldown: 1
 --- !u!1 &4512800227255183485
 GameObject:
   m_ObjectHideFlags: 0

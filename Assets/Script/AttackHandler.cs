@@ -18,6 +18,7 @@ public class AttackHandler : NetworkBehaviour
     }
     public void Attack()
     {
+        Debug.Log("shot1");
         // if (Runner.LagCompensation.Raycast(
         //     CharacterTrans.position, CharacterTrans.forward,
         //     Mathf.Infinity,

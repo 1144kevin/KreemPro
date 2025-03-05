@@ -1,33 +1,31 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fusion;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+
     [SerializeField]
     private NetworkRunner networkRunner;
+
     [SerializeField]
     private NetworkEvents networkEvents;
-    public string PlayerName { get; set; }
-    public int SelectedCharacterIndex { get; set; }
-
-    // 新增角色預製體陣列
-    public GameObject[] CharacterPrefabs;
-    public string RoomName { get; set; }
 
     [SerializeField]
     private PlayerNetworkData playerNetworkDataPrefab;
 
+    public static GameManager Instance { get; private set; }
+    public string PlayerName { get; set; }
+    public int SelectedCharacterIndex { get; set; }
+    public GameObject[] CharacterPrefabs;// 新增角色預製體陣列
+    public string RoomName { get; set; }
+
     public Dictionary<PlayerRef, PlayerNetworkData> PlayerList => playerList;
     private Dictionary<PlayerRef, PlayerNetworkData> playerList = new Dictionary<PlayerRef, PlayerNetworkData>();
 
-    private void Awake()
+    private void Awake()//單例模式
     {
         if (Instance == null)
         {
@@ -41,13 +39,13 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    internal void SetPlayerNetworkData(PlayerRef player, PlayerNetworkData playerNetworkData)
+    internal void SetPlayerNetworkData(PlayerRef player, PlayerNetworkData playerNetworkData)//設定玩家的網路物件
     {
         playerList.Add(player, playerNetworkData);
         playerNetworkData.transform.SetParent(transform);
     }
 
-    private void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    private void OnPlayerJoined(NetworkRunner runner, PlayerRef player)//玩家加入事件
     {
         if (!runner.IsServer)
         {
@@ -90,6 +88,7 @@ public class GameManager : MonoBehaviour
             PlayerCount = 4,
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
+            //ObjectPool = gameObject.AddComponent<FusionObjectPoolRoot>()
         });
 
 
@@ -116,6 +115,7 @@ public class GameManager : MonoBehaviour
             PlayerCount = 4,
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
+            //ObjectPool = gameObject.AddComponent<FusionObjectPoolRoot>()
         });
 
         if (result.Ok)
