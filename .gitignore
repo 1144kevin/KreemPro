@@ -20,5 +20,7 @@
 *.mdb
 *.opendb
 *.VC.db
+*.pdb
+*.pdb.meta
 
 .fake
