@@ -12,10 +12,10 @@ public class Player : NetworkBehaviour
   [SerializeField] private Camera playerCamera;
 
   [Networked] private int Health { get; set; }
-   [Networked] private NetworkButtons previousButton { get; set; }
+  [Networked] private NetworkButtons previousButton { get; set; }
 
   private int lastHealth; // 用於檢測健康值是否變化
- 
+
   private void Awake()
   {
     CharacterController = GetComponent<NetworkCharacterController>();
@@ -43,19 +43,19 @@ public class Player : NetworkBehaviour
   {
     if (GetInput(out NetworkInputData data))
     {
-      var buttonPressed = data.button.GetPressed(previousButton);
-      previousButton = data.button;
+      var buttonPressed = data.buttons.GetPressed(previousButton);
+      var buttonReleased = data.buttons.GetReleased(previousButton);
+      previousButton = data.buttons;
 
       data.direction.Normalize();
       CharacterController.Move(Speed * data.direction * Runner.DeltaTime);
 
       AnimationHandler.PlayerAnimation(data.direction);
-
-      if (buttonPressed.IsSet(InputButton.ATTACK))
+      
+      if (data.buttons.IsSet(InputButton.ATTACK))
       {
         AttackHandler.Attack();
       }
-
     }
     // 健康值變化檢測
     if (Health != lastHealth)

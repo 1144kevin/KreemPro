@@ -88,6 +88,7 @@ public class GameManager : MonoBehaviour
             PlayerCount = 4,
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
+            //ObjectPool = gameObject.AddComponent<FusionObjectPoolRoot>()
         });
 
 
@@ -114,6 +115,7 @@ public class GameManager : MonoBehaviour
             PlayerCount = 4,
             Scene = scene,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
+            //ObjectPool = gameObject.AddComponent<FusionObjectPoolRoot>()
         });
 
         if (result.Ok)
