@@ -21,7 +21,7 @@ public class PoolObjectProvider : Fusion.Behaviour, INetworkObjectProvider
     /// <summary>
     /// How many objects are going to be kept on the pools, 0 or negative means to pool all released objects.
     /// </summary>
-    private int _maxPoolCount = 0;
+    private int _maxPoolCount = 3;
     
     /// The base <see cref="NetworkObjectProviderDefault"/> by default simply instantiate a new game object.
     /// Let's create a method to use a custom logic that will pool objects.
@@ -29,7 +29,7 @@ public class PoolObjectProvider : Fusion.Behaviour, INetworkObjectProvider
         NetworkPrefabId contextPrefabId)
     {
         var result = default(NetworkObject);
-        
+        Debug.Log("work1");
         // Found free queue for prefab AND the queue is not empty. Return free object.
         if (_free.TryGetValue(contextPrefabId, out var freeQ))
         {
@@ -37,15 +37,6 @@ public class PoolObjectProvider : Fusion.Behaviour, INetworkObjectProvider
             {
                 result = freeQ.Dequeue();
                 result.gameObject.SetActive(true);
-                
-                // ----------------------------------------------------------------------
-                // Make rigidbody non-kinematic again. Specific for this sample, if copying this object provider remove it.
-                if (result.gameObject.TryGetComponent<Rigidbody>(out var rigidbody))
-                {
-                    rigidbody.isKinematic = false;
-                    rigidbody.detectCollisions = true;
-                }
-                // ----------------------------------------------------------------------
                 
                 return result;
             }
@@ -70,7 +61,7 @@ public class PoolObjectProvider : Fusion.Behaviour, INetworkObjectProvider
             return;
         }
         
-        
+        Debug.Log("work2");
         // Free queue found. Should cache.
         freeQ.Enqueue(instance);
 
@@ -79,24 +70,6 @@ public class PoolObjectProvider : Fusion.Behaviour, INetworkObjectProvider
             // Make objects inactive.
             instance.gameObject.SetActive(false);
         }
-        else
-        {
-            // ----------------------------------------------------------------------
-            // Make object transparent and kinematic. Specific for this sample, if copying this object provider remove it.
-            if (instance.gameObject.TryGetComponent<Renderer>(out var renderer))
-            {
-                var color = renderer.material.color;
-                color.a = .25f;
-                renderer.material.color = color;
-            }
-
-            if (instance.gameObject.TryGetComponent<Rigidbody>(out var rigidbody))
-            {
-                rigidbody.isKinematic = true;
-                rigidbody.detectCollisions = false;
-            }
-            // ----------------------------------------------------------------------
-        }
     }
 
     public NetworkObjectAcquireResult AcquirePrefabInstance(NetworkRunner runner, in NetworkPrefabAcquireContext context,
@@ -104,7 +77,7 @@ public class PoolObjectProvider : Fusion.Behaviour, INetworkObjectProvider
     {
         
         instance = null;
-
+        Debug.Log("work3");
         if (DelayIfSceneManagerIsBusy && runner.SceneManager.IsBusy) {
             return NetworkObjectAcquireResult.Retry;
         }
@@ -139,7 +112,7 @@ public class PoolObjectProvider : Fusion.Behaviour, INetworkObjectProvider
     public void ReleaseInstance(NetworkRunner runner, in NetworkObjectReleaseContext context)
     {
         var instance = context.Object;
-
+        Debug.Log("work4");
         // Only pool prefabs.
         if (!context.IsBeingDestroyed) {
             if (context.TypeId.IsPrefab) {
@@ -155,24 +128,6 @@ public class PoolObjectProvider : Fusion.Behaviour, INetworkObjectProvider
             runner.Prefabs.RemoveInstance(context.TypeId.AsPrefabId);
         }
     }
-
-    private void DisableObjectsAsDefaultReleaseBehaviour(bool value)
-    {
-        _disableObjectInPool = value;
-    }
-
-    public bool SwitchDefaultReleaseBehaviour()
-    {
-        DisableObjectsAsDefaultReleaseBehaviour(!_disableObjectInPool);
-
-        return _disableObjectInPool;
-    }
-
-    public void SetMaxPoolCount(int count)
-    {
-        _maxPoolCount = count;
-    }
-
 
     public NetworkPrefabId GetPrefabId(NetworkRunner runner, NetworkObjectGuid guid)
     {

@@ -1,45 +1,44 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Fusion;
-using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class ObjectSpawner : NetworkBehaviour
 {
-    [SerializeField] private NetworkPrefabRef _spherePrefab;
-    [SerializeField] private NetworkPrefabRef _cubePrefab;
+    [SerializeField] private NetworkPrefabRef shotPrefab;
 
-    private readonly HashSet<NetworkObject> _spawnedObjects = new HashSet<NetworkObject>();
-
+    private readonly HashSet<NetworkObject> spawnedObjects = new HashSet<NetworkObject>();
+    
     public void SpawnSphere()
     {
-        if (Runner.IsClient) return; // Clients can't spawn.
+        if (Runner.IsClient) return; // 確保只有伺服器能夠生成物件
+        Debug.Log("shot1");
         
-        var obj = Runner.Spawn(_spherePrefab, transform.position + Random.insideUnitSphere * 3);
-        _spawnedObjects.Add(obj);
-    }
-    
-    public void SpawnCube()
-    {
-        if (Runner.IsClient) return; // Clients can't spawn.
-        
-        var obj = Runner.Spawn(_cubePrefab, transform.position + Random.insideUnitSphere * 3);
-        _spawnedObjects.Add(obj);
+        var obj =Runner.Spawn(shotPrefab, transform.position + Random.insideUnitSphere * 3);
+        spawnedObjects.Add(obj);
+        // if (obj == null)
+        // {
+        //     obj = Runner.Spawn(shotPrefab, transform.position + Random.insideUnitSphere * 3);
+        //     spawnedObjects.Add(obj);
+        // }
+        // else
+        // {
+        //     obj.gameObject.SetActive(true);
+        //     spawnedObjects.Add(obj);
+        // }
     }
 
     public void DespawnAll()
     {
         if (Runner.IsClient) return; // Clients can't despawn.
         
-        if (_spawnedObjects == null) return;
+        if (spawnedObjects == null) return;
 
-        foreach (var networkObject in _spawnedObjects)
+        foreach (var obj in spawnedObjects)
         {
-            Runner.Despawn(networkObject);
+            Runner.Despawn(obj);
         }
-        
-        _spawnedObjects.Clear();
+        Debug.Log("despawn");
+        spawnedObjects.Clear();
     }
 }

@@ -21,12 +21,13 @@ public class InputHandler : NetworkBehaviour
     }
     public void OnMove(CallbackContext context)
     {
-        Debug.Log("move");
+        //Debug.Log("move");
         moveInput = context.ReadValue<Vector2>();
     }
-    public void OnAttack(CallbackContext context)//沒有運作
+    public void OnAttack(CallbackContext context)
     {
-        Debug.Log("attack");
+        //Debug.Log("attack");
+        
         if (context.performed)
         {
             attackInput = true;  
@@ -40,13 +41,12 @@ public class InputHandler : NetworkBehaviour
             
         };
         
-        //data.buttons.Set(InputButton.ATTACK,attackInput);
-        // if (attackInput)  
-        // {
-        //     data.buttons.IsSet((int)InputButton.ATTACK);
-            
-        // }
-        data.buttons.Set(InputButton.ATTACK,Input.GetMouseButton(0));//接收left mouse的資訊，不是從player input取得
+        if (attackInput)  
+        {   
+            data.buttons.Set(InputButton.ATTACK,attackInput);
+            attackInput=false;
+        }
+        // data.buttons.Set(InputButton.ATTACK,Input.GetMouseButton(0));//接收left mouse的資訊，不是從player input取得
 
         input.Set(data);
     }

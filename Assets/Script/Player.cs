@@ -43,8 +43,6 @@ public class Player : NetworkBehaviour
   {
     if (GetInput(out NetworkInputData data))
     {
-      var buttonPressed = data.buttons.GetPressed(previousButton);
-      var buttonReleased = data.buttons.GetReleased(previousButton);
       previousButton = data.buttons;
 
       data.direction.Normalize();
