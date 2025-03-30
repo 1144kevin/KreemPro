@@ -60,7 +60,6 @@ public class PlayerRespawn : NetworkBehaviour
     {
         if (!Object.HasStateAuthority || KreemPrefab == null) return;
 
-        Debug.Log($"[RpcKreemSpawn] Spawning KreemPrefab at death position: {deathPos}");
         Runner.Spawn(KreemPrefab, deathPos, Quaternion.identity, default(PlayerRef));
     }
     public void Respawn()

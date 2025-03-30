@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-public class KreemSpawn : NetworkBehaviour
+public class KreemDespawn : NetworkBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
