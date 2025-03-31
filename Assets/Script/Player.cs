@@ -14,8 +14,10 @@ public class Player : NetworkBehaviour
   [Networked] private NetworkButtons previousButton { get; set; }
   [SerializeField] private Camera playerCamera;
   [SerializeField] private GameObject respawnCanvas;
-  [Networked] public Vector3 LastDeathPosition { get; set; }
+  [Networked] private Vector3 LastDeathPosition { get; set; }
   private PlayerRespawn playerRespawn;
+  private bool lastMoving = false;
+
   private void Awake()
   {
     CharacterController = GetComponent<NetworkCharacterController>();
@@ -71,6 +73,12 @@ public class Player : NetworkBehaviour
     }
   }
 
+  [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+  public void RpcUpdateAnimationState(Vector3 input)
+  {
+    AnimationHandler.PlayerAnimation(input);
+  }
+
   public override void FixedUpdateNetwork()
   {
     if (Object.HasStateAuthority && Health <= 0 && !isDead)
@@ -93,7 +101,18 @@ public class Player : NetworkBehaviour
       {
         data.direction.Normalize();
         CharacterController.Move(Speed * data.direction * Runner.DeltaTime);
-        AnimationHandler.PlayerAnimation(data.direction);
+
+        bool currentMoving = data.direction.magnitude > 0.1f;
+
+        if (Object.HasStateAuthority && currentMoving != lastMoving)
+        {
+          lastMoving = currentMoving;
+          RpcUpdateAnimationState(currentMoving ? data.direction : Vector3.zero);
+        }
+        if (Object.HasInputAuthority)
+        {
+          AnimationHandler.PlayerAnimation(data.direction);
+        }
       }
 
       if (data.damageTrigger && Health > 0)
