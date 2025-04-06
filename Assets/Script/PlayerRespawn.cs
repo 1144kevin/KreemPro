@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using Fusion;
 using UnityEngine;
 
@@ -65,13 +67,18 @@ public class PlayerRespawn : NetworkBehaviour
     public void Respawn()
     {
         if (!Object.HasStateAuthority) return;
-        Vector3 spawnPos = SpawnPosition.GetSpawnPosition(Object.InputAuthority);
 
-        // 使用 Teleport 更新位置
+        Vector3 spawnPos = transform.parent.position;
+        Transform parentTransform = transform.parent;
+
+        // 解除父子關係，這樣 Teleport 不受父物件影響
+        transform.SetParent(null, true);
         characterController.Teleport(spawnPos, Quaternion.identity);
-        Debug.Log($"[Respawn] Respawning player {Object.Id} at spawn index {Object.InputAuthority}, position: {spawnPos}");
 
-        // 更新玩家狀態：取得 Player 組件，並呼叫 SetHealthToMax() 來重置血量與顯示
+        // 將物件重新掛回父物件，並強制 localPosition 為零
+        transform.SetParent(parentTransform, false);
+        transform.localPosition = Vector3.zero;
+
         var player = GetComponent<Player>();
         if (player != null)
         {
