@@ -39,10 +39,15 @@ public class PlayerRespawn : NetworkBehaviour
         {
             controller.enabled = isVisible;
         }
-        Transform canvasTrans = transform.Find("HealthCanvas");
-        if (canvasTrans != null)
+        Canvas canvas = GetComponentInChildren<Canvas>(true);
+        if (canvas != null)
         {
-            canvasTrans.gameObject.SetActive(isVisible);
+            canvas.gameObject.SetActive(isVisible);
+            Debug.Log($"[Respawn] Set UI visible={isVisible} for {Object.InputAuthority}");
+        }
+        else
+        {
+            Debug.LogWarning($"[Respawn] Canvas not found for player {Object.InputAuthority}");
         }
     }
 
