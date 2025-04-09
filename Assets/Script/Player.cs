@@ -23,8 +23,6 @@ public class Player : NetworkBehaviour
    [SerializeField] private TMP_Text kreemText;
 
 
-
-
   private void Awake()
   {
     CharacterController = GetComponent<NetworkCharacterController>();
@@ -184,40 +182,56 @@ public class Player : NetworkBehaviour
     playerRespawn.RpcSetPlayerVisibility(true);
   }
 
-// 給 Server 呼叫的加分邏輯
-public void ServerAddKreem()
-{
-    if (!Object.HasStateAuthority) return;
+  // 給 Server 呼叫的加分邏輯
+  public void ServerAddKreem()
+  {
+      if (!Object.HasStateAuthority) return;
 
-    kreemCollect++;
-    Debug.Log($"[Server] 玩家 {Object.InputAuthority} 撿到 Kreem：{kreemCollect}");
-}
+      kreemCollect++;
+      Debug.Log($"[Server] 玩家 {Object.InputAuthority} 撿到 Kreem：{kreemCollect}");
+  }
 
+  private void CreateKreemUI()
+  {
+      var canvas = GetComponentInChildren<Canvas>(true);
+      if (canvas != null)
+      {
+          var tmps = canvas.GetComponentsInChildren<TMP_Text>(true);
+          foreach (var tmp in tmps)
+          {
+              if (tmp.name.Contains("Kreem"))
+              {
+                  kreemText = tmp;
+                  Debug.Log($"[{Object.InputAuthority}] 成功綁定 TMP_Text：{kreemText.name} 在物件 {name}");
+                  break;
+              }
+          }
 
-private void CreateKreemUI()
-{
-    var canvas = GetComponentInChildren<Canvas>(true);
-    if (canvas != null)
-    {
-        var tmps = canvas.GetComponentsInChildren<TMP_Text>(true);
-        foreach (var tmp in tmps)
-        {
-            if (tmp.name.Contains("Kreem"))
-            {
-                kreemText = tmp;
-                Debug.Log($"[{Object.InputAuthority}] 成功綁定 TMP_Text：{kreemText.name} 在物件 {name}");
-                break;
-            }
-        }
+          if (kreemText == null)
+              Debug.LogWarning($"[{Object.InputAuthority}] 找不到 KreemText 在物件 {name}");
+      }
+      else
+      {
+          Debug.LogWarning("找不到 Canvas");
+      }
+  }
 
-        if (kreemText == null)
-            Debug.LogWarning($"[{Object.InputAuthority}] 找不到 KreemText 在物件 {name}");
-    }
-    else
-    {
-        Debug.LogWarning("找不到 Canvas");
-    }
-}
+  [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+  public void RpcRequestRestart()
+  {
+      Debug.Log($"▶️ Player {Object.InputAuthority} 呼叫 Restart");
+
+      if (GameFlowManager.Instance != null)
+      {
+          GameFlowManager.Instance.RegisterRestartVote(Object.InputAuthority);
+      }
+  }
+
+  public void RequestRestart()
+  {
+      RpcRequestRestart();
+  }
+
 
     
 }
