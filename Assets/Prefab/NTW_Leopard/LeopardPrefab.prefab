@@ -52,7 +52,9 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects:
   - {fileID: 4961559595877353863}
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 6189854223744703699}
+  - {fileID: 6884916120263464740}
   ForceRemoteRenderTimeframe: 0
 --- !u!1001 &2623386775935301022
 PrefabInstance:
@@ -202,6 +204,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2607658319918000874, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1080
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607658319918000874, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 720
+      objectReference: {fileID: 0}
+    - target: {fileID: 4606733284965030930, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 2959357491404548651}
     - target: {fileID: 4606733284965030930, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
       propertyPath: m_RenderMode
@@ -217,17 +234,62 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: playerRespawn
+      value: 
+      objectReference: {fileID: 5162450907750788535}
+    - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: respawnCountdown
+      value: 
+      objectReference: {fileID: 6189854223744703699}
+    - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: countdownTextRect
+      value: 
+      objectReference: {fileID: 1363252895927333977}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a412f1d0a5c47ec48b609dc5f85c788e, type: 3}
+--- !u!224 &1363252895927333977 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3928013083998536135, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+    type: 3}
+  m_PrefabInstance: {fileID: 2623386775935301022}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &3048103711577912980 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1019271960232854282, guid: a412f1d0a5c47ec48b609dc5f85c788e,
     type: 3}
   m_PrefabInstance: {fileID: 2623386775935301022}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6189854223744703699 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8182727989198694733, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+    type: 3}
+  m_PrefabInstance: {fileID: 2623386775935301022}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8816256366294794128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7aa44f2566123d4792de7209623d039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6884916120263464740 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+    type: 3}
+  m_PrefabInstance: {fileID: 2623386775935301022}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2daaa77f765f80b43880ab9b3a8b8c6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8816256366294794128 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6787353636857072142, guid: a412f1d0a5c47ec48b609dc5f85c788e,
@@ -331,12 +393,12 @@ PrefabInstance:
         type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[3]'
       value: 
-      objectReference: {fileID: 4748973370542436636}
+      objectReference: {fileID: 3839229069105626213}
     - target: {fileID: 2671096231107283494, guid: 8a898734291f1c645bd11fe8261781cf,
         type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[4]'
       value: 
-      objectReference: {fileID: 2546064346756056383}
+      objectReference: {fileID: 4748973370542436636}
     - target: {fileID: 2671096231107283494, guid: 8a898734291f1c645bd11fe8261781cf,
         type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[5]'
@@ -508,7 +570,19 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2546064346756056383}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 77c5318c-66d7-48f4-98d3-bd4c7a9f07d8
     m_ActionName: 'PlayerControls/Attack[/Keyboard/e]'
   - m_PersistentCalls:
@@ -528,7 +602,19 @@ MonoBehaviour:
     m_ActionId: f17e8e07-ccc9-4e37-a500-e562cca1bf46
     m_ActionName: 'PlayerControls/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2546064346756056383}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: OnRespawn
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 82b5ebfb-78df-420a-b247-1eedc36b4e9e
     m_ActionName: 'PlayerControls/Respawn[/Keyboard/k]'
   - m_PersistentCalls:
@@ -550,6 +636,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e78550d340810040b2d8cd92eeb25a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3839229069105626213 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6092540764630253508, guid: 8a898734291f1c645bd11fe8261781cf,
+    type: 3}
+  m_PrefabInstance: {fileID: 7046624839573668769}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3531013140997442381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e6d88210b7485b468247b4690fc9567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &4748973370542436636 stripped

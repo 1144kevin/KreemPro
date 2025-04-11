@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 885158983813326049}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1300, y: 150, z: 1300}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -52,7 +52,9 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects:
   - {fileID: 1237672024898624629}
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 3174558394503443651}
+  - {fileID: 2766522088536129332}
   ForceRemoteRenderTimeframe: 0
 --- !u!1001 &230136366834741888
 PrefabInstance:
@@ -308,7 +310,19 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4713569294300530382}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 77c5318c-66d7-48f4-98d3-bd4c7a9f07d8
     m_ActionName: 'PlayerControls/Attack[/Keyboard/e]'
   - m_PersistentCalls:
@@ -328,13 +342,21 @@ MonoBehaviour:
     m_ActionId: f17e8e07-ccc9-4e37-a500-e562cca1bf46
     m_ActionName: 'PlayerControls/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4713569294300530382}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: OnRespawn
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 82b5ebfb-78df-420a-b247-1eedc36b4e9e
     m_ActionName: 'PlayerControls/Respawn[/Keyboard/k]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: ae718684-1015-4bff-921b-598afdb271b0
-    m_ActionName: 'PlayerControls/SpinnerButton[/Keyboard/z]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerControls
@@ -626,6 +648,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2607658319918000874, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1080
+      objectReference: {fileID: 0}
+    - target: {fileID: 2607658319918000874, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 720
+      objectReference: {fileID: 0}
+    - target: {fileID: 4606733284965030930, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 7498079302571883265}
     - target: {fileID: 4606733284965030930, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
       propertyPath: m_RenderMode
@@ -641,6 +678,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: playerRespawn
+      value: 
+      objectReference: {fileID: 5401708686771180170}
+    - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: respawnCountdown
+      value: 
+      objectReference: {fileID: 3174558394503443651}
+    - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: countdownTextRect
+      value: 
+      objectReference: {fileID: 7711205846089784393}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -652,9 +704,39 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6737578328402238862}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2766522088536129332 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+    type: 3}
+  m_PrefabInstance: {fileID: 6737578328402238862}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2daaa77f765f80b43880ab9b3a8b8c6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3174558394503443651 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8182727989198694733, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+    type: 3}
+  m_PrefabInstance: {fileID: 6737578328402238862}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 266039899992053632}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7aa44f2566123d4792de7209623d039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6027366304954654340 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1019271960232854282, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+    type: 3}
+  m_PrefabInstance: {fileID: 6737578328402238862}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &7711205846089784393 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3928013083998536135, guid: a412f1d0a5c47ec48b609dc5f85c788e,
     type: 3}
   m_PrefabInstance: {fileID: 6737578328402238862}
   m_PrefabAsset: {fileID: 0}

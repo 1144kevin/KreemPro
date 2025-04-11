@@ -8,25 +8,6 @@ public class InputHandler : NetworkBehaviour
     private bool damageTriggered; // 儲存按下空白鍵的結果
     public bool respawnTrigger;  // 用於偵測 K 鍵
 
-
-    private void Update()
-    {
-        // 確保只有本地玩家才進行偵測
-        if (!Object.HasInputAuthority)
-            return;
-        
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            damageTriggered = true;
-        }
-
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            respawnTrigger = true;
-        }
-    }
-
-
     public override void Spawned()
     {
         if (Runner.LocalPlayer != Object.InputAuthority) return;
@@ -42,8 +23,26 @@ public class InputHandler : NetworkBehaviour
     }
     public void OnMove(CallbackContext context)
     {
-          moveInput = context.ReadValue<Vector2>();
+        moveInput = context.ReadValue<Vector2>();
     }
+
+    public void OnAttack(CallbackContext context)
+    {
+        if (context.performed)
+        {
+            damageTriggered = true;
+        }
+    }
+
+    // Respawn Action 的回呼
+    public void OnRespawn(CallbackContext context)
+    {
+        if (context.performed)
+        {
+            respawnTrigger = true;
+        }
+    }
+
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
         var data = new NetworkInputData
