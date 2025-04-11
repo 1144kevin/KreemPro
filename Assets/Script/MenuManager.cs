@@ -5,6 +5,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class MenuManager : MonoBehaviour
 {
@@ -22,6 +23,11 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     private InputField roomNameInputField;
     [SerializeField]
+    private Button firstCharacterButton;
+    [SerializeField] private GameObject characterPanel;
+    [SerializeField] private GameObject createJoinPanel;
+
+    [SerializeField]
     private Button createBtn;
     [SerializeField]
     private Button joinBtn;
@@ -31,11 +37,21 @@ public class MenuManager : MonoBehaviour
     private GameObject playerListContent;
     [SerializeField] private TMP_Text characterName;
 
+    [SerializeField] private GameObject[] characterspic;
+
+    [SerializeField] private GameObject[] characters3d;
+
+    [SerializeField] private GameObject[] roomavatar;
+
+    private Button lastConfirmedButton;
+    private Color lastButtonOriginalColor;
     private void Start()
     {
         createBtn.onClick.AddListener(OnCreateBtnClicked);
         joinBtn.onClick.AddListener(OnJoinBtnClicked);
         startBtn.onClick.AddListener(OnStartBtnClicked);
+
+        EventSystem.current.SetSelectedGameObject(firstCharacterButton.gameObject);
     }
     private void OnDestroy()
     {
@@ -58,6 +74,60 @@ public class MenuManager : MonoBehaviour
         await GameManager.Instance.JoinRoom();
 
     }
+
+    public void OnConfirmCharacterSelected()
+    {
+        GameObject selectedObj = EventSystem.current.currentSelectedGameObject;
+        if (selectedObj == null)
+        {
+            Debug.Log("No selected object found!");
+            return;
+        }
+
+        Button selectedBtn = selectedObj.GetComponent<Button>();
+        if (selectedBtn == null)
+        {
+            Debug.Log("Selected object is not a Button!");
+            return;
+        }
+
+        // 還原上一次按鈕的縮放（如果有）
+    if (lastConfirmedButton != null)
+    {
+        lastConfirmedButton.transform.localScale = Vector3.one;
+    }
+
+    lastConfirmedButton = selectedBtn;
+    ColorBlock cb = selectedBtn.colors;
+    lastButtonOriginalColor = cb.normalColor;
+
+    cb.normalColor = new Color32(139, 255, 218, 255);
+    selectedBtn.colors = cb;
+
+    // ✅ 放大目前選到的按鈕
+    selectedBtn.transform.localScale = Vector3.one * 1.2f;
+
+    EventSystem.current.SetSelectedGameObject(createBtn.gameObject);
+}
+    
+
+    public void BackToCharacterSelection()
+    {
+        if (lastConfirmedButton != null)
+    {
+        // ✅ 還原顏色
+        ColorBlock cb = lastConfirmedButton.colors;
+        cb.normalColor = lastButtonOriginalColor;
+        lastConfirmedButton.colors = cb;
+
+        // ✅ 還原縮放
+        lastConfirmedButton.transform.localScale = Vector3.one;
+    }
+
+    EventSystem.current.SetSelectedGameObject(firstCharacterButton.gameObject);
+    }
+
+
     private void OnStartBtnClicked()
     {
         GameManager.Instance.StartGame();
@@ -78,6 +148,7 @@ public class MenuManager : MonoBehaviour
             case MenuType.Room:
                 menuPanel.SetActive(false);
                 roomPanel.SetActive(true);
+                EventSystem.current.SetSelectedGameObject(startBtn.gameObject);
                 break;
             default:
                 break;
@@ -114,7 +185,23 @@ public class MenuManager : MonoBehaviour
             GameObject selectedPrefab = gameManager.CharacterPrefabs[characterIndex];
 
             characterName.text = selectedPrefab.name.Substring(0, selectedPrefab.name.Length - 6);
+
+
+            for (int i = 0; i < characters3d.Length; i++)
+            {
+
+                characters3d[i].SetActive(false);
+                roomavatar[i].SetActive(false);
+
+            }
+
+            characters3d[characterIndex].SetActive(true);
+            roomavatar[characterIndex].SetActive(true);
+
         }
+
+
     }
+
 
 }
