@@ -86,6 +86,11 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 989176866577924110}
+    - target: {fileID: 3349936123760886286, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
+        type: 3}
+      propertyPath: AttackHandler
+      value: 
+      objectReference: {fileID: 5856146902414199159}
     - target: {fileID: 3615589371918812689, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -155,6 +160,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6160750185888569431, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6160750185888569431, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
         type: 3}
