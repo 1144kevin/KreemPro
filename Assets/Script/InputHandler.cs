@@ -12,7 +12,10 @@ public class InputHandler : NetworkBehaviour
 
     private void Update()
     {
-        if (!Object.HasInputAuthority || !inputEnabled)
+        if (!Object.HasInputAuthority)
+            return;
+
+        if (!inputEnabled)
             return;
 
         if (Input.GetKeyDown(KeyCode.Space))
@@ -25,6 +28,7 @@ public class InputHandler : NetworkBehaviour
             respawnTrigger = true;
         }
     }
+
     public void DisableInput()
     {
         inputEnabled = false;
@@ -47,25 +51,25 @@ public class InputHandler : NetworkBehaviour
     {
           moveInput = context.ReadValue<Vector2>();
     }
-public void OnInput(NetworkRunner runner, NetworkInput input)
+    public void OnInput(NetworkRunner runner, NetworkInput input)
     {
         if (!inputEnabled)
         {
-            input.Set(new NetworkInputData());
+            input.Set(new NetworkInputData()); // 不送資料
             return;
         }
 
-    var data = new NetworkInputData
-    {
-        direction = new Vector3(moveInput.x, 0, moveInput.y),
-        damageTrigger = damageTriggered,
-        respawnTrigger = respawnTrigger
-    };
+        var data = new NetworkInputData
+        {
+            direction = new Vector3(moveInput.x, 0, moveInput.y),
+            damageTrigger = damageTriggered,
+            respawnTrigger = respawnTrigger
+        };
 
-    input.Set(data);
-    damageTriggered = false;
-    respawnTrigger = false;
-}
+        input.Set(data);
+        damageTriggered = false;
+        respawnTrigger = false;
+    }
 
 }
 
