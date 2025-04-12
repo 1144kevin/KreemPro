@@ -127,19 +127,19 @@ public class RespawnDirectionDisplay : NetworkBehaviour
 
         if (!inputActive) return;
 
-        if (Gamepad.current.dpad.up.wasPressedThisFrame || Input.GetKeyDown(KeyCode.UpArrow))
+        if ((Gamepad.current?.dpad.up.wasPressedThisFrame ?? false) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             ProcessInput(Direction.Up);
         }
-        else if (Gamepad.current.dpad.down.wasPressedThisFrame || Input.GetKeyDown(KeyCode.DownArrow))
+        else if ((Gamepad.current?.dpad.down.wasPressedThisFrame ?? false) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             ProcessInput(Direction.Down);
         }
-        else if (Gamepad.current.dpad.left.wasPressedThisFrame || Input.GetKeyDown(KeyCode.LeftArrow))
+        else if ((Gamepad.current?.dpad.left.wasPressedThisFrame ?? false) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             ProcessInput(Direction.Left);
         }
-        else if (Gamepad.current.dpad.right.wasPressedThisFrame || Input.GetKeyDown(KeyCode.RightArrow))
+        else if ((Gamepad.current?.dpad.right.wasPressedThisFrame ?? false) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             ProcessInput(Direction.Right);
         }

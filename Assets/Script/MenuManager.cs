@@ -36,9 +36,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     private GameObject playerListContent;
     [SerializeField] private TMP_Text characterName;
-
-    [SerializeField] private GameObject[] characterspic;
-
     [SerializeField] private GameObject[] characters3d;
 
     [SerializeField] private GameObject[] roomavatar;
