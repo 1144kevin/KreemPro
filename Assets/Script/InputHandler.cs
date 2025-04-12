@@ -4,9 +4,35 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class InputHandler : NetworkBehaviour
 {
-    private Vector2 moveInput; // 儲存移動輸入
-    private bool damageTriggered; // 儲存按下空白鍵的結果
-    public bool respawnTrigger;  // 用於偵測 K 鍵
+    private Vector2 moveInput;
+    private bool damageTriggered;
+    public bool respawnTrigger;
+
+    public  bool inputEnabled = true; // ✅ 改為非靜態（每位玩家自己有自己的值）
+
+    private void Update()
+    {
+        if (!Object.HasInputAuthority)
+            return;
+
+        if (!inputEnabled)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            damageTriggered = true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            respawnTrigger = true;
+        }
+    }
+
+    public void DisableInput()
+    {
+        inputEnabled = false;
+    }
 
     public override void Spawned()
     {
@@ -45,6 +71,12 @@ public class InputHandler : NetworkBehaviour
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
+        if (!inputEnabled)
+        {
+            input.Set(new NetworkInputData()); // 不送資料
+            return;
+        }
+
         var data = new NetworkInputData
         {
             direction = new Vector3(moveInput.x, 0, moveInput.y),
@@ -53,9 +85,9 @@ public class InputHandler : NetworkBehaviour
         };
 
         input.Set(data);
-        // 傳送完畢後重置狀態，確保只會傳送一次按鍵事件
         damageTriggered = false;
         respawnTrigger = false;
     }
+
 }
 

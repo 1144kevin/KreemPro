@@ -15850,13 +15850,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e6d88210b7485b468247b4690fc9567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputHandler: {fileID: 0}
   CharacterController: {fileID: 3900080139100811450}
   MaxHealth: 100
   HealthBar: {fileID: 330737521994838588}
   AttackHandler: {fileID: 0}
   AnimationHandler: {fileID: 1487303342129193676}
   Speed: 0
+  playerCamera: {fileID: 0}
+  respawnCanvas: {fileID: 0}
+  _kreemCollect: 0
+  kreemUIPrefab: {fileID: 315445804050702509, guid: da143402bf5a8b04384dac63c852c883,
+    type: 3}
 --- !u!114 &1305063026022428405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15974,6 +15978,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f4da05df36c97a4f9591d5ac60c98eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  respawnTrigger: 0
 --- !u!114 &1487303342129193676
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using Fusion;
 using UnityEngine;
+using TMPro;
 
 public class Player : NetworkBehaviour
 {
@@ -15,8 +16,12 @@ public class Player : NetworkBehaviour
   [SerializeField] private Camera playerCamera;
   [SerializeField] private GameObject respawnCanvas;
   [Networked] private Vector3 LastDeathPosition { get; set; }
+  [Networked] public int kreemCollect { get; set; } = 0;
   private PlayerRespawn playerRespawn;
   private bool lastMoving = false;
+
+  [SerializeField] private TMP_Text kreemText;
+
 
   private void Awake()
   {
@@ -34,12 +39,14 @@ public class Player : NetworkBehaviour
     {
       playerCamera.gameObject.SetActive(true);
       playerCamera.enabled = true;
+
     }
     else
     {
       playerCamera.gameObject.SetActive(false);
       playerCamera.enabled = false;
     }
+    CreateKreemUI();
 
     // 初始血量
     Health = MaxHealth;
@@ -48,6 +55,7 @@ public class Player : NetworkBehaviour
     if (Object.HasStateAuthority)
     {
       RpcUpdateHealth(Health);
+
     }
     else
     {
@@ -124,6 +132,7 @@ public class Player : NetworkBehaviour
       {
         playerRespawn.RpcRequestRespawn();
       }
+
     }
 
     // 本地玩家根據 Health 控制死亡 UI 的顯示
@@ -133,12 +142,22 @@ public class Player : NetworkBehaviour
       {
         if (respawnCanvas != null && !respawnCanvas.activeSelf)
           respawnCanvas.SetActive(true);
+
       }
       else
       {
         if (respawnCanvas != null && respawnCanvas.activeSelf)
           respawnCanvas.SetActive(false);
       }
+    }
+  }
+
+  private void LateUpdate()
+  {
+    // 不管是哪一端都跑，顯示頭上數字
+    if (kreemText != null)
+    {
+      kreemText.text = kreemCollect.ToString();
     }
   }
 
@@ -162,4 +181,52 @@ public class Player : NetworkBehaviour
     RpcUpdateHealth(Health);
     playerRespawn.RpcSetPlayerVisibility(true);
   }
+
+  // 給 Server 呼叫的加分邏輯
+  public void ServerAddKreem()
+  {
+    if (!Object.HasStateAuthority) return;
+
+    kreemCollect++;
+    Debug.Log($"[Server] 玩家 {Object.InputAuthority} 撿到 Kreem：{kreemCollect}");
+  }
+
+  private void CreateKreemUI()
+  {
+    var canvas = GetComponentInChildren<Canvas>(true);
+    if (canvas != null)
+    {
+      var tmps = canvas.GetComponentsInChildren<TMP_Text>(true);
+      foreach (var tmp in tmps)
+      {
+        if (tmp.name.Contains("Kreem"))
+        {
+          kreemText = tmp;
+          Debug.Log($"[{Object.InputAuthority}] 成功綁定 TMP_Text：{kreemText.name} 在物件 {name}");
+          break;
+        }
+      }
+
+      if (kreemText == null)
+        Debug.LogWarning($"[{Object.InputAuthority}] 找不到 KreemText 在物件 {name}");
+    }
+    else
+    {
+      Debug.LogWarning("找不到 Canvas");
+    }
+  }
+
+  // [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+  // public void RpcRequestRestart()
+  // {
+  //     Debug.Log($"▶️ Player {Object.InputAuthority} 呼叫 Restart");
+
+  //     if (GameFlowManager.Instance != null)
+  //     {
+  //         GameFlowManager.Instance.RegisterRestartVote(Object.InputAuthority);
+  //     }
+  // }
+
+
+
 }
