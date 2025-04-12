@@ -12,7 +12,7 @@ public class PlayerSpawner : NetworkBehaviour
 
         foreach (var playerData in gameManager.PlayerList.Values)
         {
-            var spawnPoint = new Vector3(0, 50, 0);
+            var spawnPoint = SpawnPosition.GetSpawnPosition(playerData.Object.InputAuthority);
             var characterPrefab = gameManager.CharacterPrefabs[playerData.SelectedCharacterIndex];
             Runner.Spawn(characterPrefab, spawnPoint, Quaternion.identity, playerData.Object.InputAuthority);
         }

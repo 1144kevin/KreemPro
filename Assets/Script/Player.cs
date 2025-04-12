@@ -9,36 +9,27 @@ public class Player : NetworkBehaviour
   [SerializeField] private AttackHandler AttackHandler;
   [SerializeField] private AnimationHandler AnimationHandler;
   [SerializeField] private float Speed = 500f;
-  // [Networked(OnChanged = nameof(HealthChanged))]
-  //  private int Health { get; set; }  
   [Networked] private int Health { get; set; }
-  private int lastHealth; // 用於檢測健康值是否變化
+  [Networked] private bool isDead { get; set; } = false;
   [Networked] private NetworkButtons previousButton { get; set; }
   [SerializeField] private Camera playerCamera;
+  [SerializeField] private GameObject respawnCanvas;
+  [Networked] private Vector3 LastDeathPosition { get; set; }
+  private PlayerRespawn playerRespawn;
+  private bool lastMoving = false;
 
-  // [SerializeField] private MeshRenderer[] Visuals;
-  // // [SerializeField] private Camera Camera;
-  // [Networked] private Angle Pitch { get; set; }
-  // [Networked] private Angle Yaw { get; set; }
   private void Awake()
   {
     CharacterController = GetComponent<NetworkCharacterController>();
+    playerRespawn = GetComponent<PlayerRespawn>();
+    if (playerRespawn == null)
+    {
+      Debug.LogError("PlayerRespawn component not found on player!");
+    }
   }
+
   public override void Spawned()
   {
-    // if (Object.HasInputAuthority)
-    // {
-    //   Camera.enabled = true;
-
-    //   foreach (var visual in Visuals)
-    //   {
-    //     visual.enabled = false;
-    //   }
-    // }
-    // else
-    // {
-    //   Camera.enabled = false;
-    // }
     if (Object.HasInputAuthority)
     {
       playerCamera.gameObject.SetActive(true);
@@ -50,66 +41,125 @@ public class Player : NetworkBehaviour
       playerCamera.enabled = false;
     }
 
+    // 初始血量
     Health = MaxHealth;
-    lastHealth = Health; // 初始化健康值記錄
-    UpdateHealth(); // 初始更新血條
 
+    // 只有 State Authority 呼叫 RpcUpdateHealth
+    if (Object.HasStateAuthority)
+    {
+      RpcUpdateHealth(Health);
+    }
+    else
+    {
+      // 非 State Authority 的本地端，直接更新 HealthBar
+      if (HealthBar != null)
+      {
+        HealthBar.SetHealth(Health);
+      }
+    }
+
+    // 本地 UI 先隱藏
+    if (respawnCanvas != null)
+      respawnCanvas.SetActive(false);
+  }
+
+  // 透過 RPC 同步更新所有客戶端的 HealthBar
+  [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+  public void RpcUpdateHealth(int currentHealth)
+  {
+    if (HealthBar != null)
+    {
+      HealthBar.SetHealth(currentHealth);
+    }
+  }
+
+  [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+  public void RpcUpdateAnimationState(Vector3 input)
+  {
+    AnimationHandler.PlayerAnimation(input);
   }
 
   public override void FixedUpdateNetwork()
   {
+    if (Object.HasStateAuthority && Health <= 0 && !isDead)
+    {
+      isDead = true;
+      LastDeathPosition = transform.position;
+      playerRespawn.RpcSetPlayerVisibility(false);
+      if (playerRespawn.KreemPrefab != null)
+      {
+        Runner.Spawn(playerRespawn.KreemPrefab, LastDeathPosition, Quaternion.identity, default(PlayerRef));
+      }
+    }
+
     if (GetInput(out NetworkInputData data))
     {
       var buttonPressed = data.button.GetPressed(previousButton);
       previousButton = data.button;
 
-      data.direction.Normalize();
-      CharacterController.Move(Speed * data.direction * Runner.DeltaTime);
-
-      AnimationHandler.PlayerAnimation(data.direction);
-
-      if (buttonPressed.IsSet(InputButton.ATTACK))
+      if (Health > 0)
       {
-        AttackHandler.Attack();
+        data.direction.Normalize();
+        CharacterController.Move(Speed * data.direction * Runner.DeltaTime);
+
+        bool currentMoving = data.direction.magnitude > 0.1f;
+
+        if (Object.HasStateAuthority && currentMoving != lastMoving)
+        {
+          lastMoving = currentMoving;
+          RpcUpdateAnimationState(currentMoving ? data.direction : Vector3.zero);
+        }
+        if (Object.HasInputAuthority)
+        {
+          AnimationHandler.PlayerAnimation(data.direction);
+        }
       }
 
+      if (data.damageTrigger && Health > 0)
+      {
+        TakeDamage(10);
+      }
+
+      if (Object.HasInputAuthority && Health <= 0 && data.respawnTrigger)
+      {
+        playerRespawn.RpcRequestRespawn();
+      }
     }
-    // 健康值變化檢測
-    if (Health != lastHealth)
+
+    // 本地玩家根據 Health 控制死亡 UI 的顯示
+    if (Object.HasInputAuthority)
     {
-      UpdateHealth();
-      lastHealth = Health; // 更新記錄的健康值
-    }
-    if (Health <= 0)
-    {
-      Dead();
-    }
-    if (Input.GetKey(KeyCode.Space))
-    {
-      TakeDamage(10);
+      if (Health <= 0)
+      {
+        if (respawnCanvas != null && !respawnCanvas.activeSelf)
+          respawnCanvas.SetActive(true);
+      }
+      else
+      {
+        if (respawnCanvas != null && respawnCanvas.activeSelf)
+          respawnCanvas.SetActive(false);
+      }
     }
   }
 
   public void TakeDamage(int damage)
   {
+    if (!Object.HasStateAuthority) return;
+
     Health -= damage;
-    Health = Mathf.Clamp(Health, 0, MaxHealth); // 確保健康值範圍
+    Health = Mathf.Clamp(Health, 0, MaxHealth);
     Debug.Log("hit");
+
+    RpcUpdateHealth(Health);
   }
 
-  private void Dead()
+  // 當重生完成後，重置 Health 與死亡狀態，並顯示角色
+  public void SetHealthToMax()
   {
+    if (!Object.HasStateAuthority) return;
     Health = MaxHealth;
-    CharacterController.transform.position = new Vector3(0, 0, 0);
-  }
-
-  // private static void HealthChanged(Changed<Player> changed)
-  // {
-  //   changed.Behaviour.UpdateHealth();
-  // }
-
-  private void UpdateHealth()
-  {
-    HealthBar.SetHealth(Health);
+    isDead = false;
+    RpcUpdateHealth(Health);
+    playerRespawn.RpcSetPlayerVisibility(true);
   }
 }

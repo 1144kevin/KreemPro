@@ -58,8 +58,7 @@ public class BasicSpawner : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (runner.IsServer)
         {
-            // Create a unique position for the player
-            Vector3 spawnPosition = new Vector3((player.RawEncoded % runner.Config.Simulation.PlayerCount) * 3, 100, 0);//生成位置待調
+            Vector3 spawnPosition = SpawnPosition.GetSpawnPosition(player);
             // Vector3 spawnPosition = new Vector3(1947, 217, -1718);
             NetworkObject networkPlayerObject = runner.Spawn(_playerPrefab, spawnPosition, Quaternion.identity, player);
             // Keep track of the player avatars for easy access
