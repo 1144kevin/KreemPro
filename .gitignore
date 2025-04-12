@@ -1,3 +1,4 @@
+# Unity 預設不需要版本控制的資料夾
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
@@ -6,6 +7,8 @@
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
 .vs/
+
+# Visual Studio / Rider 檔案
 *.csproj
 *.unityproj
 *.sln
@@ -17,10 +20,28 @@
 *.booproj
 *.svd
 *.pdb
+*.pdb.meta
 *.mdb
 *.opendb
 *.VC.db
-*.pdb
-*.pdb.meta
 
+# 自定義排除
 .fake
+
+# 避免 Unity Build 時產生的大型資源檔案進 Git
+*.resS
+*.resource
+*.assets
+*.bundle
+*.apk
+*.aab
+*.exe
+*.dll
+*.json
+globalgamemanagers*
+level*
+resources.assets*
+
+# macOS / Windows 系統檔案
+.DS_Store
+Thumbs.db
