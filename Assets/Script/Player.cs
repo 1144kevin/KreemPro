@@ -216,21 +216,16 @@ public class Player : NetworkBehaviour
       }
   }
 
-  [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-  public void RpcRequestRestart()
-  {
-      Debug.Log($"▶️ Player {Object.InputAuthority} 呼叫 Restart");
+  // [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+  // public void RpcRequestRestart()
+  // {
+  //     Debug.Log($"▶️ Player {Object.InputAuthority} 呼叫 Restart");
 
-      if (GameFlowManager.Instance != null)
-      {
-          GameFlowManager.Instance.RegisterRestartVote(Object.InputAuthority);
-      }
-  }
-
-  public void RequestRestart()
-  {
-      RpcRequestRestart();
-  }
+  //     if (GameFlowManager.Instance != null)
+  //     {
+  //         GameFlowManager.Instance.RegisterRestartVote(Object.InputAuthority);
+  //     }
+  // }
 
 
     

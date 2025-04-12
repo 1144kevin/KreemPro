@@ -2,71 +2,31 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
-using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 public class GameFlowManager : NetworkBehaviour
 {
-    public static GameFlowManager Instance { get; private set; }
-
     [SerializeField] private float matchDuration = 180f;
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private GameObject winnerUI;
     [SerializeField] private TMP_Text winnerText;
-    [SerializeField] private Button restartButton;
-    [SerializeField] private Button returnButton;
     [SerializeField] private string singleWinnerFormat = "Player {0} wins Kreem {1}";
     [SerializeField] private string tieWinnerFormat = "Players {0} tie with Kreem {1}";
+    [SerializeField] private float waitBeforeRanking = 5f;
 
-    private Dictionary<PlayerRef, bool> restartVotes = new();
     [Networked] private float remainingTime { get; set; }
     private bool gameEnded = false;
-
-    private void Awake()
-    {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(gameObject);
-    }
 
     public override void Spawned()
     {
         if (Object.HasStateAuthority)
         {
             remainingTime = matchDuration;
-            foreach (var player in Runner.ActivePlayers)
-            {
-                restartVotes[player] = false;
-            }
+    
         }
-
-        if (!Object.HasStateAuthority)
-        {
-            returnButton.gameObject.SetActive(false);
-        }
-
-        restartButton.onClick.AddListener(() =>
-        {
-            var localPlayer = FindObjectsOfType<Player>().FirstOrDefault(p => p.Object.HasInputAuthority);
-            if (localPlayer != null)
-            {
-                localPlayer.RequestRestart();
-                restartButton.interactable = false;
-            }
-        });
-
-        returnButton.onClick.AddListener(() =>
-        {
-            if (Object.HasStateAuthority)
-            {
-                Runner.Shutdown();
-                SceneManager.LoadScene("Entry"); // 你回選角頁面的場景名
-            }
-        });
     }
-
     public override void FixedUpdateNetwork()
     {
         if (!Object.HasStateAuthority || gameEnded) return;
@@ -98,7 +58,8 @@ public class GameFlowManager : NetworkBehaviour
     {
         int maxKreem = -1;
         List<(Player player, PlayerRef playerRef)> topPlayers = new();
-
+        // GameResultData.KreemCounts.Clear(); // 🔁 準備儲存分數給下一場景用
+        GameResultData.KreemCounts.Clear();
         foreach (var playerRef in Runner.ActivePlayers)
         {
             var obj = Runner.GetPlayerObject(playerRef);
@@ -106,6 +67,8 @@ public class GameFlowManager : NetworkBehaviour
 
             Player p = obj.GetComponentInChildren<Player>();
             if (p == null) continue;
+
+            GameResultData.KreemCounts[playerRef] = p.kreemCollect; // ✅ 儲存分數
 
             if (p.kreemCollect > maxKreem)
             {
@@ -122,6 +85,8 @@ public class GameFlowManager : NetworkBehaviour
         if (topPlayers.Count == 0) return;
 
         RpcShowWinners(topPlayers.Select(p => p.playerRef).ToArray(), maxKreem);
+        RpcDisableAllPlayerInput();
+        StartCoroutine(LoadRankingSceneAfterDelay());
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -140,25 +105,26 @@ public class GameFlowManager : NetworkBehaviour
             string formatted = string.Format(tieWinnerFormat, names, score);
             winnerText.text = formatted;
         }
+    }
 
-        restartButton.gameObject.SetActive(true);
-        restartButton.interactable = true;
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RpcDisableAllPlayerInput()
+    {
+        foreach (var handler in FindObjectsOfType<InputHandler>())
+        {
+            handler.DisableInput();
+        }
+
+        Debug.Log("🛑 所有玩家輸入已禁用！");
+    }
+
+    private IEnumerator LoadRankingSceneAfterDelay()
+    {
+        yield return new WaitForSeconds(waitBeforeRanking);
 
         if (Object.HasStateAuthority)
         {
-            returnButton.gameObject.SetActive(true);
-        }
-    }
-
-    public void RegisterRestartVote(PlayerRef player)
-    {
-        if (!restartVotes.ContainsKey(player)) return;
-
-        restartVotes[player] = true;
-
-        if (restartVotes.Values.All(v => v))
-        {
-            Runner.LoadScene(SceneManager.GetActiveScene().name);
+            Runner.LoadScene("RankingScene"); // ✅ 實際 RankingScene 名稱
         }
     }
 }
