@@ -7257,6 +7257,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ee897ff8557f02e468855ea695afeb09,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9277,6 +9282,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Kreem
       objectReference: {fileID: 0}
+    - target: {fileID: 389400009104322736, guid: 41508aa1a0f88fc4488ee2b1a0e33296,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1021399651754060298, guid: 41508aa1a0f88fc4488ee2b1a0e33296,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11162,7 +11172,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1369736025
 Transform:
   m_ObjectHideFlags: 0
@@ -14069,6 +14079,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: 'KTower '
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a31fb8f1c7a2de3499f56de7c8dc8a68,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4411724735058625330, guid: a31fb8f1c7a2de3499f56de7c8dc8a68,
         type: 3}
       propertyPath: m_LocalPosition.y
@@ -16253,8 +16268,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3, y: 241.9}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 0, y: 450}
+  m_SizeDelta: {x: 400, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2081000966
 MonoBehaviour:
@@ -16303,8 +16318,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 80
+  m_fontSizeBase: 80
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

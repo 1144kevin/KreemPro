@@ -8,26 +8,9 @@ public class InputHandler : NetworkBehaviour
     private bool damageTriggered;
     public bool respawnTrigger;
 
-    public  bool inputEnabled = true; // ✅ 改為非靜態（每位玩家自己有自己的值）
+    public bool inputEnabled = true; // ✅ 改為非靜態（每位玩家自己有自己的值）
 
-    // private void Update()
-    // {
-    //     if (!Object.HasInputAuthority)
-    //         return;
-
-    //     if (!inputEnabled)
-    //         return;
-
-    //     if (Input.GetKeyDown(KeyCode.Space))
-    //     {
-    //         damageTriggered = true;
-    //     }
-
-    //     if (Input.GetKeyDown(KeyCode.K))
-    //     {
-    //         respawnTrigger = true;
-    //     }
-    // }
+    private bool attackInput;
 
     public void DisableInput()
     {
@@ -52,7 +35,7 @@ public class InputHandler : NetworkBehaviour
         moveInput = context.ReadValue<Vector2>();
     }
 
-    public void OnAttack(CallbackContext context)
+    public void OnDamage(CallbackContext context)
     {
         if (context.performed)
         {
@@ -69,6 +52,13 @@ public class InputHandler : NetworkBehaviour
         }
     }
 
+    public void OnAttack(CallbackContext context)
+    {
+        if (context.performed)
+        {
+            attackInput = true;
+        }
+    }
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
         if (!inputEnabled)
@@ -83,6 +73,12 @@ public class InputHandler : NetworkBehaviour
             damageTrigger = damageTriggered,
             respawnTrigger = respawnTrigger
         };
+
+        if (attackInput)
+        {
+            data.buttons.Set(InputButton.ATTACK, attackInput);
+            attackInput = false;
+        }
 
         input.Set(data);
         damageTriggered = false;

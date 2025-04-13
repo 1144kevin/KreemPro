@@ -446,21 +446,21 @@ MonoBehaviour:
     m_ActionId: 82b5ebfb-78df-420a-b247-1eedc36b4e9e
     m_ActionName: 'PlayerControls/Respawn[/Keyboard/k]'
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f537ebc8-7940-48b0-8011-927d1bd7ec02
-    m_ActionName: 'PlayerControls/ResapwnDirectionUp[/Keyboard/upArrow,/DualShock4GamepadHID/dpad/up]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: e9535db8-ec28-4d71-9c40-687138cb722c
-    m_ActionName: 'PlayerControls/ResapwnDirectionDown[/Keyboard/downArrow,/DualShock4GamepadHID/dpad/down]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6d41bce6-6b11-4127-a0d5-4c00a1c2bbf4
-    m_ActionName: 'PlayerControls/ResapwnDirectionRight[/Keyboard/rightArrow,/DualShock4GamepadHID/dpad/right]'
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: ec05211e-56da-49f0-a1d8-11217fa613d6
-    m_ActionName: 'PlayerControls/ResapwnDirectionLeft[/Keyboard/leftArrow,/DualShock4GamepadHID/dpad/left]'
+      m_Calls:
+      - m_Target: {fileID: 1494871329877556233}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: OnDamage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 38a858b0-3285-4e3b-a01b-d4b6e7f1831f
+    m_ActionName: 'PlayerControls/Damage[/Keyboard/space,/DualShock4GamepadHID/buttonWest]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerControls

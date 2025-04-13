@@ -16,10 +16,13 @@ public class MenuManager : MonoBehaviour
     }
     [SerializeField]
     private GameObject menuPanel;
+
     [SerializeField]
     private GameObject roomPanel;
+
     [SerializeField]
     private InputField playerNameInputField;
+
     [SerializeField]
     private InputField roomNameInputField;
     [SerializeField]
@@ -29,10 +32,12 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField]
     private Button createBtn;
+
     [SerializeField]
     private Button joinBtn;
     [SerializeField]
     private Button startBtn;
+
     [SerializeField]
     private GameObject playerListContent;
     [SerializeField] private TMP_Text characterName;

@@ -102,8 +102,7 @@ public class Player : NetworkBehaviour
 
     if (GetInput(out NetworkInputData data))
     {
-      var buttonPressed = data.button.GetPressed(previousButton);
-      previousButton = data.button;
+      previousButton = data.buttons;
 
       if (Health > 0)
       {
@@ -121,6 +120,11 @@ public class Player : NetworkBehaviour
         {
           AnimationHandler.PlayerAnimation(data.direction);
         }
+      }
+
+      if (data.buttons.IsSet(InputButton.ATTACK))
+      {
+        AttackHandler.Attack();
       }
 
       if (data.damageTrigger && Health > 0)
