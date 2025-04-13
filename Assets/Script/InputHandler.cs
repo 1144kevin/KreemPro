@@ -10,24 +10,24 @@ public class InputHandler : NetworkBehaviour
 
     public  bool inputEnabled = true; // ✅ 改為非靜態（每位玩家自己有自己的值）
 
-    private void Update()
-    {
-        if (!Object.HasInputAuthority)
-            return;
+    // private void Update()
+    // {
+    //     if (!Object.HasInputAuthority)
+    //         return;
 
-        if (!inputEnabled)
-            return;
+    //     if (!inputEnabled)
+    //         return;
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            damageTriggered = true;
-        }
+    //     if (Input.GetKeyDown(KeyCode.Space))
+    //     {
+    //         damageTriggered = true;
+    //     }
 
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            respawnTrigger = true;
-        }
-    }
+    //     if (Input.GetKeyDown(KeyCode.K))
+    //     {
+    //         respawnTrigger = true;
+    //     }
+    // }
 
     public void DisableInput()
     {
