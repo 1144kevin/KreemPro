@@ -5,6 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/main menu.unity
+    guid: 2e33f66bd31b8604883f6bc04458b1bf
   - enabled: 1
     path: Assets/Scenes/Entry.unity
     guid: ad959e105c090cc4da888841c5e04b2d
@@ -14,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/FinalScene.unity
     guid: 890165fea2417a44f95bcbbd58f6b26e
+  - enabled: 1
+    path: Assets/Scenes/RankingScene.unity
+    guid: 30bfd72ab1aa8a84184bfc401e683e25
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

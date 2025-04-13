@@ -4,7 +4,18 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class InputHandler : NetworkBehaviour
 {
-    private Vector2 moveInput; // 儲存移動輸入
+    private Vector2 moveInput;
+    private bool damageTriggered;
+    public bool respawnTrigger;
+
+    public bool inputEnabled = true; // ✅ 改為非靜態（每位玩家自己有自己的值）
+
+    private bool attackInput;
+
+    public void DisableInput()
+    {
+        inputEnabled = false;
+    }
 
     public override void Spawned()
     {
@@ -21,16 +32,58 @@ public class InputHandler : NetworkBehaviour
     }
     public void OnMove(CallbackContext context)
     {
-          moveInput = context.ReadValue<Vector2>();
+        moveInput = context.ReadValue<Vector2>();
+    }
+
+    public void OnDamage(CallbackContext context)
+    {
+        if (context.performed)
+        {
+            damageTriggered = true;
+        }
+    }
+
+    // Respawn Action 的回呼
+    public void OnRespawn(CallbackContext context)
+    {
+        if (context.performed)
+        {
+            respawnTrigger = true;
+        }
+    }
+
+    public void OnAttack(CallbackContext context)
+    {
+        if (context.performed)
+        {
+            attackInput = true;
+        }
     }
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
+        if (!inputEnabled)
+        {
+            input.Set(new NetworkInputData()); // 不送資料
+            return;
+        }
+
         var data = new NetworkInputData
         {
-            direction = new Vector3(moveInput.x, 0, moveInput.y)
+            direction = new Vector3(moveInput.x, 0, moveInput.y),
+            damageTrigger = damageTriggered,
+            respawnTrigger = respawnTrigger
         };
 
+        if (attackInput)
+        {
+            data.buttons.Set(InputButton.ATTACK, attackInput);
+            attackInput = false;
+        }
+
         input.Set(data);
+        damageTriggered = false;
+        respawnTrigger = false;
     }
+
 }
 

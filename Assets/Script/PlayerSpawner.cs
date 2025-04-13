@@ -5,6 +5,8 @@ public class PlayerSpawner : NetworkBehaviour
 {
     public override void Spawned()
     {
+        Debug.Log($"✅ PlayerSpawner Spawned on {Object.InputAuthority} / StateAuthority: {Object.HasStateAuthority}");
+
         if (!Object.HasStateAuthority)
             return;
 
@@ -12,9 +14,10 @@ public class PlayerSpawner : NetworkBehaviour
 
         foreach (var playerData in gameManager.PlayerList.Values)
         {
-            var spawnPoint = new Vector3(0, 50, 0);//重生點需要修改
+            var spawnPoint = SpawnPosition.GetSpawnPosition(playerData.Object.InputAuthority);
             var characterPrefab = gameManager.CharacterPrefabs[playerData.SelectedCharacterIndex];
-            Runner.Spawn(characterPrefab, spawnPoint, Quaternion.identity, playerData.Object.InputAuthority);
+            var playerObj = Runner.Spawn(characterPrefab, spawnPoint, Quaternion.identity, playerData.Object.InputAuthority);
+            Runner.SetPlayerObject(playerData.Object.InputAuthority, playerObj); // ⬅️ 加上這行
         }
     }
 }
