@@ -1,22 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class LoadingBar : MonoBehaviour
 {
-    [SerializeField] private Image fillImage; // 指向填滿的那個Image
-    [SerializeField] private float loadingSpeed = 0.5f; // 控制進度條加速的速度
+    [SerializeField] private Image fillImage;
+    public System.Action OnLoadingComplete;
+    
 
-    private float currentProgress = 0f;
-
-    void Update()
+    public void StartLoading()
     {
-        // 模擬從0到1的填滿
-        if (currentProgress < 1f)
+        StartCoroutine(FakeProgress());
+    }
+
+    IEnumerator FakeProgress()
+    {
+        float progress = 0f;
+        while (progress < 1f)
         {
-            currentProgress += loadingSpeed * Time.deltaTime;
-            fillImage.fillAmount = currentProgress;
+            progress += Time.deltaTime * 0.5f;
+            fillImage.fillAmount = progress;
+            yield return null;
         }
+
+        Debug.Log("✅ 模擬 Loading 完成，通知 LoadingSyncManager");
+        OnLoadingComplete?.Invoke();
+    }
+
+    // 這裡不再處理場景跳轉
+    public void ActivateScene()
+    {
+        Debug.Log("🟩 UI 收到廣播，Loading 結束");
+        // 不執行 LoadScene，交由 LoadingSyncManager 處理
     }
 }

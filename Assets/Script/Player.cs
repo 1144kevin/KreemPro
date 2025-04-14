@@ -23,7 +23,8 @@ public class Player : NetworkBehaviour
   [SerializeField] private TMP_Text kreemText;
 
 
-  private void Awake()
+
+  public override void Spawned()
   {
     CharacterController = GetComponent<NetworkCharacterController>();
     playerRespawn = GetComponent<PlayerRespawn>();
@@ -31,10 +32,7 @@ public class Player : NetworkBehaviour
     {
       Debug.LogError("PlayerRespawn component not found on player!");
     }
-  }
-
-  public override void Spawned()
-  {
+    
     if (Object.HasInputAuthority)
     {
       playerCamera.gameObject.SetActive(true);
@@ -215,18 +213,6 @@ public class Player : NetworkBehaviour
       Debug.LogWarning("找不到 Canvas");
     }
   }
-
-  // [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-  // public void RpcRequestRestart()
-  // {
-  //     Debug.Log($"▶️ Player {Object.InputAuthority} 呼叫 Restart");
-
-  //     if (GameFlowManager.Instance != null)
-  //     {
-  //         GameFlowManager.Instance.RegisterRestartVote(Object.InputAuthority);
-  //     }
-  // }
-
 
 
 }
