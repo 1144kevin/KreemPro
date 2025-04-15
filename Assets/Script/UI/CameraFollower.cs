@@ -5,7 +5,7 @@ public class CameraFollower : MonoBehaviour
 {
     [Header("跟隨目標 (自動設為父物件)")]
     [SerializeField] private Transform target;
-    [SerializeField] private Vector3 offset = new Vector3(0, -800, 500);
+    public Vector3 offset = new Vector3(0, -800, 500);
     [SerializeField] private float smoothTime = 0.2f;
 
     [Header("邊界限制 (自動偵測)")]
@@ -17,7 +17,6 @@ public class CameraFollower : MonoBehaviour
     [SerializeField] private float zThreshold = 200f;
 
     private Vector3 currentVelocity = Vector3.zero;
-    private float factorX = 1f, factorZ = 1f;
 
     private void Start()
     {
@@ -93,16 +92,6 @@ private void LateUpdate()
     transform.position = Vector3.SmoothDamp(transform.position, adjustedTarget, ref currentVelocity, smoothTime);
 }
 
-
-    private float CalculateFollowFactor(float pos, float min, float max, float threshold)
-    {
-        if (pos < min + threshold)
-            return Mathf.Clamp01((pos - min) / threshold);
-        else if (pos > max - threshold)
-            return Mathf.Clamp01((max - pos) / threshold);
-        else
-            return 1f;
-    }
 
     public void SetTarget(Transform newTarget)
     {

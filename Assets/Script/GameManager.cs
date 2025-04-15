@@ -18,7 +18,6 @@ public class GameManager : MonoBehaviour
     private NetworkEvents networkEvents;
     public string PlayerName { get; set; }
     public int SelectedCharacterIndex { get; set; }
-    [SerializeField] private NetworkObject loadingManager;
 
     // 新增角色預製體陣列
     public GameObject[] CharacterPrefabs;
@@ -40,7 +39,6 @@ public class GameManager : MonoBehaviour
             networkEvents.PlayerLeft.AddListener(OnPlayerLeft);
             DontDestroyOnLoad(gameObject);
         // ✅ 監聽場景切換事件
-        SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
@@ -151,33 +149,9 @@ public class GameManager : MonoBehaviour
 public void StartGame()
 {
     networkRunner.LoadScene("Entry");
-    StartCoroutine(ResyncLoadingManager());
+    Debug.Log("📦 Host 已執行 LoadScene('Entry')");
 }
 
-
-private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-{
-    if (scene.name == "Entry")
-    {
-        StartCoroutine(ResyncLoadingManager());
-    }
-}
-
-private IEnumerator ResyncLoadingManager()
-{
-    yield return new WaitForSeconds(0.3f); // 等待場景穩定載入
-
-    var sync = FindObjectOfType<LoadingSyncManager>();
-    if (sync != null)
-    {
-        loadingManager = sync.GetComponent<NetworkObject>(); // ✅ 修正
-        Debug.Log("🔁 已重新綁定 loadingManager = " + loadingManager);
-    }
-    else
-    {
-        Debug.LogWarning("⚠️ 找不到 LoadingManager！");
-    }
-}
 
 
 
