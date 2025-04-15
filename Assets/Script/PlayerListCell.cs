@@ -6,24 +6,20 @@ public class PlayerListCell : MonoBehaviour
     [SerializeField]
     private Text playerNameTxt;
 
-    [SerializeField]
-    private Image playerImage;
+    [SerializeField] private GameObject[] avatarImage;
 
     public void SetPlayerName(string playerName)
     {
         playerNameTxt.text = playerName;
     }
-    public void SetPlayerImage(Sprite characterSprites)
-    {
-      if (characterSprites != null)
+
+    public void SetPlayerAvatar(int characterIndex)
+    {
+        for (int i = 0; i < avatarImage.Length; i++)
         {
-            playerImage.sprite = characterSprites;
-            playerImage.gameObject.SetActive(true);
+            avatarImage[i].SetActive(false);
         }
-        else
-        {
-            playerImage.gameObject.SetActive(false);
-        }
-    }
+        avatarImage[characterIndex].SetActive(true);
+    }
 
 }
