@@ -7,8 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
-    [SerializeField]
-    private NetworkRunner networkRunner;
+    public NetworkRunner networkRunner;
 
     [SerializeField]
     private NetworkEvents networkEvents;
@@ -24,6 +23,12 @@ public class GameManager : MonoBehaviour
 
     public Dictionary<PlayerRef, PlayerNetworkData> PlayerList => playerList;
     private Dictionary<PlayerRef, PlayerNetworkData> playerList = new Dictionary<PlayerRef, PlayerNetworkData>();
+
+    public struct PlayerDisplayInfo
+    {
+        public string Name;
+        public int CharacterIndex;
+    }
 
     private void Awake()//單例模式
     {
@@ -133,14 +138,25 @@ public class GameManager : MonoBehaviour
 
     public void UpdatePlayerList()
     {
-        var playerNames = new List<string>();
-        foreach (var playerNetworkData in playerList.Values)
+        var playerInfos = new List<PlayerDisplayInfo>();
+
+        foreach (var kvp in playerList)
         {
-            playerNames.Add(playerNetworkData.PlayerName);
+            var playerRef = kvp.Key;
+            var playerData = kvp.Value;
+            int characterIndex = playerData.SelectedCharacterIndex;
+            int playerId = playerRef.PlayerId;
+
+            string displayName = $"{playerData.PlayerName} (Player {playerId})";
+            playerInfos.Add(new PlayerDisplayInfo
+            {
+                Name = displayName,
+                CharacterIndex = characterIndex
+            });
         }
 
         var menuManager = FindObjectOfType<MenuManager>();
-        menuManager.UpdatePlayerList(playerNames);
+        menuManager.UpdatePlayerList(playerInfos);
     }
     public void StartGame()
     {
