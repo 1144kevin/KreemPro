@@ -160,6 +160,6 @@ public class GameManager : MonoBehaviour
     }
     public void StartGame()
     {
-        networkRunner.LoadScene(SceneRef.FromIndex(2));//場景管理器待修
+        networkRunner.LoadScene(SceneRef.FromIndex(3));//場景管理器待修
     }
 }
