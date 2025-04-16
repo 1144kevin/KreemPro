@@ -19,4 +19,4 @@ public class LoadingBar : MonoBehaviour
             fillImage.fillAmount = currentProgress;
         }
     }
-}
+} 
