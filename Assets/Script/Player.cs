@@ -16,6 +16,7 @@ public class Player : NetworkBehaviour
   [SerializeField] private Camera playerCamera;
   [SerializeField] private GameObject respawnCanvas;
   [Networked] private Vector3 LastDeathPosition { get; set; }
+  private bool hasGameEnded = false;
   [Networked] public int kreemCollect { get; set; } = 0;
   private PlayerRespawn playerRespawn;
   private bool lastMoving = false;
@@ -81,6 +82,17 @@ public class Player : NetworkBehaviour
     }
   }
 
+  [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+  public void RpcSetGameEnded()
+  {
+    hasGameEnded = true;  // 直接更新本地旗標，不使用 Networked localGameEnded
+    if (respawnCanvas != null && respawnCanvas.activeSelf)
+    {
+      respawnCanvas.SetActive(false);
+    }
+    Debug.Log($"[RPC] 玩家 {Object.InputAuthority} 遊戲結束，已關閉 respawnCanvas");
+  }
+
   [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
   public void RpcUpdateAnimationState(Vector3 input)
   {
@@ -89,6 +101,17 @@ public class Player : NetworkBehaviour
 
   public override void FixedUpdateNetwork()
   {
+    if (Object.HasInputAuthority)
+    {
+        // 如果已經收到遊戲結束的 RPC，直接關閉 canvas 並提前返回
+        if (hasGameEnded)
+        {
+            if (respawnCanvas != null && respawnCanvas.activeSelf)
+                respawnCanvas.SetActive(false);
+            return;
+        }
+    }
+
     if (Object.HasStateAuthority && Health <= 0 && !isDead)
     {
       isDead = true;
@@ -139,14 +162,12 @@ public class Player : NetworkBehaviour
 
     }
 
-    // 本地玩家根據 Health 控制死亡 UI 的顯示
     if (Object.HasInputAuthority)
     {
       if (Health <= 0)
       {
         if (respawnCanvas != null && !respawnCanvas.activeSelf)
           respawnCanvas.SetActive(true);
-
       }
       else
       {
