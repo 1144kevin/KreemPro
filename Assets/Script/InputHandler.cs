@@ -2,14 +2,14 @@ using UnityEngine;
 using Fusion;
 using static UnityEngine.InputSystem.InputAction;
 
+
 public class InputHandler : NetworkBehaviour
 {
     private Vector2 moveInput;
     private bool damageTriggered;
     public bool respawnTrigger;
-
     public  bool inputEnabled = true; // ✅ 改為非靜態（每位玩家自己有自己的值）
-
+    
     private void Update()
     {
         if (!Object.HasInputAuthority)
@@ -69,25 +69,35 @@ public class InputHandler : NetworkBehaviour
         }
     }
 
-    public void OnInput(NetworkRunner runner, NetworkInput input)
+public void OnInput(NetworkRunner runner, NetworkInput input)
+{
+    if (!inputEnabled)
     {
-        if (!inputEnabled)
-        {
-            input.Set(new NetworkInputData()); // 不送資料
-            return;
-        }
-
-        var data = new NetworkInputData
-        {
-            direction = new Vector3(moveInput.x, 0, moveInput.y),
-            damageTrigger = damageTriggered,
-            respawnTrigger = respawnTrigger
-        };
-
-        input.Set(data);
-        damageTriggered = false;
-        respawnTrigger = false;
+        input.Set(new NetworkInputData());
+        return;
     }
+
+    var buttons = new NetworkButtons();
+
+    if (Input.GetKey(KeyCode.Space))
+        buttons.Set((int)InputButton.ATTACK, true);
+
+
+
+    var data = new NetworkInputData
+    {
+        direction = new Vector3(moveInput.x, 0, moveInput.y),
+        damageTrigger = damageTriggered,
+        respawnTrigger = respawnTrigger,
+        button = buttons
+    };
+
+    input.Set(data);
+
+    // Reset one-time triggers
+    damageTriggered = false;
+    respawnTrigger = false;
+}
 
 }
 

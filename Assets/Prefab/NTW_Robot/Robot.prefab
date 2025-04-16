@@ -115062,7 +115062,6 @@ GameObject:
   - component: {fileID: -7081059584481997882}
   - component: {fileID: -2069260492089648809}
   - component: {fileID: -8482038325312668204}
-  - component: {fileID: 1246150234139697192}
   - component: {fileID: -5281226162973150396}
   - component: {fileID: 6867493830046641858}
   - component: {fileID: -8056685190529804309}
@@ -115154,6 +115153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnTrigger: 0
+  inputEnabled: 1
 --- !u!114 &-7081059584481997882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115173,7 +115173,6 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: -5020048008856334519}
   - {fileID: -8482038325312668204}
-  - {fileID: 1246150234139697192}
   - {fileID: 6867493830046641858}
   - {fileID: -8272489294311847019}
   ForceRemoteRenderTimeframe: 0
@@ -115222,29 +115221,6 @@ MonoBehaviour:
   braking: 1000
   maxSpeed: 300
   rotationSpeed: 15
---- !u!114 &1246150234139697192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8578148826100666246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e6d88210b7485b468247b4690fc9567, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CharacterController: {fileID: -8482038325312668204}
-  MaxHealth: 100
-  HealthBar: {fileID: 0}
-  AttackHandler: {fileID: 0}
-  AnimationHandler: {fileID: -8056685190529804309}
-  Speed: 50
-  playerCamera: {fileID: 0}
-  respawnCanvas: {fileID: 0}
-  _kreemCollect: 0
-  kreemUIPrefab: {fileID: 315445804050702509, guid: da143402bf5a8b04384dac63c852c883,
-    type: 3}
 --- !u!114 &-5281226162973150396
 MonoBehaviour:
   m_ObjectHideFlags: 0
