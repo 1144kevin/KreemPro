@@ -22,9 +22,6 @@ public class Player : NetworkBehaviour
   private PlayerRespawn playerRespawn;
   private bool lastMoving = false;
   [SerializeField] private float startGameTime = 2.0f;
-
-
-
   [SerializeField] private TMP_Text kreemText;
 
 
@@ -55,6 +52,12 @@ public class Player : NetworkBehaviour
         playerCamera.enabled = false;
         playerCamera.gameObject.SetActive(false);
     }
+}
+
+[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+public void RpcPlayAttackAnimation(bool isRunning)
+{
+    AnimationHandler.TriggerAttack(isRunning);
 }
 
  
@@ -91,6 +94,15 @@ public class Player : NetworkBehaviour
     {
       var buttonPressed = data.button.GetPressed(previousButton);
       previousButton = data.button;
+
+      // 播放攻擊動畫（只針對本地玩家）
+    if (Object.HasStateAuthority && buttonPressed.IsSet((int)InputButton.ATTACK) && Health > 0)
+    {
+        bool isRunning = data.direction.magnitude > 0.1f;
+        RpcPlayAttackAnimation(isRunning);
+    }
+
+
 
       if (Health > 0)
       {
@@ -200,6 +212,8 @@ public class Player : NetworkBehaviour
       Debug.LogWarning("找不到 Canvas");
     }
   }
+  
+
   private IEnumerator EnableCameraAfterTransformReady()
 {
     // 等待 transform 初始化完成（避免為 Vector3.zero）
@@ -227,6 +241,7 @@ public class Player : NetworkBehaviour
     }
 
 }
+
 
     
 

@@ -180,10 +180,35 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2273629365093673320, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2545473470673648115, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2831162092939967893, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4052228259732168991, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5176529954715088123, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5504331414521270787, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7211767173744176321, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
@@ -270,8 +295,12 @@ PrefabInstance:
       propertyPath: m_MaxValue
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 9213813671382535251, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 1246150234139697192, guid: 5c85c8c3d61f73340994e1ec01d3451f, type: 3}
     - {fileID: 7771910355581514208, guid: 5c85c8c3d61f73340994e1ec01d3451f, type: 3}
     m_RemovedGameObjects:
     - {fileID: 1171536293941572767, guid: 5c85c8c3d61f73340994e1ec01d3451f, type: 3}
@@ -291,7 +320,7 @@ PrefabInstance:
       addedObject: {fileID: 2924631913886249589}
     - targetCorrespondingSourceObject: {fileID: 8578148826100666246, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
-      insertIndex: -1
+      insertIndex: 12
       addedObject: {fileID: 5332132805555755153}
   m_SourcePrefab: {fileID: 100100000, guid: 5c85c8c3d61f73340994e1ec01d3451f, type: 3}
 --- !u!114 &35747137518499443 stripped
@@ -493,6 +522,7 @@ MonoBehaviour:
   playerCamera: {fileID: 422290161773047575}
   respawnCanvas: {fileID: 7302330609558429805}
   _kreemCollect: 0
+  startGameTime: 2
   kreemText: {fileID: 0}
 --- !u!4 &8384365897964113241 stripped
 Transform:

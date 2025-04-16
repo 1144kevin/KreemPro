@@ -5,13 +5,22 @@ using UnityEngine;
 public class AnimationHandler : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-    private bool attackInput = false;
-    private bool isAttacking = false;
+    
+    //private bool attackInput = false;
+   // private bool isAttacking = false;
 
     public void PlayerAnimation(Vector3 input)
     {
         animator.SetBool("isMoving", input.magnitude > 0.1f);
     }
+    public void TriggerAttack(bool isRunning)
+    {
+        if (isRunning)
+            animator.SetTrigger("isRunAttack");
+        else
+            animator.SetTrigger("isAttack");
+    }
+
     
     // public void PlayerAnimation(Vector3 input)
     // {
