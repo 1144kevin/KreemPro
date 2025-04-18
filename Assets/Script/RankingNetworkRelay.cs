@@ -16,6 +16,12 @@ public class RankingNetworkRelay : NetworkBehaviour
         }
 
         Debug.Log("✅ Client 收到所有玩家分數");
-        FindObjectOfType<RankingManager>().ShowRankingResults(); // 呼叫 UI 顯示
+
+        var mgr = FindObjectOfType<RankingManager>();
+        if (mgr != null)
+        {
+            mgr.ShowRankingResults();  // 更新文字
+            mgr.PopulateLocalUI();     // 直接本地畫，不再叫 RPC
+        }
     }
 }
