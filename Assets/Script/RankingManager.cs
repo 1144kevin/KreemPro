@@ -13,6 +13,9 @@ public class RankingManager : NetworkBehaviour
     [SerializeField] private Button returnButton;
     [SerializeField] private TMP_Text voteText;
     [SerializeField] private TMP_Text rankingText;
+    [SerializeField] private Transform contentParent;   
+    [SerializeField] private GameObject rankingEntryPrefab;
+    [SerializeField] private GameObject[] characterPrefabs;
     [SerializeField] private string finalSceneName = "FinalScene";
 
     private Dictionary<PlayerRef, bool> restartVotes = new();
@@ -33,6 +36,7 @@ public class RankingManager : NetworkBehaviour
 
             // Host 自己顯示 + 廣播資料給 client
             ShowRankingResults();
+            RpcPopulateRankingUI();
             StartCoroutine(BroadcastKreemAfterDelay());
         }
     }
@@ -74,6 +78,44 @@ public class RankingManager : NetworkBehaviour
             });
 
         rankingText.text = string.Join("\n", lines);
+    }
+
+    public void PopulateLocalUI()
+    {
+        foreach (Transform child in contentParent)
+            Destroy(child.gameObject);
+
+        if (GameResultData.KreemCounts == null || GameResultData.KreemCounts.Count == 0)
+            return;
+
+        var ordered = GameResultData.KreemCounts
+                     .OrderByDescending(kv => kv.Value);
+
+        foreach (var kv in ordered)
+        {
+            var playerRef = kv.Key;
+            var score = kv.Value;
+
+            if (!GameManager.Instance.PlayerList.TryGetValue(playerRef, out var pData))
+                continue;
+
+            string displayName = $"{pData.PlayerName} (Player {playerRef.PlayerId})";
+
+            int idx = pData.SelectedCharacterIndex;
+            GameObject prefab = (idx >= 0 && idx < characterPrefabs.Length)
+                                ? characterPrefabs[idx]
+                                : null;
+
+            var entryGO = Instantiate(rankingEntryPrefab, contentParent);
+            entryGO.GetComponent<RankingEntryUI>()
+                   .Setup(displayName, score, prefab);
+        }
+    }
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+    private void RpcPopulateRankingUI()
+    {
+        PopulateLocalUI();
     }
 
     private void OnRestartClicked()
