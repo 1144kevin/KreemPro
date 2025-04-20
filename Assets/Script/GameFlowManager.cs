@@ -24,8 +24,8 @@ public class GameFlowManager : NetworkBehaviour
         if (Object.HasStateAuthority)
         {
             remainingTime = matchDuration;
-    
         }
+        AudioManager.Instance.PlayBGM(Resources.Load<AudioClip>("Audio/BackgroundMusic"));
     }
     public override void FixedUpdateNetwork()
     {
@@ -68,7 +68,7 @@ public class GameFlowManager : NetworkBehaviour
             Player p = obj.GetComponentInChildren<Player>();
             if (p == null) continue;
 
-            p.RpcSetGameEnded();;
+            p.RpcSetGameEnded(); ;
 
             GameResultData.KreemCounts[playerRef] = p.kreemCollect; // ✅ 儲存分數
 
