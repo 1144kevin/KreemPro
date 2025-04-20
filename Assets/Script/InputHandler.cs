@@ -2,6 +2,7 @@ using UnityEngine;
 using Fusion;
 using static UnityEngine.InputSystem.InputAction;
 
+
 public class InputHandler : NetworkBehaviour
 {
     private Vector2 moveInput;
@@ -59,19 +60,22 @@ public class InputHandler : NetworkBehaviour
             attackInput = true;
         }
     }
-    public void OnInput(NetworkRunner runner, NetworkInput input)
+public void OnInput(NetworkRunner runner, NetworkInput input)
+{
+    if (!inputEnabled)
     {
-        if (!inputEnabled)
-        {
-            input.Set(new NetworkInputData()); // 不送資料
-            return;
-        }
+        input.Set(new NetworkInputData());
+        return;
+    }
+
+    var buttons = new NetworkButtons();
 
         var data = new NetworkInputData
         {
             direction = new Vector3(moveInput.x, 0, moveInput.y),
             damageTrigger = damageTriggered,
-            respawnTrigger = respawnTrigger
+            respawnTrigger = respawnTrigger,
+            buttons = buttons,
         };
 
         if (attackInput)
@@ -80,10 +84,12 @@ public class InputHandler : NetworkBehaviour
             attackInput = false;
         }
 
-        input.Set(data);
-        damageTriggered = false;
-        respawnTrigger = false;
-    }
+    input.Set(data);
+
+    // Reset one-time triggers
+    damageTriggered = false;
+    respawnTrigger = false;
+}
 
 }
 

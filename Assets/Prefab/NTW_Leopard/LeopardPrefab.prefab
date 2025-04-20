@@ -917,6 +917,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1240711482540135049, guid: a769b7ab851328341a9b26c206ea5f5e,
         type: 3}
+      propertyPath: smoothTime
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1240711482540135049, guid: a769b7ab851328341a9b26c206ea5f5e,
+        type: 3}
       propertyPath: xThreshold
       value: 500
       objectReference: {fileID: 0}
