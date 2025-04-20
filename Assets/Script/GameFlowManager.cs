@@ -68,6 +68,8 @@ public class GameFlowManager : NetworkBehaviour
             Player p = obj.GetComponentInChildren<Player>();
             if (p == null) continue;
 
+            p.RpcSetGameEnded();;
+
             GameResultData.KreemCounts[playerRef] = p.kreemCollect; // ✅ 儲存分數
 
             if (p.kreemCollect > maxKreem)

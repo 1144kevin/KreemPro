@@ -7,8 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
-    [SerializeField]
-    private NetworkRunner networkRunner;
+    public NetworkRunner networkRunner;
 
     [SerializeField]
     private NetworkEvents networkEvents;
@@ -24,6 +23,12 @@ public class GameManager : MonoBehaviour
 
     public Dictionary<PlayerRef, PlayerNetworkData> PlayerList => playerList;
     private Dictionary<PlayerRef, PlayerNetworkData> playerList = new Dictionary<PlayerRef, PlayerNetworkData>();
+
+    public struct PlayerDisplayInfo
+    {
+        public string Name;
+        public int CharacterIndex;
+    }
 
     private void Awake()//單例模式
     {
@@ -98,6 +103,7 @@ public class GameManager : MonoBehaviour
 
             menuManager.SwitchMenuType(MenuManager.MenuType.Room);
             menuManager.SetStartBtnVisible(true);
+            Debug.Log("這是 Host (直連)");   // Host 永遠 Direct
         }
         else
         {
@@ -124,6 +130,13 @@ public class GameManager : MonoBehaviour
 
             menuManager.SwitchMenuType(MenuManager.MenuType.Room);
             menuManager.SetStartBtnVisible(false);
+            var myRef = networkRunner.LocalPlayer;
+            var conn = networkRunner.GetPlayerConnectionType(myRef);
+
+            Debug.Log(conn == ConnectionType.Relayed
+                      ? "目前使用 Photon 中繼 (Relay)"
+                      : "已建立 Client ⇄ Host 直連 (P2P)");
+
         }
         else
         {
@@ -133,17 +146,28 @@ public class GameManager : MonoBehaviour
 
     public void UpdatePlayerList()
     {
-        var playerNames = new List<string>();
-        foreach (var playerNetworkData in playerList.Values)
+        var playerInfos = new List<PlayerDisplayInfo>();
+
+        foreach (var kvp in playerList)
         {
-            playerNames.Add(playerNetworkData.PlayerName);
+            var playerRef = kvp.Key;
+            var playerData = kvp.Value;
+            int characterIndex = playerData.SelectedCharacterIndex;
+            int playerId = playerRef.PlayerId;
+
+            string displayName = $"{playerData.PlayerName} (Player {playerId})";
+            playerInfos.Add(new PlayerDisplayInfo
+            {
+                Name = displayName,
+                CharacterIndex = characterIndex
+            });
         }
 
         var menuManager = FindObjectOfType<MenuManager>();
-        menuManager.UpdatePlayerList(playerNames);
+        menuManager.UpdatePlayerList(playerInfos);
     }
     public void StartGame()
     {
-        networkRunner.LoadScene(SceneRef.FromIndex(2));//場景管理器待修
+        networkRunner.LoadScene(SceneRef.FromIndex(3));//場景管理器待修
     }
 }

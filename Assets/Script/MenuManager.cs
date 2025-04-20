@@ -20,11 +20,9 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     private GameObject roomPanel;
 
-    [SerializeField]
-    private InputField playerNameInputField;
+    private string playerName;
 
-    [SerializeField]
-    private InputField roomNameInputField;
+    // private string roomName;
     [SerializeField]
     private Button firstCharacterButton;
     [SerializeField] private GameObject characterPanel;
@@ -40,13 +38,15 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField]
     private GameObject playerListContent;
-    [SerializeField] private TMP_Text characterName;
+    // [SerializeField] private TMP_Text characterName;
     [SerializeField] private GameObject[] characters3d;
 
-    [SerializeField] private GameObject[] roomavatar;
+    [SerializeField] private string[] charactersName;
+    [SerializeField] private GameObject[] charactersNameImage;
 
     private Button lastConfirmedButton;
     private Color lastButtonOriginalColor;
+
     private void Start()
     {
         createBtn.onClick.AddListener(OnCreateBtnClicked);
@@ -64,15 +64,15 @@ public class MenuManager : MonoBehaviour
 
     private async void OnCreateBtnClicked()
     {
-        GameManager.Instance.PlayerName = playerNameInputField.text;
-        GameManager.Instance.RoomName = roomNameInputField.text;
+        GameManager.Instance.PlayerName = playerName;
+        GameManager.Instance.RoomName = "Kreem";
         await GameManager.Instance.CreateRoom();
 
     }
     private async void OnJoinBtnClicked()
     {
-        GameManager.Instance.PlayerName = playerNameInputField.text;
-        GameManager.Instance.RoomName = roomNameInputField.text;
+        GameManager.Instance.PlayerName = playerName;
+        GameManager.Instance.RoomName = "Kreem";
         await GameManager.Instance.JoinRoom();
 
     }
@@ -94,39 +94,39 @@ public class MenuManager : MonoBehaviour
         }
 
         // 還原上一次按鈕的縮放（如果有）
-    if (lastConfirmedButton != null)
-    {
-        lastConfirmedButton.transform.localScale = Vector3.one;
+        if (lastConfirmedButton != null)
+        {
+            lastConfirmedButton.transform.localScale = Vector3.one;
+        }
+
+        lastConfirmedButton = selectedBtn;
+        ColorBlock cb = selectedBtn.colors;
+        lastButtonOriginalColor = cb.normalColor;
+
+        cb.normalColor = new Color32(139, 255, 218, 255);
+        selectedBtn.colors = cb;
+
+        // ✅ 放大目前選到的按鈕
+        selectedBtn.transform.localScale = Vector3.one * 1.2f;
+
+        EventSystem.current.SetSelectedGameObject(createBtn.gameObject);
     }
 
-    lastConfirmedButton = selectedBtn;
-    ColorBlock cb = selectedBtn.colors;
-    lastButtonOriginalColor = cb.normalColor;
-
-    cb.normalColor = new Color32(139, 255, 218, 255);
-    selectedBtn.colors = cb;
-
-    // ✅ 放大目前選到的按鈕
-    selectedBtn.transform.localScale = Vector3.one * 1.2f;
-
-    EventSystem.current.SetSelectedGameObject(createBtn.gameObject);
-}
-    
 
     public void BackToCharacterSelection()
     {
         if (lastConfirmedButton != null)
-    {
-        // ✅ 還原顏色
-        ColorBlock cb = lastConfirmedButton.colors;
-        cb.normalColor = lastButtonOriginalColor;
-        lastConfirmedButton.colors = cb;
+        {
+            // ✅ 還原顏色
+            ColorBlock cb = lastConfirmedButton.colors;
+            cb.normalColor = lastButtonOriginalColor;
+            lastConfirmedButton.colors = cb;
 
-        // ✅ 還原縮放
-        lastConfirmedButton.transform.localScale = Vector3.one;
-    }
+            // ✅ 還原縮放
+            lastConfirmedButton.transform.localScale = Vector3.one;
+        }
 
-    EventSystem.current.SetSelectedGameObject(firstCharacterButton.gameObject);
+        EventSystem.current.SetSelectedGameObject(firstCharacterButton.gameObject);
     }
 
 
@@ -161,7 +161,7 @@ public class MenuManager : MonoBehaviour
 
     private List<PlayerListCell> existingCells = new List<PlayerListCell>();
 
-    public void UpdatePlayerList(List<string> playerNames)
+    public void UpdatePlayerList(List<GameManager.PlayerDisplayInfo> playerInfos)
     {
         foreach (var cell in existingCells)
         {
@@ -169,11 +169,13 @@ public class MenuManager : MonoBehaviour
         }
         existingCells.Clear();
 
-        foreach (var playerName in playerNames)
+        foreach (var info in playerInfos)
         {
             var cell = Instantiate(playerListCell, playerListContent.transform);
             cell.gameObject.SetActive(true);
-            cell.SetPlayerName(playerName);
+            cell.SetPlayerName(info.Name);
+            cell.SetPlayerAvatar(info.CharacterIndex);
+
             existingCells.Add(cell);
         }
     }
@@ -184,21 +186,24 @@ public class MenuManager : MonoBehaviour
         if (characterIndex >= 0)
         {
             gameManager.SelectedCharacterIndex = characterIndex;
-            GameObject selectedPrefab = gameManager.CharacterPrefabs[characterIndex];
 
-            characterName.text = selectedPrefab.name.Substring(0, selectedPrefab.name.Length - 6);
-
+            var myPlayerRef = gameManager.networkRunner.LocalPlayer;
+            if (gameManager.PlayerList.TryGetValue(myPlayerRef, out var myPlayerNetworkData))
+            {
+                myPlayerNetworkData.SelectedCharacterIndex = characterIndex;
+            }
 
             for (int i = 0; i < characters3d.Length; i++)
             {
-
                 characters3d[i].SetActive(false);
-                roomavatar[i].SetActive(false);
-
+                charactersNameImage[i].SetActive(false);
             }
 
             characters3d[characterIndex].SetActive(true);
-            roomavatar[characterIndex].SetActive(true);
+            charactersNameImage[characterIndex].SetActive(true);
+
+            //characterName.text = charactersName[characterIndex];
+            playerName = charactersName[characterIndex];
 
         }
 
