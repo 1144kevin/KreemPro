@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Fusion;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -38,6 +40,7 @@ public class GameManager : MonoBehaviour
             networkEvents.PlayerJoined.AddListener(OnPlayerJoined);
             networkEvents.PlayerLeft.AddListener(OnPlayerLeft);
             DontDestroyOnLoad(gameObject);
+        // ✅ 監聽場景切換事件
         }
         else
         {
@@ -62,13 +65,26 @@ public class GameManager : MonoBehaviour
     }
     private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
+        // Host 執行移除玩家資料
         if (playerList.TryGetValue(player, out var playerNetworkData))
         {
             runner.Despawn(playerNetworkData.Object);
             playerList.Remove(player);
         }
 
-    }
+}
+// public  void OnShutdown()
+// {
+//     Debug.LogWarning("❗ Fusion Shutdown 被呼叫（可能是 Host 離開）");
+
+//     if (!networkRunner.IsServer)
+//     {
+//         Debug.Log("📌 Client 偵測 Host 離線，自動跳轉 Entry Scene");
+//         SceneManager.LoadScene("Entry");
+//     }
+// }
+
+
     private async void Start()
     {
         var result = await networkRunner.JoinSessionLobby(SessionLobby.ClientServer);
@@ -166,8 +182,13 @@ public class GameManager : MonoBehaviour
         var menuManager = FindObjectOfType<MenuManager>();
         menuManager.UpdatePlayerList(playerInfos);
     }
-    public void StartGame()
-    {
-        networkRunner.LoadScene(SceneRef.FromIndex(3));//場景管理器待修
-    }
+public void StartGame()
+{
+    networkRunner.LoadScene("Entry");
+    Debug.Log("📦 Host 已執行 LoadScene('Entry')");
+}
+
+
+
+
 }

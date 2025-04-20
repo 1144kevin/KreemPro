@@ -1,22 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LoadingBar : MonoBehaviour
 {
-    [SerializeField] private Image fillImage; // 指向填滿的那個Image
-    [SerializeField] private float loadingSpeed = 0.5f; // 控制進度條加速的速度
+    [SerializeField] private Image fillBar;
+    [SerializeField] private float duration = 1f;
+    private float timer;
 
-    private float currentProgress = 0f;
-
-    void Update()
+    private void Start()
     {
-        // 模擬從0到1的填滿
-        if (currentProgress < 1f)
+        timer = 0f;
+    }
+
+    private void Update()
+    {
+        if (timer < duration)
         {
-            currentProgress += loadingSpeed * Time.deltaTime;
-            fillImage.fillAmount = currentProgress;
+            timer += Time.deltaTime;
+            fillBar.fillAmount = timer / duration;
         }
     }
 }

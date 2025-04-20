@@ -13,7 +13,7 @@ public class RankingManager : NetworkBehaviour
     [SerializeField] private Button returnButton;
     [SerializeField] private TMP_Text voteText;
     [SerializeField] private TMP_Text rankingText;
-    [SerializeField] private Transform contentParent;   
+    [SerializeField] private Transform contentParent;
     [SerializeField] private GameObject rankingEntryPrefab;
     [SerializeField] private GameObject[] characterPrefabs;
     [SerializeField] private string finalSceneName = "FinalScene";
@@ -39,7 +39,27 @@ public class RankingManager : NetworkBehaviour
             RpcPopulateRankingUI();
             StartCoroutine(BroadcastKreemAfterDelay());
         }
+        else
+        {
+            StartCoroutine(CheckDisconnected()); // ✅ Client 啟動斷線偵測
+        }
     }
+    private IEnumerator CheckDisconnected()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+
+            if (Runner == null || !Runner.IsRunning)
+            {
+                Debug.Log("🔌 Client 偵測 Host 離線，自動跳轉 Entry");
+                SceneManager.LoadScene("Entry");
+                yield break;
+            }
+        }
+    }
+
+
 
     private IEnumerator BroadcastKreemAfterDelay()
     {
@@ -126,12 +146,11 @@ public class RankingManager : NetworkBehaviour
 
     private void OnReturnClicked()
     {
-        if (Object.HasStateAuthority)
-        {
-            Runner.Shutdown();
-            SceneManager.LoadScene("Entry");
-        }
+        Runner.Shutdown();
+        SceneManager.LoadScene("Entry");
     }
+
+
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     private void RpcVoteRestart(PlayerRef player)

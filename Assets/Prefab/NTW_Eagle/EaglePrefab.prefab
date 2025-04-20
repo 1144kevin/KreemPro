@@ -532,6 +532,22 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
+        type: 3}
+      propertyPath: xThreshold
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
+        type: 3}
+      propertyPath: zThreshold
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
+        type: 3}
+      propertyPath: mapBoundsObject
+      value: 
+      objectReference: {fileID: 813627858756411408, guid: a042fcdfaffcb6345ac5fbb3f6196e77,
+        type: 3}
     - target: {fileID: 2578045407947020984, guid: b6d778c50bf6d3f45bac856613247392,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.x
