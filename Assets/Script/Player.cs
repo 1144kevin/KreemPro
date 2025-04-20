@@ -19,6 +19,7 @@ public class Player : NetworkBehaviour
   private void Awake()
   {
     CharacterController = GetComponent<NetworkCharacterController>();
+    AttackHandler= GetComponent<AttackHandler>();
   }
   public override void Spawned()
   {

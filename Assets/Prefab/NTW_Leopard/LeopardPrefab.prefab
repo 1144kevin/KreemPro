@@ -134,13 +134,18 @@ PrefabInstance:
     - target: {fileID: 2671096231107283494, guid: 8a898734291f1c645bd11fe8261781cf,
         type: 3}
       propertyPath: NetworkedBehaviours.Array.size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2671096231107283494, guid: 8a898734291f1c645bd11fe8261781cf,
         type: 3}
       propertyPath: 'NetworkedBehaviours.Array.data[4]'
       value: 
       objectReference: {fileID: 3809485549536323375}
+    - target: {fileID: 2671096231107283494, guid: 8a898734291f1c645bd11fe8261781cf,
+        type: 3}
+      propertyPath: 'NetworkedBehaviours.Array.data[5]'
+      value: 
+      objectReference: {fileID: 3200288254351316774}
     - target: {fileID: 3081006358723203401, guid: 8a898734291f1c645bd11fe8261781cf,
         type: 3}
       propertyPath: animator
@@ -205,6 +210,10 @@ PrefabInstance:
         type: 3}
       insertIndex: 6
       addedObject: {fileID: 336975766195380746}
+    - targetCorrespondingSourceObject: {fileID: 5821481182043834604, guid: 8a898734291f1c645bd11fe8261781cf,
+        type: 3}
+      insertIndex: 12
+      addedObject: {fileID: 3200288254351316774}
   m_SourcePrefab: {fileID: 100100000, guid: 8a898734291f1c645bd11fe8261781cf, type: 3}
 --- !u!95 &2318998346596492989 stripped
 Animator:
@@ -257,7 +266,19 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2546064346756056383}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: OnAttack
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 77c5318c-66d7-48f4-98d3-bd4c7a9f07d8
     m_ActionName: 'PlayerControls/Attack[/Keyboard/e]'
   - m_PersistentCalls:
@@ -289,6 +310,20 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerControls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &3200288254351316774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3531013140997442381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acce833fbbf90024ca9a83eddfd64ac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotPrefab:
+    RawGuidValue: c8252cdedd2c47245b2ff61571ead7ab
 --- !u!114 &3809485549536323375 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6130702119375938702, guid: 8a898734291f1c645bd11fe8261781cf,
