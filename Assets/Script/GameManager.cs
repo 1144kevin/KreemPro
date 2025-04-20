@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.SceneManagement;
 using System.Collections;
-
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -63,13 +63,26 @@ public class GameManager : MonoBehaviour
     }
     private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
+        // Host 執行移除玩家資料
         if (playerList.TryGetValue(player, out var playerNetworkData))
         {
             runner.Despawn(playerNetworkData.Object);
             playerList.Remove(player);
         }
 
-    }
+}
+// public  void OnShutdown()
+// {
+//     Debug.LogWarning("❗ Fusion Shutdown 被呼叫（可能是 Host 離開）");
+
+//     if (!networkRunner.IsServer)
+//     {
+//         Debug.Log("📌 Client 偵測 Host 離線，自動跳轉 Entry Scene");
+//         SceneManager.LoadScene("Entry");
+//     }
+// }
+
+
     private async void Start()
     {
         var result = await networkRunner.JoinSessionLobby(SessionLobby.ClientServer);

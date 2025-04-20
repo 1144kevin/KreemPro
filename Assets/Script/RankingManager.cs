@@ -17,25 +17,45 @@ public class RankingManager : NetworkBehaviour
 
     private Dictionary<PlayerRef, bool> restartVotes = new();
 
-    public override void Spawned()
+public override void Spawned()
+{
+    // 綁定按鈕事件（每個人都要）
+    restartButton.onClick.AddListener(OnRestartClicked);
+    returnButton.onClick.AddListener(OnReturnClicked);
+
+    if (Object.HasStateAuthority)
     {
-        // 綁定按鈕事件（每個人都要）
-        restartButton.onClick.AddListener(OnRestartClicked);
-        returnButton.onClick.AddListener(OnReturnClicked);
-
-        if (Object.HasStateAuthority)
+         // 建立投票表
+        foreach (var player in Runner.ActivePlayers)
         {
-            // 建立投票表
-            foreach (var player in Runner.ActivePlayers)
-            {
-                restartVotes[player] = false;
-            }
+            restartVotes[player] = false;
+        }
 
-            // Host 自己顯示 + 廣播資料給 client
-            ShowRankingResults();
-            StartCoroutine(BroadcastKreemAfterDelay());
+        // Host 自己顯示 + 廣播資料給 client
+        ShowRankingResults();
+        StartCoroutine(BroadcastKreemAfterDelay());
+    }
+    else
+    {
+        StartCoroutine(CheckDisconnected()); // ✅ Client 啟動斷線偵測
+    }
+}
+private IEnumerator CheckDisconnected()
+{
+    while (true)
+    {
+        yield return new WaitForSeconds(1f);
+
+        if (Runner == null || !Runner.IsRunning)
+        {
+            Debug.Log("🔌 Client 偵測 Host 離線，自動跳轉 Entry");
+            SceneManager.LoadScene("Entry");
+            yield break;
         }
     }
+}
+
+
 
     private IEnumerator BroadcastKreemAfterDelay()
     {
@@ -83,13 +103,12 @@ public class RankingManager : NetworkBehaviour
     }
 
     private void OnReturnClicked()
-    {
-        if (Object.HasStateAuthority)
-        {
+    {   
             Runner.Shutdown();
-            SceneManager.LoadScene("Entry");
-        }
+            SceneManager.LoadScene("Entry"); 
     }
+
+
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     private void RpcVoteRestart(PlayerRef player)

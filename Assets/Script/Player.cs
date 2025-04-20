@@ -101,9 +101,6 @@ public void RpcPlayAttackAnimation(bool isRunning)
         bool isRunning = data.direction.magnitude > 0.1f;
         RpcPlayAttackAnimation(isRunning);
     }
-
-
-
       if (Health > 0)
       {
         data.direction.Normalize();
