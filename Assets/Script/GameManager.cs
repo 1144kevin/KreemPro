@@ -103,6 +103,7 @@ public class GameManager : MonoBehaviour
 
             menuManager.SwitchMenuType(MenuManager.MenuType.Room);
             menuManager.SetStartBtnVisible(true);
+            Debug.Log("這是 Host (直連)");   // Host 永遠 Direct
         }
         else
         {
@@ -129,6 +130,13 @@ public class GameManager : MonoBehaviour
 
             menuManager.SwitchMenuType(MenuManager.MenuType.Room);
             menuManager.SetStartBtnVisible(false);
+            var myRef = networkRunner.LocalPlayer;
+            var conn = networkRunner.GetPlayerConnectionType(myRef);
+
+            Debug.Log(conn == ConnectionType.Relayed
+                      ? "目前使用 Photon 中繼 (Relay)"
+                      : "已建立 Client ⇄ Host 直連 (P2P)");
+
         }
         else
         {
