@@ -10,7 +10,7 @@ public class Player : NetworkBehaviour
   [SerializeField] private NetworkCharacterController CharacterController;
   [SerializeField] private int MaxHealth = 100;
   [SerializeField] private HealthBar HealthBar;
-  [SerializeField] private AttackHandler AttackHandler;
+  [SerializeField] private AttackHandler2 AttackHandler;
   [SerializeField] private AnimationHandler AnimationHandler;
   [SerializeField] private float Speed = 500f;
   [Networked] private int Health { get; set; }
@@ -28,41 +28,51 @@ public class Player : NetworkBehaviour
 
 
 
- public override void Spawned()
-{
+  public override void Spawned()
+  {
     CharacterController = GetComponent<NetworkCharacterController>();
     playerRespawn = GetComponent<PlayerRespawn>();
+    AttackHandler = GetComponentInChildren<AttackHandler2>(true); 
+    if (AttackHandler != null)
+{
+    Debug.Log($"[Player.Spawned] 🎯 AttackHandler 綁定成功：{AttackHandler.name} | ID: {AttackHandler.GetInstanceID()}", AttackHandler);
+}
+else
+{
+    Debug.LogError("[Player.Spawned] ❌ 無法綁定 AttackHandler2");
+}
+
     if (playerRespawn == null)
-        Debug.LogError("PlayerRespawn component not found!");
+      Debug.LogError("PlayerRespawn component not found!");
 
     CreateKreemUI();
     Health = MaxHealth;
 
     if (Object.HasStateAuthority)
-        RpcUpdateHealth(Health);
+      RpcUpdateHealth(Health);
     else if (HealthBar != null)
-        HealthBar.SetHealth(Health);
+      HealthBar.SetHealth(Health);
 
     if (respawnCanvas != null)
-        respawnCanvas.SetActive(false);
+      respawnCanvas.SetActive(false);
 
     // ✅ 只對自己的角色啟動相機
     if (Object.HasInputAuthority)
-        StartCoroutine(EnableCameraAfterTransformReady());
+      StartCoroutine(EnableCameraAfterTransformReady());
     else
     {
-        playerCamera.enabled = false;
-        playerCamera.gameObject.SetActive(false);
+      playerCamera.enabled = false;
+      playerCamera.gameObject.SetActive(false);
     }
-}
+  }
 
-[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-public void RpcPlayAttackAnimation(bool isRunning)
-{
+  [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+  public void RpcPlayAttackAnimation(bool isRunning)
+  {
     AnimationHandler.TriggerAttack(isRunning);
-}
+  }
 
- 
+
   // 透過 RPC 同步更新所有客戶端的 HealthBar
   [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
   public void RpcUpdateHealth(int currentHealth)
@@ -94,13 +104,13 @@ public void RpcPlayAttackAnimation(bool isRunning)
   {
     if (Object.HasInputAuthority)
     {
-        // 如果已經收到遊戲結束的 RPC，直接關閉 canvas 並提前返回
-        if (hasGameEnded)
-        {
-            if (respawnCanvas != null && respawnCanvas.activeSelf)
-                respawnCanvas.SetActive(false);
-            return;
-        }
+      // 如果已經收到遊戲結束的 RPC，直接關閉 canvas 並提前返回
+      if (hasGameEnded)
+      {
+        if (respawnCanvas != null && respawnCanvas.activeSelf)
+          respawnCanvas.SetActive(false);
+        return;
+      }
     }
 
     if (Object.HasStateAuthority && Health <= 0 && !isDead)
@@ -120,11 +130,11 @@ public void RpcPlayAttackAnimation(bool isRunning)
       previousButton = data.buttons;
 
       // 播放攻擊動畫（只針對本地玩家）
-    if (Object.HasStateAuthority && buttonPressed.IsSet((int)InputButton.ATTACK) && Health > 0)
-    {
+      if (Object.HasStateAuthority && buttonPressed.IsSet((int)InputButton.ATTACK) && Health > 0)
+      {
         bool isRunning = data.direction.magnitude > 0.1f;
         RpcPlayAttackAnimation(isRunning);
-    }
+      }
       if (Health > 0)
       {
         data.direction.Normalize();
@@ -145,7 +155,24 @@ public void RpcPlayAttackAnimation(bool isRunning)
 
       if (data.buttons.IsSet(InputButton.ATTACK))
       {
-        AttackHandler.Attack();
+        Debug.Log("🔘 ATTACK input 被偵測到了");
+        if (AttackHandler != null)
+        {
+          Debug.Log("🎯 AttackHandler 存在，準備攻擊");
+
+          if (Runner != null && Runner.LagCompensation != null && Runner.IsRunning)
+          {
+            AttackHandler.Attack();
+          }
+          else
+          {
+            Debug.LogWarning("⚠️ Runner or LagCompensation not ready");
+          }
+        }
+        else
+        {
+          Debug.LogError("❌ AttackHandler 是 null");
+        }
       }
 
       if (data.damageTrigger && Health > 0)
@@ -237,13 +264,13 @@ public void RpcPlayAttackAnimation(bool isRunning)
       Debug.LogWarning("找不到 Canvas");
     }
   }
-  
+
 
   private IEnumerator EnableCameraAfterTransformReady()
-{
+  {
     // 等待 transform 初始化完成（避免為 Vector3.zero）
     while (transform.position.sqrMagnitude < 10f)
-        yield return null;
+      yield return null;
 
     var follower = playerCamera.GetComponent<CameraFollower>();
     Vector3 offset = follower != null ? follower.offset : new Vector3(0, -800, 500);
@@ -253,21 +280,21 @@ public void RpcPlayAttackAnimation(bool isRunning)
     playerCamera.enabled = true;
 
     if (follower != null)
-        follower.SetTarget(transform);
+      follower.SetTarget(transform);
 
     Debug.Log($"📸 相機啟動完成：{transform.position}");
     if (Object.HasInputAuthority)
     {
-    var ui = GameObject.Find("StartGameUI");
-    if (ui != null)
+      var ui = GameObject.Find("StartGameUI");
+      if (ui != null)
         ui.SetActive(true);
-        yield return new WaitForSeconds(startGameTime); //  // ✅ 特定秒數後自動隱藏，可自訂秒數
-        ui.SetActive(false);
+      yield return new WaitForSeconds(startGameTime); //  // ✅ 特定秒數後自動隱藏，可自訂秒數
+      ui.SetActive(false);
     }
 
-}
+  }
 
 
-    
+
 
 }
