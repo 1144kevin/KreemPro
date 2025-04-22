@@ -1,6 +1,9 @@
 using Fusion;
 using UnityEngine;
 using TMPro;
+using System.Collections;
+using UnityEngine.SceneManagement;
+using ExitGames.Client.Photon.StructWrapping; // ← 加這個
 
 public class Player : NetworkBehaviour
 {
@@ -20,9 +23,8 @@ public class Player : NetworkBehaviour
   [Networked] public int kreemCollect { get; set; } = 0;
   private PlayerRespawn playerRespawn;
   private bool lastMoving = false;
-
+  [SerializeField] private float startGameTime = 2.0f;
   [SerializeField] private TMP_Text kreemText;
-
 
   private void Awake()
   {
@@ -30,7 +32,7 @@ public class Player : NetworkBehaviour
     playerRespawn = GetComponent<PlayerRespawn>();
     if (playerRespawn == null)
     {
-      Debug.LogError("PlayerRespawn component not found on player!");
+      Debug.LogError("PlayerRespawn component not found!");
     }
   }
 
@@ -38,39 +40,37 @@ public class Player : NetworkBehaviour
   {
     if (Object.HasInputAuthority)
     {
-      playerCamera.gameObject.SetActive(true);
+      // 只有本地玩家的相機會啟用
+      StartCoroutine(EnableStartUI());
       playerCamera.enabled = true;
-
+      playerCamera.gameObject.SetActive(true);
     }
     else
     {
-      playerCamera.gameObject.SetActive(false);
       playerCamera.enabled = false;
+      playerCamera.gameObject.SetActive(false); ;
     }
-    CreateKreemUI();
 
-    // 初始血量
+    CreateKreemUI();
     Health = MaxHealth;
 
-    // 只有 State Authority 呼叫 RpcUpdateHealth
-    if (Object.HasStateAuthority)
-    {
+    if (Object.HasStateAuthority){
       RpcUpdateHealth(Health);
-
     }
-    else
-    {
-      // 非 State Authority 的本地端，直接更新 HealthBar
-      if (HealthBar != null)
-      {
-        HealthBar.SetHealth(Health);
-      }
+    else if (HealthBar != null){
+      HealthBar.SetHealth(Health);
     }
 
-    // 本地 UI 先隱藏
     if (respawnCanvas != null)
       respawnCanvas.SetActive(false);
   }
+
+  [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+  public void RpcPlayAttackAnimation(bool isRunning)
+  {
+    AnimationHandler.TriggerAttack(isRunning);
+  }
+
 
   // 透過 RPC 同步更新所有客戶端的 HealthBar
   [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -99,22 +99,31 @@ public class Player : NetworkBehaviour
     AnimationHandler.PlayerAnimation(input);
   }
 
+  [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+  private void RpcDisableCameraClampClient()
+  {
+    var cam = FindObjectOfType<CameraFollower>();
+    if (cam != null)
+      cam.DisableCameraClamp();
+  }
+
   public override void FixedUpdateNetwork()
   {
     if (Object.HasInputAuthority)
     {
-        // 如果已經收到遊戲結束的 RPC，直接關閉 canvas 並提前返回
-        if (hasGameEnded)
-        {
-            if (respawnCanvas != null && respawnCanvas.activeSelf)
-                respawnCanvas.SetActive(false);
-            return;
-        }
+      // 如果已經收到遊戲結束的 RPC，直接關閉 canvas 並提前返回
+      if (hasGameEnded)
+      {
+        if (respawnCanvas != null && respawnCanvas.activeSelf)
+          respawnCanvas.SetActive(false);
+        return;
+      }
     }
 
     if (Object.HasStateAuthority && Health <= 0 && !isDead)
     {
       isDead = true;
+      RpcDisableCameraClampClient();
       LastDeathPosition = transform.position;
       playerRespawn.RpcSetPlayerVisibility(false);
       if (playerRespawn.KreemPrefab != null)
@@ -125,8 +134,15 @@ public class Player : NetworkBehaviour
 
     if (GetInput(out NetworkInputData data))
     {
+      var buttonPressed = data.buttons.GetPressed(previousButton);
       previousButton = data.buttons;
 
+      // 播放攻擊動畫（只針對本地玩家）
+      if (Object.HasStateAuthority && buttonPressed.IsSet((int)InputButton.ATTACK) && Health > 0)
+      {
+        bool isRunning = data.direction.magnitude > 0.1f;
+        RpcPlayAttackAnimation(isRunning);
+      }
       if (Health > 0)
       {
         data.direction.Normalize();
@@ -159,7 +175,6 @@ public class Player : NetworkBehaviour
       {
         playerRespawn.RpcRequestRespawn();
       }
-
     }
 
     if (Object.HasInputAuthority)
@@ -240,18 +255,22 @@ public class Player : NetworkBehaviour
       Debug.LogWarning("找不到 Canvas");
     }
   }
+  
 
-  // [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-  // public void RpcRequestRestart()
-  // {
-  //     Debug.Log($"▶️ Player {Object.InputAuthority} 呼叫 Restart");
+  private IEnumerator EnableStartUI()
+{
+    if (Object.HasInputAuthority)
+    {
+    var ui = GameObject.Find("StartGameUI");
+    if (ui != null)
+        ui.SetActive(true);
+        yield return new WaitForSeconds(startGameTime); //✅ 特定秒數後自動隱藏，可自訂秒數
+        ui.SetActive(false);
+    }
 
-  //     if (GameFlowManager.Instance != null)
-  //     {
-  //         GameFlowManager.Instance.RegisterRestartVote(Object.InputAuthority);
-  //     }
-  // }
+}
 
 
+    
 
 }
