@@ -27,6 +27,7 @@ public class PlayerSpawner : NetworkBehaviour
 
            var attackHandler = playerObj.GetComponentInChildren<AttackHandler2>();
            
+           
             if (attackHandler != null)
             {
                 var spawner = FindObjectOfType<ObjectSpawner>();

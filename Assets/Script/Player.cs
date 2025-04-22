@@ -33,6 +33,7 @@ public class Player : NetworkBehaviour
     CharacterController = GetComponent<NetworkCharacterController>();
     playerRespawn = GetComponent<PlayerRespawn>();
     AttackHandler = GetComponentInChildren<AttackHandler2>(true); 
+    
     if (AttackHandler != null)
 {
     Debug.Log($"[Player.Spawned] 🎯 AttackHandler 綁定成功：{AttackHandler.name} | ID: {AttackHandler.GetInstanceID()}", AttackHandler);
@@ -155,25 +156,15 @@ else
 
       if (data.buttons.IsSet(InputButton.ATTACK))
       {
-        Debug.Log("🔘 ATTACK input 被偵測到了");
-        if (AttackHandler != null)
-        {
-          Debug.Log("🎯 AttackHandler 存在，準備攻擊");
+          Debug.Log("🔘 ATTACK input 被偵測到了");
 
-          if (Runner != null && Runner.LagCompensation != null && Runner.IsRunning)
+          if (AttackHandler != null && Object.HasInputAuthority)
           {
-            AttackHandler.Attack();
+              Debug.Log("📤 客戶端送出攻擊請求");
+              AttackHandler.RequestAttackRpc();
           }
-          else
-          {
-            Debug.LogWarning("⚠️ Runner or LagCompensation not ready");
-          }
-        }
-        else
-        {
-          Debug.LogError("❌ AttackHandler 是 null");
-        }
       }
+
 
       if (data.damageTrigger && Health > 0)
       {

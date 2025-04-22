@@ -11,21 +11,31 @@ public class AttackHandler2 : NetworkBehaviour
 
     [SerializeField] private ObjectSpawner objectSpawner;
 
-    // private void Update()
-    // {
-    //     Debug.Log($"🔁 Update from {gameObject.name} | ID: {GetInstanceID()}");
-    // }
+    // ✅ 將攻擊條件封裝為 CanAttack 屬性供 Player 使用
+    public bool CanAttack => Runner != null && Runner.IsRunning && Runner.LagCompensation != null && objectSpawner != null;
 
+private void Start()
+{
+     Debug.Log($"[AttackHandler2.Start] 🧠 Runner 是否有值？{(Runner != null)} | Mode: {Runner?.Mode}");
+    Debug.Log($"[AttackHandler2.Start] 🧠 Runner: {Runner}, LagComp: {Runner?.LagCompensation}, Mode: {Runner?.Mode}, IsRunning: {Runner?.IsRunning}");
+}
+
+    public string SpawnerStatus()
+    {
+        return objectSpawner != null ? objectSpawner.name : "null";
+    }
     public void SetSpawner(ObjectSpawner spawner)
     {
         Debug.Log($"🧩 Spawner 被設置 on {gameObject.name} | ID: {GetInstanceID()}");
         objectSpawner = spawner;
     }
+    
 
     public void Attack()
     {
+        Debug.Log($"[攻擊時] 是否是 Spawn 物件？Object: {Object}, HasStateAuthority: {HasStateAuthority}, HasInputAuthority: {HasInputAuthority}");
         Debug.Log($"🛠️ Attack() 被呼叫！ID: {GetInstanceID()} | name: {gameObject.name}", this);
-        Debug.Log("Attack() 被呼叫", this);
+
         if (!HasStateAuthority && !HasInputAuthority)
             Debug.LogWarning("⚠️ AttackHandler 的物件不是任何權限擁有者！可能是 Editor 中的場景物件");
 
@@ -34,7 +44,7 @@ public class AttackHandler2 : NetworkBehaviour
 
         Debug.Log($"[Debug] Runner: {Runner}, LagComp: {Runner?.LagCompensation}, Spawner: {objectSpawner}");
 
-        if (objectSpawner == null || Runner == null || Runner.LagCompensation == null)
+        if (!CanAttack)
         {
             Debug.LogError("❌ LagCompensation 或 Spawner 尚未初始化！");
             return;
@@ -43,14 +53,13 @@ public class AttackHandler2 : NetworkBehaviour
         objectSpawner.SpawnSphere();
         StartCoroutine(DespawnAfterDelay(3f));
 
-        // 🔴 延遲補償 Raycast 設定
-        Vector3 origin = CharacterTrans.position + Vector3.up * 1f; // 根據角色調整高度
+        Vector3 origin = CharacterTrans.position + Vector3.up * 1f;
         Vector3 direction = CharacterTrans.forward;
         float maxDistance = 100f;
 
         Debug.DrawRay(origin, direction * maxDistance, Color.red, 1f);
 
-        // ✅ 執行 Lag Compensation Raycast
+        
         if (Runner.LagCompensation.Raycast(
             origin,
             direction,
@@ -76,11 +85,14 @@ public class AttackHandler2 : NetworkBehaviour
 
     private IEnumerator DespawnAfterDelay(float delay)
     {
-
-        yield return new WaitForSeconds(delay);  // 等待指定秒數
-        objectSpawner.DespawnAll();  // 3 秒後執行
-        //Debug.Log("despawn");
+        yield return new WaitForSeconds(delay);
+        objectSpawner.DespawnAll();
     }
-
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RequestAttackRpc()
+    {
+        Debug.Log("📥 Host 收到攻擊 RPC，執行 Attack()");
+        Attack();
+    }
 
 }

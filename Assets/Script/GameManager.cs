@@ -8,7 +8,6 @@ using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
-
     public NetworkRunner networkRunner;
 
     [SerializeField]
@@ -20,7 +19,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public string PlayerName { get; set; }
     public int SelectedCharacterIndex { get; set; }
-    public GameObject[] CharacterPrefabs;// 新增角色預製體陣列
+    public GameObject[] CharacterPrefabs;
     public string RoomName { get; set; }
 
     public Dictionary<PlayerRef, PlayerNetworkData> PlayerList => playerList;
@@ -32,7 +31,7 @@ public class GameManager : MonoBehaviour
         public int CharacterIndex;
     }
 
-    private void Awake()//單例模式
+    private void Awake()
     {
         if (Instance == null)
         {
@@ -40,20 +39,20 @@ public class GameManager : MonoBehaviour
             networkEvents.PlayerJoined.AddListener(OnPlayerJoined);
             networkEvents.PlayerLeft.AddListener(OnPlayerLeft);
             DontDestroyOnLoad(gameObject);
-        // ✅ 監聽場景切換事件
         }
         else
         {
             Destroy(gameObject);
         }
     }
-    internal void SetPlayerNetworkData(PlayerRef player, PlayerNetworkData playerNetworkData)//設定玩家的網路物件
+
+    internal void SetPlayerNetworkData(PlayerRef player, PlayerNetworkData playerNetworkData)
     {
         playerList.Add(player, playerNetworkData);
         playerNetworkData.transform.SetParent(transform);
     }
 
-    private void OnPlayerJoined(NetworkRunner runner, PlayerRef player)//玩家加入事件
+    private void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (!runner.IsServer)
         {
@@ -61,29 +60,16 @@ public class GameManager : MonoBehaviour
             return;
         }
         runner.Spawn(playerNetworkDataPrefab, transform.position, Quaternion.identity, player);
-
     }
+
     private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        // Host 執行移除玩家資料
         if (playerList.TryGetValue(player, out var playerNetworkData))
         {
             runner.Despawn(playerNetworkData.Object);
             playerList.Remove(player);
         }
-
-}
-// public  void OnShutdown()
-// {
-//     Debug.LogWarning("❗ Fusion Shutdown 被呼叫（可能是 Host 離開）");
-
-//     if (!networkRunner.IsServer)
-//     {
-//         Debug.Log("📌 Client 偵測 Host 離線，自動跳轉 Entry Scene");
-//         SceneManager.LoadScene("Entry");
-//     }
-// }
-
+    }
 
     private async void Start()
     {
@@ -95,31 +81,34 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("shit");
+            Debug.LogError("Failed to join lobby");
         }
     }
 
     public async Task CreateRoom()
     {
         var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
+
+        // ✅ 確保 networkRunner 和 SceneManager 掛在同一 GameObject
+        var sceneManager = networkRunner.gameObject.AddComponent<NetworkSceneManagerDefault>();
+
         var result = await networkRunner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.Host,
             SessionName = RoomName,
             PlayerCount = 4,
             Scene = scene,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
-            //ObjectPool = gameObject.AddComponent<FusionObjectPoolRoot>()
+            SceneManager = sceneManager
         });
 
+        Debug.Log($"[CreateRoom] Runner Mode: {networkRunner.Mode}, LagComp: {networkRunner.LagCompensation}, SceneMgr: {networkRunner.SceneManager}");
 
         if (result.Ok)
         {
             var menuManager = FindObjectOfType<MenuManager>();
-
             menuManager.SwitchMenuType(MenuManager.MenuType.Room);
             menuManager.SetStartBtnVisible(true);
-            Debug.Log("這是 Host (直連)");   // Host 永遠 Direct
+            Debug.Log("這是 Host (直連)");
         }
         else
         {
@@ -130,29 +119,31 @@ public class GameManager : MonoBehaviour
     public async Task JoinRoom()
     {
         var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
+
+        var sceneManager = networkRunner.gameObject.AddComponent<NetworkSceneManagerDefault>();
+
         var result = await networkRunner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.Client,
             SessionName = RoomName,
             PlayerCount = 4,
             Scene = scene,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>(),
-            //ObjectPool = gameObject.AddComponent<FusionObjectPoolRoot>()
+            SceneManager = sceneManager
         });
+
+        Debug.Log($"[JoinRoom] Runner Mode: {networkRunner.Mode}, LagComp: {networkRunner.LagCompensation}, SceneMgr: {networkRunner.SceneManager}");
 
         if (result.Ok)
         {
             var menuManager = FindObjectOfType<MenuManager>();
-
             menuManager.SwitchMenuType(MenuManager.MenuType.Room);
             menuManager.SetStartBtnVisible(false);
+
             var myRef = networkRunner.LocalPlayer;
             var conn = networkRunner.GetPlayerConnectionType(myRef);
-
             Debug.Log(conn == ConnectionType.Relayed
                       ? "目前使用 Photon 中繼 (Relay)"
                       : "已建立 Client ⇄ Host 直連 (P2P)");
-
         }
         else
         {
@@ -182,13 +173,10 @@ public class GameManager : MonoBehaviour
         var menuManager = FindObjectOfType<MenuManager>();
         menuManager.UpdatePlayerList(playerInfos);
     }
-public void StartGame()
-{
-    networkRunner.LoadScene("Entry");
-    Debug.Log("📦 Host 已執行 LoadScene('Entry')");
-}
 
-
-
-
+    public void StartGame()
+    {
+        networkRunner.LoadScene("Entry");
+        Debug.Log("📦 Host 已執行 LoadScene('Entry')");
+    }
 }
