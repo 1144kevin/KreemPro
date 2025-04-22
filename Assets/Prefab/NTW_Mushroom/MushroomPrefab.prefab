@@ -633,7 +633,7 @@ PrefabInstance:
     - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
         type: 3}
       propertyPath: limitZ.y
-      value: -850
+      value: -750
       objectReference: {fileID: 0}
     - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
         type: 3}
@@ -644,6 +644,16 @@ PrefabInstance:
         type: 3}
       propertyPath: smoothTime
       value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
+        type: 3}
+      propertyPath: middleDuration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
+        type: 3}
+      propertyPath: clampSmoothTime
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2104474932244183455, guid: 104a8dcde286fca4d9629ed55d0bade7,
         type: 3}

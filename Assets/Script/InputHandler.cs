@@ -33,6 +33,11 @@ public class InputHandler : NetworkBehaviour
     public void OnMove(CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
+        var cam = FindObjectOfType<CameraFollower>();
+        if (cam != null)
+        {
+            cam.EnableCameraClamp();  // 死亡重生時先關掉 clamp
+        }
     }
 
     public void OnDamage(CallbackContext context)
