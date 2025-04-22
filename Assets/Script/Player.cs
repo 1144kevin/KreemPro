@@ -26,43 +26,52 @@ public class Player : NetworkBehaviour
   [SerializeField] private float startGameTime = 2.0f;
   [SerializeField] private TMP_Text kreemText;
 
-
-
- public override void Spawned()
-{
+  private void Awake()
+  {
     CharacterController = GetComponent<NetworkCharacterController>();
     playerRespawn = GetComponent<PlayerRespawn>();
     if (playerRespawn == null)
-        Debug.LogError("PlayerRespawn component not found!");
+    {
+      Debug.LogError("PlayerRespawn component not found!");
+    }
+  }
+
+  public override void Spawned()
+  {
+    if (Object.HasInputAuthority)
+    {
+      // 只有本地玩家的相機會啟用
+      StartCoroutine(EnableStartUI());
+      playerCamera.enabled = true;
+      playerCamera.gameObject.SetActive(true);
+    }
+    else
+    {
+      playerCamera.enabled = false;
+      playerCamera.gameObject.SetActive(false); ;
+    }
 
     CreateKreemUI();
     Health = MaxHealth;
 
-    if (Object.HasStateAuthority)
-        RpcUpdateHealth(Health);
-    else if (HealthBar != null)
-        HealthBar.SetHealth(Health);
+    if (Object.HasStateAuthority){
+      RpcUpdateHealth(Health);
+    }
+    else if (HealthBar != null){
+      HealthBar.SetHealth(Health);
+    }
 
     if (respawnCanvas != null)
-        respawnCanvas.SetActive(false);
+      respawnCanvas.SetActive(false);
+  }
 
-    // ✅ 只對自己的角色啟動相機
-    if (Object.HasInputAuthority)
-        StartCoroutine(EnableCameraAfterTransformReady());
-    else
-    {
-        playerCamera.enabled = false;
-        playerCamera.gameObject.SetActive(false);
-    }
-}
-
-[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-public void RpcPlayAttackAnimation(bool isRunning)
-{
+  [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+  public void RpcPlayAttackAnimation(bool isRunning)
+  {
     AnimationHandler.TriggerAttack(isRunning);
-}
+  }
 
- 
+
   // 透過 RPC 同步更新所有客戶端的 HealthBar
   [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
   public void RpcUpdateHealth(int currentHealth)
@@ -90,22 +99,31 @@ public void RpcPlayAttackAnimation(bool isRunning)
     AnimationHandler.PlayerAnimation(input);
   }
 
+  [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+  private void RpcDisableCameraClampClient()
+  {
+    var cam = FindObjectOfType<CameraFollower>();
+    if (cam != null)
+      cam.DisableCameraClamp();
+  }
+
   public override void FixedUpdateNetwork()
   {
     if (Object.HasInputAuthority)
     {
-        // 如果已經收到遊戲結束的 RPC，直接關閉 canvas 並提前返回
-        if (hasGameEnded)
-        {
-            if (respawnCanvas != null && respawnCanvas.activeSelf)
-                respawnCanvas.SetActive(false);
-            return;
-        }
+      // 如果已經收到遊戲結束的 RPC，直接關閉 canvas 並提前返回
+      if (hasGameEnded)
+      {
+        if (respawnCanvas != null && respawnCanvas.activeSelf)
+          respawnCanvas.SetActive(false);
+        return;
+      }
     }
 
     if (Object.HasStateAuthority && Health <= 0 && !isDead)
     {
       isDead = true;
+      RpcDisableCameraClampClient();
       LastDeathPosition = transform.position;
       playerRespawn.RpcSetPlayerVisibility(false);
       if (playerRespawn.KreemPrefab != null)
@@ -120,11 +138,11 @@ public void RpcPlayAttackAnimation(bool isRunning)
       previousButton = data.buttons;
 
       // 播放攻擊動畫（只針對本地玩家）
-    if (Object.HasStateAuthority && buttonPressed.IsSet((int)InputButton.ATTACK) && Health > 0)
-    {
+      if (Object.HasStateAuthority && buttonPressed.IsSet((int)InputButton.ATTACK) && Health > 0)
+      {
         bool isRunning = data.direction.magnitude > 0.1f;
         RpcPlayAttackAnimation(isRunning);
-    }
+      }
       if (Health > 0)
       {
         data.direction.Normalize();
@@ -239,29 +257,14 @@ public void RpcPlayAttackAnimation(bool isRunning)
   }
   
 
-  private IEnumerator EnableCameraAfterTransformReady()
+  private IEnumerator EnableStartUI()
 {
-    // 等待 transform 初始化完成（避免為 Vector3.zero）
-    while (transform.position.sqrMagnitude < 10f)
-        yield return null;
-
-    var follower = playerCamera.GetComponent<CameraFollower>();
-    Vector3 offset = follower != null ? follower.offset : new Vector3(0, -800, 500);
-
-    playerCamera.transform.position = transform.position - offset;
-    playerCamera.gameObject.SetActive(true);
-    playerCamera.enabled = true;
-
-    if (follower != null)
-        follower.SetTarget(transform);
-
-    Debug.Log($"📸 相機啟動完成：{transform.position}");
     if (Object.HasInputAuthority)
     {
     var ui = GameObject.Find("StartGameUI");
     if (ui != null)
         ui.SetActive(true);
-        yield return new WaitForSeconds(startGameTime); //  // ✅ 特定秒數後自動隱藏，可自訂秒數
+        yield return new WaitForSeconds(startGameTime); //✅ 特定秒數後自動隱藏，可自訂秒數
         ui.SetActive(false);
     }
 

@@ -529,6 +529,26 @@ PrefabInstance:
       objectReference: {fileID: 5492088683996029954}
     - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
         type: 3}
+      propertyPath: limitX.x
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
+        type: 3}
+      propertyPath: limitX.y
+      value: 2200
+      objectReference: {fileID: 0}
+    - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
+        type: 3}
+      propertyPath: limitZ.x
+      value: -4000
+      objectReference: {fileID: 0}
+    - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
+        type: 3}
+      propertyPath: limitZ.y
+      value: -750
+      objectReference: {fileID: 0}
+    - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
+        type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -553,6 +573,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 813627858756411408, guid: a042fcdfaffcb6345ac5fbb3f6196e77,
         type: 3}
+    - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
+        type: 3}
+      propertyPath: smoothTime
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
+        type: 3}
+      propertyPath: middleDuration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
+        type: 3}
+      propertyPath: clampSmoothTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
+        type: 3}
+      propertyPath: followSmoothTime
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2578045407947020984, guid: b6d778c50bf6d3f45bac856613247392,
         type: 3}
       propertyPath: m_NormalizedViewPortRect.x

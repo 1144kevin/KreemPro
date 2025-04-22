@@ -144,13 +144,14 @@ public class RankingManager : NetworkBehaviour
         restartButton.interactable = false;
     }
 
-    private void OnReturnClicked()
+    public void OnReturnClicked()
     {
-        Runner.Shutdown();
-        SceneManager.LoadScene("Entry");
+        if (Object.HasStateAuthority)
+        {
+            Runner.Shutdown();
+        }
+        SceneManager.LoadScene("main menu"); // ✅ 實際主選單場景名稱
     }
-
-
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     private void RpcVoteRestart(PlayerRef player)
