@@ -2,10 +2,22 @@ using UnityEngine;
 using Fusion;
 using static UnityEngine.InputSystem.InputAction;
 
+
 public class InputHandler : NetworkBehaviour
 {
-    private Vector2 moveInput; // 儲存移動輸入
+    private Vector2 moveInput;
+    private bool damageTriggered;
+    public bool respawnTrigger;
+
+    public bool inputEnabled = true; // ✅ 改為非靜態（每位玩家自己有自己的值）
+
     private bool attackInput;
+
+    public void DisableInput()
+    {
+        inputEnabled = false;
+    }
+
     public override void Spawned()
     {
         if (Runner.LocalPlayer != Object.InputAuthority) return;
@@ -21,34 +33,68 @@ public class InputHandler : NetworkBehaviour
     }
     public void OnMove(CallbackContext context)
     {
-        //Debug.Log("move");
         moveInput = context.ReadValue<Vector2>();
+        var cam = FindObjectOfType<CameraFollower>();
+        if (cam != null)
+        {
+            cam.EnableCameraClamp();  // 死亡重生時先關掉 clamp
+        }
     }
-    public void OnAttack(CallbackContext context)
+
+    public void OnDamage(CallbackContext context)
     {
-        //Debug.Log("attack");
-        
         if (context.performed)
         {
-            attackInput = true;  
+            damageTriggered = true;
         }
     }
-    public void OnInput(NetworkRunner runner, NetworkInput input)
+
+    // Respawn Action 的回呼
+    public void OnRespawn(CallbackContext context)
     {
+        if (context.performed)
+        {
+            respawnTrigger = true;
+        }
+    }
+
+    public void OnAttack(CallbackContext context)
+    {
+        if (context.performed)
+        {
+            attackInput = true;
+        }
+    }
+public void OnInput(NetworkRunner runner, NetworkInput input)
+{
+    if (!inputEnabled)
+    {
+        input.Set(new NetworkInputData());
+        return;
+    }
+
+    var buttons = new NetworkButtons();
+
         var data = new NetworkInputData
         {
-            direction = new Vector3(moveInput.x, 0, moveInput.y)
-            
+            direction = new Vector3(moveInput.x, 0, moveInput.y),
+            damageTrigger = damageTriggered,
+            respawnTrigger = respawnTrigger,
+            buttons = buttons,
         };
-        
-        if (attackInput)  
-        {   
-            data.buttons.Set(InputButton.ATTACK,attackInput);
-            attackInput=false;
-        }
-        // data.buttons.Set(InputButton.ATTACK,Input.GetMouseButton(0));//接收left mouse的資訊，不是從player input取得
 
-        input.Set(data);
-    }
+        if (attackInput)
+        {
+            data.buttons.Set(InputButton.ATTACK, attackInput);
+            attackInput = false;
+        }
+
+    input.Set(data);
+
+    // Reset one-time triggers
+    damageTriggered = false;
+    respawnTrigger = false;
+}
+
 }
 

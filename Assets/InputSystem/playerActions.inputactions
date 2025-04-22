@@ -33,9 +33,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SpinnerButton",
+                    "name": "Damage",
                     "type": "Button",
-                    "id": "ae718684-1015-4bff-921b-598afdb271b0",
+                    "id": "38a858b0-3285-4e3b-a01b-d4b6e7f1831f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -57,18 +57,7 @@
                 {
                     "name": "",
                     "id": "59798400-0465-449f-88bf-18b72c75b553",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a2f75e11-7c61-42b3-8714-234c18828c63",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -156,7 +145,7 @@
                 {
                     "name": "",
                     "id": "853d3eb1-6c4b-44e4-819b-a369d95f49bb",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -166,23 +155,23 @@
                 },
                 {
                     "name": "",
-                    "id": "c4de2657-69ce-4f14-98b0-00f324cce623",
-                    "path": "<Keyboard>/z",
+                    "id": "09d30ad4-8ae5-4fc5-9d5f-94a48eb1e889",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SpinnerButton",
+                    "action": "Damage",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "e17ffe8f-2329-47de-8f3d-f17b03be4eef",
-                    "path": "<Gamepad>/buttonNorth",
+                    "id": "1b179484-14e3-40c4-b736-868eaaa794fb",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SpinnerButton",
+                    "action": "Damage",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

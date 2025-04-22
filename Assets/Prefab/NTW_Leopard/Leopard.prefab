@@ -55475,10 +55475,10 @@ GameObject:
   - component: {fileID: 2671096231107283494}
   - component: {fileID: 146294530410132869}
   - component: {fileID: 3692949743914113549}
+  - component: {fileID: 4800788808689059486}
   - component: {fileID: 6092540764630253508}
   - component: {fileID: 5234637200740984264}
   - component: {fileID: 2318542275950621373}
-  - component: {fileID: 4800788808689059486}
   - component: {fileID: 3081006358723203401}
   - component: {fileID: 6130702119375938702}
   - component: {fileID: 2450094955258058720}
@@ -55564,9 +55564,9 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 3692949743914113549}
+  - {fileID: 4800788808689059486}
   - {fileID: 6092540764630253508}
   - {fileID: 2318542275950621373}
-  - {fileID: 4800788808689059486}
   - {fileID: 6130702119375938702}
   ForceRemoteRenderTimeframe: 0
 --- !u!143 &146294530410132869
@@ -55614,6 +55614,19 @@ MonoBehaviour:
   braking: 1000
   maxSpeed: 300
   rotationSpeed: 15
+--- !u!114 &4800788808689059486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5821481182043834604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f4da05df36c97a4f9591d5ac60c98eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnTrigger: 0
 --- !u!114 &6092540764630253508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55626,7 +55639,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e6d88210b7485b468247b4690fc9567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InputHandler: {fileID: 0}
   CharacterController: {fileID: 6134804354763863802, guid: b3a49e98548c82f4286bb5b9a0cd6339,
     type: 3}
   MaxHealth: 100
@@ -55635,6 +55647,8 @@ MonoBehaviour:
   AnimationHandler: {fileID: 5139318794833937522, guid: b3a49e98548c82f4286bb5b9a0cd6339,
     type: 3}
   Speed: 50
+  playerCamera: {fileID: 0}
+  respawnCanvas: {fileID: 0}
 --- !u!114 &5234637200740984264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -55672,18 +55686,6 @@ MonoBehaviour:
   Offset: {x: 0, y: 1, z: 0}
   GizmosColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   Hitboxes: []
---- !u!114 &4800788808689059486
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5821481182043834604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f4da05df36c97a4f9591d5ac60c98eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3081006358723203401
 MonoBehaviour:
   m_ObjectHideFlags: 0

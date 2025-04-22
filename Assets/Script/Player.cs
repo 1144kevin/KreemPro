@@ -1,5 +1,9 @@
 using Fusion;
 using UnityEngine;
+using TMPro;
+using System.Collections;
+using UnityEngine.SceneManagement;
+using ExitGames.Client.Photon.StructWrapping; // ← 加這個
 
 public class Player : NetworkBehaviour
 {
@@ -9,89 +13,264 @@ public class Player : NetworkBehaviour
   [SerializeField] private AttackHandler AttackHandler;
   [SerializeField] private AnimationHandler AnimationHandler;
   [SerializeField] private float Speed = 500f;
-  [SerializeField] private Camera playerCamera;
-
   [Networked] private int Health { get; set; }
+  [Networked] private bool isDead { get; set; } = false;
   [Networked] private NetworkButtons previousButton { get; set; }
-
-  private int lastHealth; // 用於檢測健康值是否變化
+  [SerializeField] private Camera playerCamera;
+  [SerializeField] private GameObject respawnCanvas;
+  [Networked] private Vector3 LastDeathPosition { get; set; }
+  private bool hasGameEnded = false;
+  [Networked] public int kreemCollect { get; set; } = 0;
+  private PlayerRespawn playerRespawn;
+  private bool lastMoving = false;
+  [SerializeField] private float startGameTime = 2.0f;
+  [SerializeField] private TMP_Text kreemText;
 
   private void Awake()
   {
     CharacterController = GetComponent<NetworkCharacterController>();
-    AttackHandler= GetComponent<AttackHandler>();
+    playerRespawn = GetComponent<PlayerRespawn>();
+    if (playerRespawn == null)
+    {
+      Debug.LogError("PlayerRespawn component not found!");
+    }
   }
+
   public override void Spawned()
   {
     if (Object.HasInputAuthority)
     {
-      playerCamera.gameObject.SetActive(true);
+      // 只有本地玩家的相機會啟用
+      StartCoroutine(EnableStartUI());
       playerCamera.enabled = true;
+      playerCamera.gameObject.SetActive(true);
     }
     else
     {
-      playerCamera.gameObject.SetActive(false);
       playerCamera.enabled = false;
+      playerCamera.gameObject.SetActive(false); ;
     }
 
+    CreateKreemUI();
     Health = MaxHealth;
-    lastHealth = Health; // 初始化健康值記錄
-    UpdateHealth(); // 初始更新血條
 
+    if (Object.HasStateAuthority){
+      RpcUpdateHealth(Health);
+    }
+    else if (HealthBar != null){
+      HealthBar.SetHealth(Health);
+    }
+
+    if (respawnCanvas != null)
+      respawnCanvas.SetActive(false);
+  }
+
+  [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+  public void RpcPlayAttackAnimation(bool isRunning)
+  {
+    AnimationHandler.TriggerAttack(isRunning);
+  }
+
+
+  // 透過 RPC 同步更新所有客戶端的 HealthBar
+  [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+  public void RpcUpdateHealth(int currentHealth)
+  {
+    if (HealthBar != null)
+    {
+      HealthBar.SetHealth(currentHealth);
+    }
+  }
+
+  [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+  public void RpcSetGameEnded()
+  {
+    hasGameEnded = true;  // 直接更新本地旗標，不使用 Networked localGameEnded
+    if (respawnCanvas != null && respawnCanvas.activeSelf)
+    {
+      respawnCanvas.SetActive(false);
+    }
+    Debug.Log($"[RPC] 玩家 {Object.InputAuthority} 遊戲結束，已關閉 respawnCanvas");
+  }
+
+  [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+  public void RpcUpdateAnimationState(Vector3 input)
+  {
+    AnimationHandler.PlayerAnimation(input);
+  }
+
+  [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+  private void RpcDisableCameraClampClient()
+  {
+    var cam = FindObjectOfType<CameraFollower>();
+    if (cam != null)
+      cam.DisableCameraClamp();
   }
 
   public override void FixedUpdateNetwork()
   {
+    if (Object.HasInputAuthority)
+    {
+      // 如果已經收到遊戲結束的 RPC，直接關閉 canvas 並提前返回
+      if (hasGameEnded)
+      {
+        if (respawnCanvas != null && respawnCanvas.activeSelf)
+          respawnCanvas.SetActive(false);
+        return;
+      }
+    }
+
+    if (Object.HasStateAuthority && Health <= 0 && !isDead)
+    {
+      isDead = true;
+      RpcDisableCameraClampClient();
+      LastDeathPosition = transform.position;
+      playerRespawn.RpcSetPlayerVisibility(false);
+      if (playerRespawn.KreemPrefab != null)
+      {
+        Runner.Spawn(playerRespawn.KreemPrefab, LastDeathPosition, Quaternion.identity, default(PlayerRef));
+      }
+    }
+
     if (GetInput(out NetworkInputData data))
     {
+      var buttonPressed = data.buttons.GetPressed(previousButton);
       previousButton = data.buttons;
 
-      data.direction.Normalize();
-      CharacterController.Move(Speed * data.direction * Runner.DeltaTime);
+      // 播放攻擊動畫（只針對本地玩家）
+      if (Object.HasStateAuthority && buttonPressed.IsSet((int)InputButton.ATTACK) && Health > 0)
+      {
+        bool isRunning = data.direction.magnitude > 0.1f;
+        RpcPlayAttackAnimation(isRunning);
+      }
+      if (Health > 0)
+      {
+        data.direction.Normalize();
+        CharacterController.Move(Speed * data.direction * Runner.DeltaTime);
 
-      AnimationHandler.PlayerAnimation(data.direction);
-      
+        bool currentMoving = data.direction.magnitude > 0.1f;
+
+        if (Object.HasStateAuthority && currentMoving != lastMoving)
+        {
+          lastMoving = currentMoving;
+          RpcUpdateAnimationState(currentMoving ? data.direction : Vector3.zero);
+        }
+        if (Object.HasInputAuthority)
+        {
+          AnimationHandler.PlayerAnimation(data.direction);
+        }
+      }
+
       if (data.buttons.IsSet(InputButton.ATTACK))
       {
         AttackHandler.Attack();
       }
+
+      if (data.damageTrigger && Health > 0)
+      {
+        TakeDamage(10);
+      }
+
+      if (Object.HasInputAuthority && Health <= 0 && data.respawnTrigger)
+      {
+        playerRespawn.RpcRequestRespawn();
+      }
     }
-    // 健康值變化檢測
-    if (Health != lastHealth)
+
+    if (Object.HasInputAuthority)
     {
-      UpdateHealth();
-      lastHealth = Health; // 更新記錄的健康值
+      if (Health <= 0)
+      {
+        if (respawnCanvas != null && !respawnCanvas.activeSelf)
+          respawnCanvas.SetActive(true);
+      }
+      else
+      {
+        if (respawnCanvas != null && respawnCanvas.activeSelf)
+          respawnCanvas.SetActive(false);
+      }
     }
-    if (Health <= 0)
+  }
+
+  private void LateUpdate()
+  {
+    // 不管是哪一端都跑，顯示頭上數字
+    if (kreemText != null)
     {
-      Dead();
-    }
-    if (Input.GetKey(KeyCode.Space))
-    {
-      TakeDamage(10);
+      kreemText.text = kreemCollect.ToString();
     }
   }
 
   public void TakeDamage(int damage)
   {
+    if (!Object.HasStateAuthority) return;
+
     Health -= damage;
-    Health = Mathf.Clamp(Health, 0, MaxHealth); // 確保健康值範圍
+    Health = Mathf.Clamp(Health, 0, MaxHealth);
     Debug.Log("hit");
+
+    RpcUpdateHealth(Health);
   }
 
-  private void Dead()
+  // 當重生完成後，重置 Health 與死亡狀態，並顯示角色
+  public void SetHealthToMax()
   {
+    if (!Object.HasStateAuthority) return;
     Health = MaxHealth;
-    CharacterController.transform.position = new Vector3(0, 0, 0);
+    isDead = false;
+    RpcUpdateHealth(Health);
+    playerRespawn.RpcSetPlayerVisibility(true);
   }
 
-  // private static void HealthChanged(Changed<Player> changed)
-  // {
-  //   changed.Behaviour.UpdateHealth();
-  // }
-
-  private void UpdateHealth()
+  // 給 Server 呼叫的加分邏輯
+  public void ServerAddKreem()
   {
-    HealthBar.SetHealth(Health);
+    if (!Object.HasStateAuthority) return;
+
+    kreemCollect++;
+    Debug.Log($"[Server] 玩家 {Object.InputAuthority} 撿到 Kreem：{kreemCollect}");
   }
+
+  private void CreateKreemUI()
+  {
+    var canvas = GetComponentInChildren<Canvas>(true);
+    if (canvas != null)
+    {
+      var tmps = canvas.GetComponentsInChildren<TMP_Text>(true);
+      foreach (var tmp in tmps)
+      {
+        if (tmp.name.Contains("Kreem"))
+        {
+          kreemText = tmp;
+          Debug.Log($"[{Object.InputAuthority}] 成功綁定 TMP_Text：{kreemText.name} 在物件 {name}");
+          break;
+        }
+      }
+
+      if (kreemText == null)
+        Debug.LogWarning($"[{Object.InputAuthority}] 找不到 KreemText 在物件 {name}");
+    }
+    else
+    {
+      Debug.LogWarning("找不到 Canvas");
+    }
+  }
+  
+
+  private IEnumerator EnableStartUI()
+{
+    if (Object.HasInputAuthority)
+    {
+    var ui = GameObject.Find("StartGameUI");
+    if (ui != null)
+        ui.SetActive(true);
+        yield return new WaitForSeconds(startGameTime); //✅ 特定秒數後自動隱藏，可自訂秒數
+        ui.SetActive(false);
+    }
+
+}
+
+
+    
+
 }

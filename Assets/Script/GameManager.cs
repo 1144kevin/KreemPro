@@ -3,12 +3,13 @@ using System.Threading.Tasks;
 using Fusion;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
 
-    [SerializeField]
-    private NetworkRunner networkRunner;
+    public NetworkRunner networkRunner;
 
     [SerializeField]
     private NetworkEvents networkEvents;
@@ -25,6 +26,12 @@ public class GameManager : MonoBehaviour
     public Dictionary<PlayerRef, PlayerNetworkData> PlayerList => playerList;
     private Dictionary<PlayerRef, PlayerNetworkData> playerList = new Dictionary<PlayerRef, PlayerNetworkData>();
 
+    public struct PlayerDisplayInfo
+    {
+        public string Name;
+        public int CharacterIndex;
+    }
+
     private void Awake()//單例模式
     {
         if (Instance == null)
@@ -33,6 +40,7 @@ public class GameManager : MonoBehaviour
             networkEvents.PlayerJoined.AddListener(OnPlayerJoined);
             networkEvents.PlayerLeft.AddListener(OnPlayerLeft);
             DontDestroyOnLoad(gameObject);
+        // ✅ 監聽場景切換事件
         }
         else
         {
@@ -57,13 +65,26 @@ public class GameManager : MonoBehaviour
     }
     private void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
+        // Host 執行移除玩家資料
         if (playerList.TryGetValue(player, out var playerNetworkData))
         {
             runner.Despawn(playerNetworkData.Object);
             playerList.Remove(player);
         }
 
-    }
+}
+// public  void OnShutdown()
+// {
+//     Debug.LogWarning("❗ Fusion Shutdown 被呼叫（可能是 Host 離開）");
+
+//     if (!networkRunner.IsServer)
+//     {
+//         Debug.Log("📌 Client 偵測 Host 離線，自動跳轉 Entry Scene");
+//         SceneManager.LoadScene("Entry");
+//     }
+// }
+
+
     private async void Start()
     {
 
@@ -101,6 +122,7 @@ public class GameManager : MonoBehaviour
 
             menuManager.SwitchMenuType(MenuManager.MenuType.Room);
             menuManager.SetStartBtnVisible(true);
+            Debug.Log("這是 Host (直連)");   // Host 永遠 Direct
         }
         else
         {
@@ -127,6 +149,13 @@ public class GameManager : MonoBehaviour
 
             menuManager.SwitchMenuType(MenuManager.MenuType.Room);
             menuManager.SetStartBtnVisible(false);
+            var myRef = networkRunner.LocalPlayer;
+            var conn = networkRunner.GetPlayerConnectionType(myRef);
+
+            Debug.Log(conn == ConnectionType.Relayed
+                      ? "目前使用 Photon 中繼 (Relay)"
+                      : "已建立 Client ⇄ Host 直連 (P2P)");
+
         }
         else
         {
@@ -136,18 +165,33 @@ public class GameManager : MonoBehaviour
 
     public void UpdatePlayerList()
     {
-        var playerNames = new List<string>();
-        foreach (var playerNetworkData in playerList.Values)
+        var playerInfos = new List<PlayerDisplayInfo>();
+
+        foreach (var kvp in playerList)
         {
-            playerNames.Add(playerNetworkData.PlayerName);
+            var playerRef = kvp.Key;
+            var playerData = kvp.Value;
+            int characterIndex = playerData.SelectedCharacterIndex;
+            int playerId = playerRef.PlayerId;
+
+            string displayName = $"{playerData.PlayerName} (Player {playerId})";
+            playerInfos.Add(new PlayerDisplayInfo
+            {
+                Name = displayName,
+                CharacterIndex = characterIndex
+            });
         }
 
         var menuManager = FindObjectOfType<MenuManager>();
-        menuManager.UpdatePlayerList(playerNames);
+        menuManager.UpdatePlayerList(playerInfos);
     }
-    public void StartGame()
-    {
-        networkRunner.LoadScene(SceneRef.FromIndex(2));//場景管理器待修
-    }
+public void StartGame()
+{
+    networkRunner.LoadScene("Entry");
+    Debug.Log("📦 Host 已執行 LoadScene('Entry')");
+}
+
+
+
 
 }
