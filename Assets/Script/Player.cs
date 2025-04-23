@@ -100,7 +100,7 @@ public class Player : NetworkBehaviour
   }
 
   [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
-  private void RpcDisableCameraClampClient()
+  public void RpcDisableCameraClampClient()
   {
     var cam = FindObjectOfType<CameraFollower>();
     if (cam != null)
@@ -123,7 +123,6 @@ public class Player : NetworkBehaviour
     if (Object.HasStateAuthority && Health <= 0 && !isDead)
     {
       isDead = true;
-      RpcDisableCameraClampClient();
       LastDeathPosition = transform.position;
       playerRespawn.RpcSetPlayerVisibility(false);
       if (playerRespawn.KreemPrefab != null)
@@ -174,6 +173,7 @@ public class Player : NetworkBehaviour
       if (Object.HasInputAuthority && Health <= 0 && data.respawnTrigger)
       {
         playerRespawn.RpcRequestRespawn();
+        RpcDisableCameraClampClient();
       }
     }
 

@@ -17,6 +17,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
     private bool inputActive = true;
     public RectTransform countdownTextRect;
     [SerializeField] private PlayerRespawn playerRespawn;
+    [SerializeField] private Player player;
     [SerializeField] private RespawnCountdown respawnCountdown;
     private bool errorTriggered = false;
 
@@ -110,6 +111,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
                     if (Object.HasInputAuthority)
                     {
                         playerRespawn.RpcRequestRespawn();
+                        player.RpcDisableCameraClampClient();
                     }
                     return;
                 }
@@ -120,6 +122,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
                 if (Object.HasInputAuthority)
                 {
                     playerRespawn.RpcRequestRespawn();
+                    player.RpcDisableCameraClampClient();
                 }
                 return;
             }
@@ -151,6 +154,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
             if (Object.HasInputAuthority)
             {
                 playerRespawn.RpcRequestRespawn();
+                player.RpcDisableCameraClampClient();
             }
         }
 
@@ -161,6 +165,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
             if (Object.HasInputAuthority)
             {
                 playerRespawn.RpcRequestRespawn();
+                player.RpcDisableCameraClampClient();
             }
         }
     }
@@ -188,6 +193,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
                 if (Object.HasInputAuthority)
                 {
                     playerRespawn.RpcRequestRespawn();
+                    player.RpcDisableCameraClampClient();
                 }
             }
         }
