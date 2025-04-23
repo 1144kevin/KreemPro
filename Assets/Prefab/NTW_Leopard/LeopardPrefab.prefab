@@ -912,8 +912,64 @@ PrefabInstance:
       objectReference: {fileID: 5024815216799105743}
     - target: {fileID: 1240711482540135049, guid: a769b7ab851328341a9b26c206ea5f5e,
         type: 3}
+      propertyPath: limitX.x
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 1240711482540135049, guid: a769b7ab851328341a9b26c206ea5f5e,
+        type: 3}
+      propertyPath: limitX.y
+      value: 2200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1240711482540135049, guid: a769b7ab851328341a9b26c206ea5f5e,
+        type: 3}
+      propertyPath: limitZ.x
+      value: -4000
+      objectReference: {fileID: 0}
+    - target: {fileID: 1240711482540135049, guid: a769b7ab851328341a9b26c206ea5f5e,
+        type: 3}
+      propertyPath: limitZ.y
+      value: -750
+      objectReference: {fileID: 0}
+    - target: {fileID: 1240711482540135049, guid: a769b7ab851328341a9b26c206ea5f5e,
+        type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1240711482540135049, guid: a769b7ab851328341a9b26c206ea5f5e,
+        type: 3}
+      propertyPath: smoothTime
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1240711482540135049, guid: a769b7ab851328341a9b26c206ea5f5e,
+        type: 3}
+      propertyPath: xThreshold
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 1240711482540135049, guid: a769b7ab851328341a9b26c206ea5f5e,
+        type: 3}
+      propertyPath: zThreshold
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 1240711482540135049, guid: a769b7ab851328341a9b26c206ea5f5e,
+        type: 3}
+      propertyPath: mapBoundsObject
+      value: 
+      objectReference: {fileID: 813627858756411408, guid: a042fcdfaffcb6345ac5fbb3f6196e77,
+        type: 3}
+    - target: {fileID: 1240711482540135049, guid: a769b7ab851328341a9b26c206ea5f5e,
+        type: 3}
+      propertyPath: smoothTime
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1240711482540135049, guid: a769b7ab851328341a9b26c206ea5f5e,
+        type: 3}
+      propertyPath: middleDuration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1240711482540135049, guid: a769b7ab851328341a9b26c206ea5f5e,
+        type: 3}
+      propertyPath: clampSmoothTime
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5876568756408119489, guid: a769b7ab851328341a9b26c206ea5f5e,
         type: 3}
@@ -933,7 +989,7 @@ PrefabInstance:
     - target: {fileID: 7648059649406358621, guid: a769b7ab851328341a9b26c206ea5f5e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 800
+      value: 800.00006
       objectReference: {fileID: 0}
     - target: {fileID: 7648059649406358621, guid: a769b7ab851328341a9b26c206ea5f5e,
         type: 3}

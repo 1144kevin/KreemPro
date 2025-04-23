@@ -617,7 +617,63 @@ PrefabInstance:
       objectReference: {fileID: 7641935778578143937}
     - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
         type: 3}
+      propertyPath: limitX.x
+      value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
+        type: 3}
+      propertyPath: limitX.y
+      value: 2200
+      objectReference: {fileID: 0}
+    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
+        type: 3}
+      propertyPath: limitZ.x
+      value: -4000
+      objectReference: {fileID: 0}
+    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
+        type: 3}
+      propertyPath: limitZ.y
+      value: -750
+      objectReference: {fileID: 0}
+    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
+        type: 3}
       propertyPath: _offset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
+        type: 3}
+      propertyPath: smoothTime
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
+        type: 3}
+      propertyPath: xThreshold
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
+        type: 3}
+      propertyPath: zThreshold
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
+        type: 3}
+      propertyPath: mapBoundsObject
+      value: 
+      objectReference: {fileID: 813627858756411408, guid: a042fcdfaffcb6345ac5fbb3f6196e77,
+        type: 3}
+    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
+        type: 3}
+      propertyPath: smoothTime
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
+        type: 3}
+      propertyPath: middleDuration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
+        type: 3}
+      propertyPath: clampSmoothTime
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2104474932244183455, guid: 104a8dcde286fca4d9629ed55d0bade7,

@@ -3,8 +3,9 @@ using UnityEngine;
 
 public enum InputButton
 {
-  ATTACK
+  ATTACK = 0,
 }
+
 public struct NetworkInputData : INetworkInput
 {
   public Vector3 direction;
