@@ -657,17 +657,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
         type: 3}
-      propertyPath: mapBoundsObject
-      value: 
-      objectReference: {fileID: 813627858756411408, guid: a042fcdfaffcb6345ac5fbb3f6196e77,
-        type: 3}
-    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
-        type: 3}
-      propertyPath: smoothTime
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
-        type: 3}
       propertyPath: middleDuration
       value: 2
       objectReference: {fileID: 0}
@@ -676,6 +665,12 @@ PrefabInstance:
       propertyPath: clampSmoothTime
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 29315799761949144, guid: 104a8dcde286fca4d9629ed55d0bade7,
+        type: 3}
+      propertyPath: mapBoundsObject
+      value: 
+      objectReference: {fileID: 813627858756411408, guid: a042fcdfaffcb6345ac5fbb3f6196e77,
+        type: 3}
     - target: {fileID: 2104474932244183455, guid: 104a8dcde286fca4d9629ed55d0bade7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -925,6 +920,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182727989198694733, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: countdownTime
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
