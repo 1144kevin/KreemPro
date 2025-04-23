@@ -25,7 +25,6 @@ public class GameFlowManager : NetworkBehaviour
         {
             remainingTime = matchDuration;
         }
-        AudioManager.Instance.PlayBGM(Resources.Load<AudioClip>("Audio/BackgroundMusic"));
     }
     public override void FixedUpdateNetwork()
     {
