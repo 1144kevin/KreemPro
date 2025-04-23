@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class RankingManager : NetworkBehaviour
 {
@@ -20,6 +21,11 @@ public class RankingManager : NetworkBehaviour
 
     private Dictionary<PlayerRef, bool> restartVotes = new();
 
+
+    private void Start()
+    {
+        EventSystem.current.SetSelectedGameObject(returnButton.gameObject);
+    }
     public override void Spawned()
     {
         // 綁定按鈕事件（每個人都要）

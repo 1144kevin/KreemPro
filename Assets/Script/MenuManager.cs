@@ -34,6 +34,8 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     private Button joinBtn;
     [SerializeField]
+    private Button menuBtn;
+    [SerializeField]
     private Button startBtn;
 
     [SerializeField]
@@ -55,6 +57,13 @@ public class MenuManager : MonoBehaviour
 
         EventSystem.current.SetSelectedGameObject(firstCharacterButton.gameObject);
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            menuBtn.OnSubmit(new BaseEventData(EventSystem.current));
+        }
+    }
     private void OnDestroy()
     {
         createBtn.onClick.RemoveAllListeners();
@@ -65,16 +74,16 @@ public class MenuManager : MonoBehaviour
     private async void OnCreateBtnClicked()
     {
         GameManager.Instance.PlayerName = playerName;
-        GameManager.Instance.RoomName = "Kreem22";
+        GameManager.Instance.RoomName = "Kreem-1";
+        createBtn.interactable = false;
         await GameManager.Instance.CreateRoom();
-
     }
     private async void OnJoinBtnClicked()
     {
         GameManager.Instance.PlayerName = playerName;
-        GameManager.Instance.RoomName = "Kreem22";
+        GameManager.Instance.RoomName = "Kreem-1";
+        joinBtn.interactable = false;
         await GameManager.Instance.JoinRoom();
-
     }
 
     public void OnConfirmCharacterSelected()
@@ -134,6 +143,7 @@ public class MenuManager : MonoBehaviour
     {
         GameManager.Instance.StartGame();
         Debug.Log("Start");
+        startBtn.interactable = false;
     }
     public void SetStartBtnVisible(bool isVisible)
     {
