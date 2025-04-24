@@ -34,8 +34,6 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     private Button joinBtn;
     [SerializeField]
-    private Button menuBtn;
-    [SerializeField]
     private Button startBtn;
 
     [SerializeField]
@@ -56,13 +54,6 @@ public class MenuManager : MonoBehaviour
         startBtn.onClick.AddListener(OnStartBtnClicked);
 
         EventSystem.current.SetSelectedGameObject(firstCharacterButton.gameObject);
-    }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            menuBtn.OnSubmit(new BaseEventData(EventSystem.current));
-        }
     }
     private void OnDestroy()
     {
