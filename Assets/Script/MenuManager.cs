@@ -151,7 +151,7 @@ public class MenuManager : MonoBehaviour
             case MenuType.Room:
                 menuPanel.SetActive(false);
                 roomPanel.SetActive(true);
-                EventSystem.current.SetSelectedGameObject(startBtn.gameObject);
+                EventSystem.current.SetSelectedGameObject(playerListContent.gameObject);
                 break;
             default:
                 break;
