@@ -10,13 +10,6 @@ public class AudioManager : MonoBehaviour
   [SerializeField] private AudioMixer mainMixer;
   [SerializeField] private AudioSource bgmSource;
   [SerializeField] private AudioSource sfxSource;
-
-  [Header("Clips")]
-  public AudioClip uiClick;
-  public AudioClip damage;
-  public AudioClip respawnInput;
-  public AudioClip respawnSuccess;
-
   private AudioSource loopingSfxSource;
 
   void Awake()
@@ -29,11 +22,13 @@ public class AudioManager : MonoBehaviour
     Instance = this;
     DontDestroyOnLoad(gameObject);
     SceneManager.sceneUnloaded += OnSceneUnloaded;
+    SceneManager.sceneLoaded += OnSceneLoaded;
   }
 
   private void OnDestroy()
   {
     SceneManager.sceneUnloaded -= OnSceneUnloaded;
+    SceneManager.sceneLoaded -= OnSceneLoaded;
   }
 
   private void OnSceneUnloaded(Scene current)
@@ -41,16 +36,28 @@ public class AudioManager : MonoBehaviour
     StopLoopingSFX();
   }
 
+  private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+  {
+    StopBGM(); // ✅ 每次進入新場景先停止舊 BGM
+  }
+
   /* ---------- Public API ---------- */
   public void PlayBGM(AudioClip clip, float vol = .7f, bool loop = true)
   {
     if (clip == null) return;
-    if (bgmSource.clip == clip && bgmSource.isPlaying) return; // 防止重複播放
-
     bgmSource.clip = clip;
     bgmSource.volume = vol;
     bgmSource.loop = loop;
     bgmSource.Play();
+  }
+
+  public void StopBGM()
+  {
+    if (bgmSource.isPlaying)
+    {
+      bgmSource.Stop();
+      bgmSource.clip = null;
+    }
   }
 
   public void PlaySFX(AudioClip clip, float vol = 1f)

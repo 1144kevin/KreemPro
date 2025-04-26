@@ -116,6 +116,17 @@ PrefabInstance:
       objectReference: {fileID: 6271842765554917136}
     - target: {fileID: 3349936123760886286, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
         type: 3}
+      propertyPath: sceneAudioSetter
+      value: 
+      objectReference: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+        type: 3}
+    - target: {fileID: 3349936123760886286, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
+        type: 3}
+      propertyPath: characterSoundIndex
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3349936123760886286, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
+        type: 3}
       propertyPath: spawnPoints.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -569,17 +580,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
         type: 3}
-      propertyPath: mapBoundsObject
-      value: 
-      objectReference: {fileID: 813627858756411408, guid: a042fcdfaffcb6345ac5fbb3f6196e77,
-        type: 3}
-    - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
-        type: 3}
-      propertyPath: smoothTime
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
-        type: 3}
       propertyPath: middleDuration
       value: 2
       objectReference: {fileID: 0}
@@ -588,6 +588,12 @@ PrefabInstance:
       propertyPath: clampSmoothTime
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
+        type: 3}
+      propertyPath: mapBoundsObject
+      value: 
+      objectReference: {fileID: 813627858756411408, guid: a042fcdfaffcb6345ac5fbb3f6196e77,
+        type: 3}
     - target: {fileID: 895927261291970625, guid: b6d778c50bf6d3f45bac856613247392,
         type: 3}
       propertyPath: followSmoothTime
@@ -956,6 +962,12 @@ PrefabInstance:
       propertyPath: respawnCountdown
       value: 
       objectReference: {fileID: 4415140829531377932}
+    - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: sceneAudioSetter
+      value: 
+      objectReference: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

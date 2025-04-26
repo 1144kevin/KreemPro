@@ -15859,8 +15859,11 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   respawnCanvas: {fileID: 0}
   _kreemCollect: 0
-  kreemUIPrefab: {fileID: 315445804050702509, guid: da143402bf5a8b04384dac63c852c883,
+  startGameTime: 2
+  kreemText: {fileID: 0}
+  sceneAudioSetter: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
     type: 3}
+  characterSoundIndex: 1
 --- !u!114 &1305063026022428405
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15979,6 +15982,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnTrigger: 0
+  inputEnabled: 1
 --- !u!114 &1487303342129193676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16010,6 +16014,7 @@ MonoBehaviour:
     m_Bits: 0
   HitOptions: 13
   damage: 10
+  objectSpawner: {fileID: 0}
 --- !u!114 &8346140986527365185
 MonoBehaviour:
   m_ObjectHideFlags: 0

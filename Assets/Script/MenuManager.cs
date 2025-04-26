@@ -68,7 +68,7 @@ public class MenuManager : MonoBehaviour
         GameManager.Instance.PlayerName = playerName;
         GameManager.Instance.RoomName = "Kreem22";
         await GameManager.Instance.CreateRoom();
-        sceneAudioSetter?.PlayConfirmSound();
+        sceneAudioSetter?.PlayConfirmSound(); 
 
     }
     private async void OnJoinBtnClicked()

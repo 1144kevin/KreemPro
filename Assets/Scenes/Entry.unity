@@ -160,6 +160,11 @@ MonoBehaviour:
   hoverSFX: {fileID: 0}
   confirmSFX: {fileID: 0}
   startSFX: {fileID: 0}
+  dieSFX: {fileID: 0}
+  ringSFX: {fileID: 0}
+  kreemSFX: {fileID: 0}
+  characterAttackSFX: []
+  melodySequences: []
 --- !u!4 &86164989
 Transform:
   m_ObjectHideFlags: 0

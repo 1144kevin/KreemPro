@@ -25,6 +25,8 @@ public class Player : NetworkBehaviour
   private bool lastMoving = false;
   [SerializeField] private float startGameTime = 2.0f;
   [SerializeField] private TMP_Text kreemText;
+  [SerializeField] private SceneAudioSetter sceneAudioSetter;
+  [SerializeField] private int characterSoundIndex = 0; // 攻擊音效用的角色 ID
 
   private void Awake()
   {
@@ -42,6 +44,7 @@ public class Player : NetworkBehaviour
     {
       // 只有本地玩家的相機會啟用
       StartCoroutine(EnableStartUI());
+      sceneAudioSetter?.PlayRingSound(); 
       playerCamera.enabled = true;
       playerCamera.gameObject.SetActive(true);
     }
@@ -54,10 +57,12 @@ public class Player : NetworkBehaviour
     CreateKreemUI();
     Health = MaxHealth;
 
-    if (Object.HasStateAuthority){
+    if (Object.HasStateAuthority)
+    {
       RpcUpdateHealth(Health);
     }
-    else if (HealthBar != null){
+    else if (HealthBar != null)
+    {
       HealthBar.SetHealth(Health);
     }
 
@@ -122,10 +127,12 @@ public class Player : NetworkBehaviour
 
     if (Object.HasStateAuthority && Health <= 0 && !isDead)
     {
+
       isDead = true;
       RpcDisableCameraClampClient();
       LastDeathPosition = transform.position;
       playerRespawn.RpcSetPlayerVisibility(false);
+      sceneAudioSetter?.PlayDieSound();
       if (playerRespawn.KreemPrefab != null)
       {
         Runner.Spawn(playerRespawn.KreemPrefab, LastDeathPosition, Quaternion.identity, default(PlayerRef));
@@ -142,6 +149,14 @@ public class Player : NetworkBehaviour
       {
         bool isRunning = data.direction.magnitude > 0.1f;
         RpcPlayAttackAnimation(isRunning);
+        if (sceneAudioSetter != null) //攻擊音效
+        {
+          var clip = sceneAudioSetter.GetAttackSFXByCharacterIndex(characterSoundIndex);
+          if (clip != null)
+          {
+            AudioManager.Instance.PlaySFX(clip);
+          }
+        }
       }
       if (Health > 0)
       {
@@ -181,8 +196,10 @@ public class Player : NetworkBehaviour
     {
       if (Health <= 0)
       {
+        
         if (respawnCanvas != null && !respawnCanvas.activeSelf)
           respawnCanvas.SetActive(true);
+          
       }
       else
       {
@@ -255,22 +272,22 @@ public class Player : NetworkBehaviour
       Debug.LogWarning("找不到 Canvas");
     }
   }
-  
+
 
   private IEnumerator EnableStartUI()
-{
+  {
     if (Object.HasInputAuthority)
     {
-    var ui = GameObject.Find("StartGameUI");
-    if (ui != null)
+      var ui = GameObject.Find("StartGameUI");
+      if (ui != null)
         ui.SetActive(true);
-        yield return new WaitForSeconds(startGameTime); //✅ 特定秒數後自動隱藏，可自訂秒數
-        ui.SetActive(false);
+      yield return new WaitForSeconds(startGameTime); //✅ 特定秒數後自動隱藏，可自訂秒數
+      ui.SetActive(false);
     }
 
-}
+  }
 
 
-    
+
 
 }

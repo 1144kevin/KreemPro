@@ -1,4 +1,11 @@
 using UnityEngine;
+using System.Collections.Generic;
+
+[System.Serializable]
+public class MelodySequence
+{
+    public AudioClip[] notes; //譜曲包裝容器
+}
 
 public class SceneAudioSetter : MonoBehaviour
 {
@@ -21,6 +28,21 @@ public class SceneAudioSetter : MonoBehaviour
     [SerializeField] private AudioClip hoverSFX;
     [SerializeField] private AudioClip confirmSFX;
     [SerializeField] private AudioClip startSFX;
+    [SerializeField] private AudioClip dieSFX;
+    [SerializeField] private AudioClip ringSFX;
+
+
+    [Header("場上物件")]
+    [SerializeField] private AudioClip kreemSFX;
+
+    [Header("各角色攻擊 SFX（依角色 index）")]
+    [SerializeField] private AudioClip[] characterAttackSFX;
+
+    [Header("復活樂譜")]
+    [SerializeField] private List<MelodySequence> melodySequences;
+
+
+
 
     void Start()
     {
@@ -52,6 +74,14 @@ public class SceneAudioSetter : MonoBehaviour
         }
     }
 
+
+    public void PlayKreemSound()
+    {
+        if (kreemSFX != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(kreemSFX);
+        }
+    }
     public void PlayHoverSound()
     {
         if (hoverSFX != null && AudioManager.Instance != null)
@@ -67,11 +97,45 @@ public class SceneAudioSetter : MonoBehaviour
             AudioManager.Instance.PlaySFX(confirmSFX);
         }
     }
-        public void PlayStartSound()
+    public void PlayStartSound()
     {
-        if (confirmSFX != null && AudioManager.Instance != null)
+        if (startSFX != null && AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX(startSFX);
         }
     }
+    public void PlayRingSound()
+    {
+        if (ringSFX != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(ringSFX);
+        }
+    }
+    public void PlayDieSound()
+    {
+        if (dieSFX != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(dieSFX);
+        }
+    }
+public int GetMelodySequenceCount()
+{
+    return melodySequences.Count;
+}
+
+public AudioClip[] GetMelodySequenceByIndex(int index)
+{
+    if (index < 0 || index >= melodySequences.Count) return null;
+    return melodySequences[index].notes;
+}
+
+
+
+
+    public AudioClip GetAttackSFXByCharacterIndex(int index)
+    {
+        if (index < 0 || index >= characterAttackSFX.Length) return null;
+        return characterAttackSFX[index];
+    }
+
 }

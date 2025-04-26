@@ -8169,6 +8169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e0d1254ce988444292ee23efb8e9d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneAudioSetter: {fileID: 1685195347}
 --- !u!1001 &855578053
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12049,6 +12050,76 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1663505524}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1685195346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1685195348}
+  - component: {fileID: 1685195347}
+  m_Layer: 0
+  m_Name: SceneAudioSetter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1685195347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685195346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c1df28139a613848806793053ad83a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneBGM: {fileID: 8300000, guid: 2756eff9ed321e446892060dc30e800b, type: 3}
+  bgmVolume: 0.7
+  bgmLoop: 1
+  sceneIntroSFX: {fileID: 0}
+  sfxVolume: 1
+  playSFXOnStart: 0
+  loopingSFX: {fileID: 0}
+  loopingSFXVolume: 1
+  playLoopingSFXOnStart: 0
+  hoverSFX: {fileID: 8300000, guid: e77ff96156084f449bc473f4d4ef3c9f, type: 3}
+  confirmSFX: {fileID: 8300000, guid: 5eaa8806eaccfc14487a2f4f219ae1e4, type: 3}
+  startSFX: {fileID: 0}
+  kreemSFX: {fileID: 0}
+  characterAttackSFX:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  melodySequences:
+  - notes:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+--- !u!4 &1685195348
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1685195346}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2199.1484, y: 1100.3113, z: -674.05206}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1768917453
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13225,3 +13296,4 @@ SceneRoots:
   - {fileID: 1356770406}
   - {fileID: 1068531082}
   - {fileID: 1385504429}
+  - {fileID: 1685195348}

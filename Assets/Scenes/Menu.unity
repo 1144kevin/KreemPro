@@ -4032,9 +4032,13 @@ MonoBehaviour:
   loopingSFX: {fileID: 0}
   loopingSFXVolume: 5
   playLoopingSFXOnStart: 1
-  hoverSFX: {fileID: 8300000, guid: e77ff96156084f449bc473f4d4ef3c9f, type: 3}
-  confirmSFX: {fileID: 8300000, guid: 53608aaf79028ed49ad3b08d9d85e081, type: 3}
-  startSFX: {fileID: 8300000, guid: b0ca92732e3476a4a8cae3e9fa489fc4, type: 3}
+  hoverSFX: {fileID: 8300000, guid: 4b62438b25456ec42b3845a999de7f50, type: 3}
+  confirmSFX: {fileID: 8300000, guid: 5eaa8806eaccfc14487a2f4f219ae1e4, type: 3}
+  startSFX: {fileID: 8300000, guid: ecd176213e9feac4798a8aa7f918ba4e, type: 3}
+  dieSFX: {fileID: 0}
+  kreemSFX: {fileID: 0}
+  characterAttackSFX: []
+  melodySequences: []
 --- !u!1 &1698576847
 GameObject:
   m_ObjectHideFlags: 0
