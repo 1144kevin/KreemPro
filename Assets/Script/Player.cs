@@ -261,13 +261,24 @@ public class Player : NetworkBehaviour
 {
     if (Object.HasInputAuthority)
     {
-    var ui = GameObject.Find("StartGameUI");
-    if (ui != null)
-        ui.SetActive(true);
-        yield return new WaitForSeconds(startGameTime); //✅ 特定秒數後自動隱藏，可自訂秒數
-        ui.SetActive(false);
-    }
+        var ui = GameObject.Find("StartGameUI");
+        if (ui != null)
+        {
+            ui.SetActive(true);
+            ui.transform.localScale = Vector3.zero; // 先縮到 0 大小
 
+            // 彈出效果（0.5秒放大到正常大小）
+            LeanTween.scale(ui, Vector3.one, 0.3f).setEaseOutBack();
+
+            yield return new WaitForSeconds(startGameTime - 0.2f); // 留時間給縮小動畫
+
+            // 縮小效果（0.5秒縮小到 0）
+            LeanTween.scale(ui, Vector3.zero, 0.2f).setEaseInBack();
+
+            yield return new WaitForSeconds(0.2f); // 等縮小完
+            ui.SetActive(false);
+        }
+    }
 }
 
 

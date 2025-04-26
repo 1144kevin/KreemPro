@@ -65,14 +65,14 @@ public class MenuManager : MonoBehaviour
     private async void OnCreateBtnClicked()
     {
         GameManager.Instance.PlayerName = playerName;
-        GameManager.Instance.RoomName = "Kreem22";
+        GameManager.Instance.RoomName = "Kreem66";
         await GameManager.Instance.CreateRoom();
 
     }
     private async void OnJoinBtnClicked()
     {
         GameManager.Instance.PlayerName = playerName;
-        GameManager.Instance.RoomName = "Kreem22";
+        GameManager.Instance.RoomName = "Kreem66";
         await GameManager.Instance.JoinRoom();
 
     }

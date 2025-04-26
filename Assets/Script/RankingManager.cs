@@ -93,8 +93,7 @@ public class RankingManager : NetworkBehaviour
             .OrderByDescending(kv => kv.Value)
             .Select(kv =>
             {
-                string prefix = kv.Value == max ? "🏆 " : "";
-                return $"{prefix}Player {kv.Key.PlayerId} - {kv.Value} Kreem";
+                return $"Player {kv.Key.PlayerId} - {kv.Value} Kreem";
             });
 
         rankingText.text = string.Join("\n", lines);
@@ -109,7 +108,10 @@ public class RankingManager : NetworkBehaviour
             return;
 
         var ordered = GameResultData.KreemCounts
-                     .OrderByDescending(kv => kv.Value);
+                     .OrderByDescending(kv => kv.Value)
+                     .ToList();
+
+        int highestScore = GameResultData.KreemCounts.Max(kv => kv.Value);
 
         foreach (var kv in ordered)
         {
@@ -126,9 +128,11 @@ public class RankingManager : NetworkBehaviour
                                 ? characterPrefabs[idx]
                                 : null;
 
+            bool isWinner = score == highestScore; // 判斷是否為最高分                    
+
             var entryGO = Instantiate(rankingEntryPrefab, contentParent);
             entryGO.GetComponent<RankingEntryUI>()
-                   .Setup(displayName, score, prefab);
+                   .Setup(displayName, score, prefab,isWinner);
         }
     }
 

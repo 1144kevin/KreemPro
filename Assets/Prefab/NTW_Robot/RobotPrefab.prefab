@@ -362,6 +362,7 @@ MonoBehaviour:
   playerCamera: {fileID: 422290161773047575}
   respawnCanvas: {fileID: 7302330609558429805}
   _kreemCollect: 0
+  startGameTime: 2
   kreemText: {fileID: 0}
 --- !u!114 &5169379578169959142
 MonoBehaviour:
@@ -520,9 +521,9 @@ MonoBehaviour:
   Type: 0
   SphereRadius: 0
   CapsuleRadius: 0
-  BoxExtents: {x: 0, y: 0, z: 0}
+  BoxExtents: {x: 100, y: 100, z: 100}
   CapsuleExtents: 0
-  Offset: {x: 0, y: 0, z: 0}
+  Offset: {x: 0, y: 110, z: 0}
   Root: {fileID: 0}
   GizmosColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!114 &8049165696522912852
@@ -1079,16 +1080,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
         type: 3}
-      propertyPath: _offset.y
-      value: -800
-      objectReference: {fileID: 0}
-    - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
-        type: 3}
-      propertyPath: _offset.z
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
-        type: 3}
       propertyPath: limitX.x
       value: 300
       objectReference: {fileID: 0}
@@ -1106,6 +1097,16 @@ PrefabInstance:
         type: 3}
       propertyPath: limitZ.y
       value: -750
+      objectReference: {fileID: 0}
+    - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
+        type: 3}
+      propertyPath: _offset.y
+      value: -800
+      objectReference: {fileID: 0}
+    - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
+        type: 3}
+      propertyPath: _offset.z
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
         type: 3}
@@ -1169,8 +1170,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
         type: 3}
+      propertyPath: middleDuration
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
+        type: 3}
       propertyPath: borderThreshold
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
+        type: 3}
+      propertyPath: clampSmoothTime
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
         type: 3}
@@ -1178,21 +1189,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 813627858756411408, guid: a042fcdfaffcb6345ac5fbb3f6196e77,
         type: 3}
-    - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
-        type: 3}
-      propertyPath: smoothTime
-      value: 0.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
-        type: 3}
-      propertyPath: middleDuration
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
-        type: 3}
-      propertyPath: clampSmoothTime
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8928411402492357148, guid: b05ae51cebd82884fb015b5bd2ea43ff,
         type: 3}
       propertyPath: m_LocalPosition.x
