@@ -25,9 +25,10 @@ public class RankingEntryUI : MonoBehaviour
   // 新增 prefabRotations 字典
   private static readonly Dictionary<string, Vector3> prefabRotations = new()
   {
-    { "Booker", new Vector3(0, 30, 0) },
+    { "Booker", new Vector3(0, 0, 0) },
     { "Simmons", new Vector3(0, 180, 0) },
-    { "kendall", new Vector3(0, 180, 0) },
+    { "Kendall", new Vector3(0, 180, 0) },
+    {"Kuzma",   new Vector3(0, 180, 0) },
 
   };
 
