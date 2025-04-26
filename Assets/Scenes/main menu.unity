@@ -1175,7 +1175,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 7c55d77650c1a314888f6d5af0179afe,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: -1.5228
+      value: 1.5228
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c55d77650c1a314888f6d5af0179afe,
         type: 3}
@@ -1272,7 +1272,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 7c55d77650c1a314888f6d5af0179afe,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: -1.5228
+      value: 1.5228
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c55d77650c1a314888f6d5af0179afe,
         type: 3}
@@ -6518,7 +6518,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 7c55d77650c1a314888f6d5af0179afe,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: -1.5228
+      value: 1.5228
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c55d77650c1a314888f6d5af0179afe,
         type: 3}
@@ -7005,7 +7005,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 7c55d77650c1a314888f6d5af0179afe,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: -1.5228
+      value: 1.5228
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c55d77650c1a314888f6d5af0179afe,
         type: 3}
@@ -8181,7 +8181,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 7c55d77650c1a314888f6d5af0179afe,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: -1.5228
+      value: 1.5228
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7c55d77650c1a314888f6d5af0179afe,
         type: 3}
@@ -13006,10 +13006,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -3723716726746063996, guid: a31fb8f1c7a2de3499f56de7c8dc8a68,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2136088202}
-    - targetCorrespondingSourceObject: {fileID: -3723716726746063996, guid: a31fb8f1c7a2de3499f56de7c8dc8a68,
-        type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2136088201}
   m_SourcePrefab: {fileID: 100100000, guid: a31fb8f1c7a2de3499f56de7c8dc8a68, type: 3}
 --- !u!1 &2136088199 stripped
@@ -13045,18 +13041,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.29
   m_Center: {x: 0, y: 0.000000012579514, z: 0.23028356}
---- !u!114 &2136088202
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2136088199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ebcbc8e2c2d01441a6490ac0ad577c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &2136088203
 Animator:
   serializedVersion: 7

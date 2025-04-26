@@ -398,6 +398,18 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerControls
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &2935191528968128729 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3137459636135066201, guid: 62469b7c713ba14479950ae9ffe62f7e,
+    type: 3}
+  m_PrefabInstance: {fileID: 230136366834741888}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048885789007739766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e6d88210b7485b468247b4690fc9567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!198 &3784111835526281450 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 4013347614223256170, guid: 62469b7c713ba14479950ae9ffe62f7e,
@@ -926,6 +938,11 @@ PrefabInstance:
       propertyPath: countdownTime
       value: 3.5
       objectReference: {fileID: 0}
+    - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 2935191528968128729}
     - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
       propertyPath: playerRespawn

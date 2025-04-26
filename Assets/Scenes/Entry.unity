@@ -434,6 +434,8 @@ GameObject:
   - component: {fileID: 1855541252}
   - component: {fileID: 1855541251}
   - component: {fileID: 1855541250}
+  - component: {fileID: 1855541254}
+  - component: {fileID: 1855541255}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -558,6 +560,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1855541254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855541249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7551cd937fd7ae84eb38a9dbbcd67c6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DrawSnapshotHistory: 0
+  DrawBroadphaseNodes: 0
+  StateAuthHitboxCollor: {r: 0, g: 1, b: 0, a: 1}
+  NonStateAuthHitboxCollor: {r: 0, g: 1, b: 1, a: 1}
+--- !u!114 &1855541255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855541249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b5a1ff9dee264bfd829a39e6542dcbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _physicsAuthority: 2
+  _physicsTiming: 3
+  ClientPhysicsSimulation: 0
+  DeltaTimeMultiplier: 1
+  SetUnityFixedTimestep: 0
 --- !u!1 &2095079456
 GameObject:
   m_ObjectHideFlags: 0
