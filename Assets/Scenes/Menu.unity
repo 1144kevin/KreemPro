@@ -2455,10 +2455,10 @@ MonoBehaviour:
   - {fileID: 2260385948649358789}
   - {fileID: 4351695612477352875}
   charactersName:
-  - BOOKER
-  - SIMMONS
-  - KENDALL
-  - KUZMA
+  - Booker
+  - Simmons
+  - Kendall
+  - Kuzma
   charactersNameImage:
   - {fileID: 1289232323}
   - {fileID: 1700613664}

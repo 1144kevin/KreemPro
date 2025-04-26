@@ -673,6 +673,7 @@ MonoBehaviour:
   respawnCanvas: {fileID: 7302330609558429805}
   _kreemCollect: 0
   startGameTime: 2
+  startGameTime: 2
   kreemText: {fileID: 0}
 --- !u!114 &5169379578169959142
 MonoBehaviour:
@@ -1472,6 +1473,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
         type: 3}
+      propertyPath: _offset.y
+      value: -800
+      objectReference: {fileID: 0}
+    - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
+        type: 3}
+      propertyPath: _offset.z
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
+        type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -1534,9 +1545,13 @@ PrefabInstance:
         type: 3}
       propertyPath: middleDuration
       value: 2
+      propertyPath: middleDuration
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
         type: 3}
+      propertyPath: borderThreshold
+      value: 50
       propertyPath: borderThreshold
       value: 50
       objectReference: {fileID: 0}
@@ -1545,6 +1560,12 @@ PrefabInstance:
       propertyPath: clampSmoothTime
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
+        type: 3}
+      propertyPath: mapBoundsObject
+      value: 
+      objectReference: {fileID: 813627858756411408, guid: a042fcdfaffcb6345ac5fbb3f6196e77,
+        type: 3}
     - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
         type: 3}
       propertyPath: mapBoundsObject
