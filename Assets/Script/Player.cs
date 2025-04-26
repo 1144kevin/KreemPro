@@ -99,14 +99,20 @@ public class Player : NetworkBehaviour
     AnimationHandler.PlayerAnimation(input);
   }
 
-  [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
-  private void RpcDisableCameraClampClient()
+  public void DisableCameraClampClient()
   {
     var cam = FindObjectOfType<CameraFollower>();
     if (cam != null)
       cam.DisableCameraClamp();
   }
 
+  public void Heal(int amount)
+  {
+    if (!Object.HasStateAuthority) return;           // 確保只有 StateAuthority（Host）執行
+    Health = Mathf.Clamp(Health + amount, 0, MaxHealth);
+    RpcUpdateHealth(Health);                        // 同步給所有客戶端
+  }
+  
   public override void FixedUpdateNetwork()
   {
     if (Object.HasInputAuthority)
@@ -119,11 +125,15 @@ public class Player : NetworkBehaviour
         return;
       }
     }
+    if (Object.HasStateAuthority && !isDead && transform.position.y < -400f)
+    {
+      isDead = true;
+      playerRespawn.RpcSetPlayerVisibility(false);
+    }
 
     if (Object.HasStateAuthority && Health <= 0 && !isDead)
     {
       isDead = true;
-      RpcDisableCameraClampClient();
       LastDeathPosition = transform.position;
       playerRespawn.RpcSetPlayerVisibility(false);
       if (playerRespawn.KreemPrefab != null)
@@ -143,7 +153,7 @@ public class Player : NetworkBehaviour
         bool isRunning = data.direction.magnitude > 0.1f;
         RpcPlayAttackAnimation(isRunning);
       }
-      if (Health > 0)
+      if (!isDead)
       {
         data.direction.Normalize();
         CharacterController.Move(Speed * data.direction * Runner.DeltaTime);
@@ -166,20 +176,21 @@ public class Player : NetworkBehaviour
         AttackHandler.Attack();
       }
 
-      if (data.damageTrigger && Health > 0)
+      if (data.damageTrigger && !isDead)
       {
         TakeDamage(10);
       }
 
-      if (Object.HasInputAuthority && Health <= 0 && data.respawnTrigger)
+      if (Object.HasInputAuthority && isDead && data.respawnTrigger)
       {
         playerRespawn.RpcRequestRespawn();
+        DisableCameraClampClient();
       }
     }
 
     if (Object.HasInputAuthority)
     {
-      if (Health <= 0)
+      if (isDead)
       {
         if (respawnCanvas != null && !respawnCanvas.activeSelf)
           respawnCanvas.SetActive(true);
@@ -255,22 +266,22 @@ public class Player : NetworkBehaviour
       Debug.LogWarning("找不到 Canvas");
     }
   }
-  
+
 
   private IEnumerator EnableStartUI()
-{
+  {
     if (Object.HasInputAuthority)
     {
-    var ui = GameObject.Find("StartGameUI");
-    if (ui != null)
+      var ui = GameObject.Find("StartGameUI");
+      if (ui != null)
         ui.SetActive(true);
-        yield return new WaitForSeconds(startGameTime); //✅ 特定秒數後自動隱藏，可自訂秒數
-        ui.SetActive(false);
+      yield return new WaitForSeconds(startGameTime); //✅ 特定秒數後自動隱藏，可自訂秒數
+      ui.SetActive(false);
     }
 
-}
+  }
 
 
-    
+
 
 }

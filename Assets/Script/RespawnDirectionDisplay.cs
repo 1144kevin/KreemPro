@@ -17,6 +17,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
     private bool inputActive = true;
     public RectTransform countdownTextRect;
     [SerializeField] private PlayerRespawn playerRespawn;
+    [SerializeField] private Player player;
     [SerializeField] private RespawnCountdown respawnCountdown;
     private bool errorTriggered = false;
 
@@ -110,6 +111,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
                     if (Object.HasInputAuthority)
                     {
                         playerRespawn.RpcRequestRespawn();
+                        player.DisableCameraClampClient();
                     }
                     return;
                 }
@@ -120,6 +122,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
                 if (Object.HasInputAuthority)
                 {
                     playerRespawn.RpcRequestRespawn();
+                    player.DisableCameraClampClient();
                 }
                 return;
             }
@@ -151,16 +154,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
             if (Object.HasInputAuthority)
             {
                 playerRespawn.RpcRequestRespawn();
-            }
-        }
-
-        if (currentIndex >= sequence.Count)
-        {
-            Debug.Log("所有方向輸入正確，提前復活！");
-            inputActive = false;
-            if (Object.HasInputAuthority)
-            {
-                playerRespawn.RpcRequestRespawn();
+                player.DisableCameraClampClient();
             }
         }
     }
@@ -188,6 +182,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
                 if (Object.HasInputAuthority)
                 {
                     playerRespawn.RpcRequestRespawn();
+                    player.DisableCameraClampClient();
                 }
             }
         }
