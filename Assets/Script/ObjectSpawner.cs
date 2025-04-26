@@ -9,13 +9,14 @@ public class ObjectSpawner : NetworkBehaviour
 
     private readonly HashSet<NetworkObject> spawnedObjects = new HashSet<NetworkObject>();
     
+    
     public void SpawnSphere()
     {
         if (Runner.IsClient) return; // 確保只有伺服器能夠生成物件
-        Debug.Log("shot1");
         
         var obj =Runner.Spawn(shotPrefab, transform.position + Random.insideUnitSphere * 3);
         spawnedObjects.Add(obj);
+        
         // if (obj == null)
         // {
         //     obj = Runner.Spawn(shotPrefab, transform.position + Random.insideUnitSphere * 3);
@@ -38,7 +39,7 @@ public class ObjectSpawner : NetworkBehaviour
         {
             Runner.Despawn(obj);
         }
-        Debug.Log("despawn");
+        
         spawnedObjects.Clear();
     }
 }

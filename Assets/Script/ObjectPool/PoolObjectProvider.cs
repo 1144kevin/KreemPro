@@ -29,7 +29,6 @@ public class PoolObjectProvider : Fusion.Behaviour, INetworkObjectProvider
         NetworkPrefabId contextPrefabId)
     {
         var result = default(NetworkObject);
-        Debug.Log("work1");
         // Found free queue for prefab AND the queue is not empty. Return free object.
         if (_free.TryGetValue(contextPrefabId, out var freeQ))
         {
@@ -61,7 +60,6 @@ public class PoolObjectProvider : Fusion.Behaviour, INetworkObjectProvider
             return;
         }
         
-        Debug.Log("work2");
         // Free queue found. Should cache.
         freeQ.Enqueue(instance);
 
@@ -77,7 +75,6 @@ public class PoolObjectProvider : Fusion.Behaviour, INetworkObjectProvider
     {
         
         instance = null;
-        Debug.Log("work3");
         if (DelayIfSceneManagerIsBusy && runner.SceneManager.IsBusy) {
             return NetworkObjectAcquireResult.Retry;
         }
@@ -112,7 +109,6 @@ public class PoolObjectProvider : Fusion.Behaviour, INetworkObjectProvider
     public void ReleaseInstance(NetworkRunner runner, in NetworkObjectReleaseContext context)
     {
         var instance = context.Object;
-        Debug.Log("work4");
         // Only pool prefabs.
         if (!context.IsBeingDestroyed) {
             if (context.TypeId.IsPrefab) {

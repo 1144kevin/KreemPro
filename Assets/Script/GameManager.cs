@@ -87,6 +87,7 @@ public class GameManager : MonoBehaviour
 
     private async void Start()
     {
+
         var result = await networkRunner.JoinSessionLobby(SessionLobby.ClientServer);
 
         if (result.Ok)
@@ -95,9 +96,11 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("shit");
+            Debug.LogError("Failed to join lobby");
         }
+
     }
+
 
     public async Task CreateRoom()
     {
