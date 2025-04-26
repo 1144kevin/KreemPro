@@ -241,6 +241,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 3839229069105626213}
+    - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
       propertyPath: playerRespawn
       value: 
       objectReference: {fileID: 5162450907750788535}
@@ -557,7 +562,7 @@ PrefabInstance:
     - target: {fileID: 146294530410132869, guid: 8a898734291f1c645bd11fe8261781cf,
         type: 3}
       propertyPath: m_Height
-      value: 120
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 146294530410132869, guid: 8a898734291f1c645bd11fe8261781cf,
         type: 3}

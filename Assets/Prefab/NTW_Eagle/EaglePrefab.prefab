@@ -227,7 +227,7 @@ PrefabInstance:
     - target: {fileID: 8161039181977602597, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
         type: 3}
       propertyPath: m_Height
-      value: 8.8
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8161039181977602597, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
         type: 3}
@@ -923,6 +923,11 @@ PrefabInstance:
       propertyPath: countdownTime
       value: 3.5
       objectReference: {fileID: 0}
+    - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 3046414755300119342}
     - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
       propertyPath: inputHandler
