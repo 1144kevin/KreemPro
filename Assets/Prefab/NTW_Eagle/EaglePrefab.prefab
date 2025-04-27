@@ -104,6 +104,17 @@ PrefabInstance:
       propertyPath: respawnCanvas
       value: 
       objectReference: {fileID: 1367650465844392527}
+    - target: {fileID: 522453494037709433, guid: bcad2930877ef234385009e80bb8a24c,
+        type: 3}
+      propertyPath: sceneAudioSetter
+      value: 
+      objectReference: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+        type: 3}
+    - target: {fileID: 522453494037709433, guid: bcad2930877ef234385009e80bb8a24c,
+        type: 3}
+      propertyPath: characterSoundIndex
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 592793619619183888, guid: bcad2930877ef234385009e80bb8a24c,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -609,6 +620,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -6.6900015
       objectReference: {fileID: 0}
+    - target: {fileID: 3349936123760886286, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
+        type: 3}
+      propertyPath: sceneAudioSetter
+      value: 
+      objectReference: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+        type: 3}
+    - target: {fileID: 3349936123760886286, guid: a893ac4eb73c1ea49b3d26dcc42875ec,
+        type: 3}
+      propertyPath: characterSoundIndex
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -815,7 +837,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8647137405245122972, guid: b6d778c50bf6d3f45bac856613247392,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1822746393615135544}
   m_SourcePrefab: {fileID: 100100000, guid: b6d778c50bf6d3f45bac856613247392, type: 3}
 --- !u!20 &989176866577924110 stripped
 Camera:
@@ -829,6 +855,20 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3349919172982938294}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6232278312405431082 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8647137405245122972, guid: b6d778c50bf6d3f45bac856613247392,
+    type: 3}
+  m_PrefabInstance: {fileID: 3349919172982938294}
+  m_PrefabAsset: {fileID: 0}
+--- !u!81 &1822746393615135544
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6232278312405431082}
+  m_Enabled: 1
 --- !u!1001 &5533614362358396993
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1097,6 +1137,12 @@ PrefabInstance:
       propertyPath: respawnCountdown
       value: 
       objectReference: {fileID: 4415140829531377932}
+    - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: sceneAudioSetter
+      value: 
+      objectReference: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

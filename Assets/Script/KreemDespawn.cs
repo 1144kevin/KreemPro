@@ -4,13 +4,16 @@ using UnityEngine;
 public class KreemDespawn : NetworkBehaviour
 {
     private bool alreadyCollected = false;
+    [SerializeField] private SceneAudioSetter sceneAudioSetter;
 
     private void OnTriggerEnter(Collider other)
     {
+        
         if (alreadyCollected || !Runner.IsServer) return;
 
         if (other.CompareTag("Player"))
         {
+            sceneAudioSetter?.PlayKreemSound();
             var player = other.GetComponent<Player>();
             if (player == null) return;
             

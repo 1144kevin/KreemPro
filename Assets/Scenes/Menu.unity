@@ -2464,6 +2464,7 @@ MonoBehaviour:
   - {fileID: 1700613664}
   - {fileID: 947726032}
   - {fileID: 249717135}
+  sceneAudioSetter: {fileID: 1630440406}
   playerListCell: {fileID: 2060992966}
 --- !u!1 &1028327001
 GameObject:
@@ -4023,6 +4024,66 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1630440404
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1630440405}
+  - component: {fileID: 1630440406}
+  m_Layer: 0
+  m_Name: SceneAudioSetter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1630440405
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630440404}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2199.1484, y: 1100.3113, z: -674.05206}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1630440406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1630440404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c1df28139a613848806793053ad83a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneBGM: {fileID: 8300000, guid: 2756eff9ed321e446892060dc30e800b, type: 3}
+  bgmVolume: 0.7
+  bgmLoop: 1
+  sceneIntroSFX: {fileID: 0}
+  sfxVolume: 1
+  playSFXOnStart: 0
+  loopingSFX: {fileID: 0}
+  loopingSFXVolume: 5
+  playLoopingSFXOnStart: 1
+  hoverSFX: {fileID: 8300000, guid: 4b62438b25456ec42b3845a999de7f50, type: 3}
+  confirmSFX: {fileID: 8300000, guid: 5eaa8806eaccfc14487a2f4f219ae1e4, type: 3}
+  startSFX: {fileID: 8300000, guid: ecd176213e9feac4798a8aa7f918ba4e, type: 3}
+  dieSFX: {fileID: 0}
+  kreemSFX: {fileID: 0}
+  characterAttackSFX: []
+  melodySequences: []
 --- !u!1 &1698576847
 GameObject:
   m_ObjectHideFlags: 0
@@ -5908,3 +5969,4 @@ SceneRoots:
   - {fileID: 156733078}
   - {fileID: 1021257138}
   - {fileID: 1840723511}
+  - {fileID: 1630440405}

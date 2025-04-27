@@ -25,6 +25,8 @@ public class Player : NetworkBehaviour
   private bool lastMoving = false;
   [SerializeField] private float startGameTime = 2.0f;
   [SerializeField] private TMP_Text kreemText;
+  [SerializeField] private SceneAudioSetter sceneAudioSetter;
+  [SerializeField] private int characterSoundIndex = 0; // 攻擊音效用的角色 ID
 
   private void Awake()
   {
@@ -42,6 +44,7 @@ public class Player : NetworkBehaviour
     {
       // 只有本地玩家的相機會啟用
       StartCoroutine(EnableStartUI());
+      sceneAudioSetter?.PlayRingSound();
       playerCamera.enabled = true;
       playerCamera.gameObject.SetActive(true);
     }
@@ -54,10 +57,12 @@ public class Player : NetworkBehaviour
     CreateKreemUI();
     Health = MaxHealth;
 
-    if (Object.HasStateAuthority){
+    if (Object.HasStateAuthority)
+    {
       RpcUpdateHealth(Health);
     }
-    else if (HealthBar != null){
+    else if (HealthBar != null)
+    {
       HealthBar.SetHealth(Health);
     }
 
@@ -112,7 +117,7 @@ public class Player : NetworkBehaviour
     Health = Mathf.Clamp(Health + amount, 0, MaxHealth);
     RpcUpdateHealth(Health);                        // 同步給所有客戶端
   }
-  
+
   public override void FixedUpdateNetwork()
   {
     if (Object.HasInputAuthority)
@@ -133,9 +138,11 @@ public class Player : NetworkBehaviour
 
     if (Object.HasStateAuthority && Health <= 0 && !isDead)
     {
+
       isDead = true;
       LastDeathPosition = transform.position;
       playerRespawn.RpcSetPlayerVisibility(false);
+      sceneAudioSetter?.PlayDieSound();
       if (playerRespawn.KreemPrefab != null)
       {
         Runner.Spawn(playerRespawn.KreemPrefab, LastDeathPosition, Quaternion.identity, default(PlayerRef));
@@ -157,6 +164,14 @@ public class Player : NetworkBehaviour
 
         if (Object.HasInputAuthority)
           AttackHandler.Attack();
+        if (sceneAudioSetter != null) //攻擊音效
+        {
+          var clip = sceneAudioSetter.GetAttackSFXByCharacterIndex(characterSoundIndex);
+          if (clip != null)
+          {
+            AudioManager.Instance.PlaySFX(clip);
+          }
+        }
       }
       if (!isDead)
       {
@@ -192,8 +207,10 @@ public class Player : NetworkBehaviour
     {
       if (isDead)
       {
+
         if (respawnCanvas != null && !respawnCanvas.activeSelf)
           respawnCanvas.SetActive(true);
+
       }
       else
       {
@@ -268,31 +285,30 @@ public class Player : NetworkBehaviour
   }
 
 
+
   private IEnumerator EnableStartUI()
   {
-    if (Object.HasInputAuthority)
     {
+      if (Object.HasInputAuthority)
+      {
         var ui = GameObject.Find("StartGameUI");
         if (ui != null)
         {
-            ui.SetActive(true);
-            ui.transform.localScale = Vector3.zero; // 先縮到 0 大小
+          ui.SetActive(true);
+          ui.transform.localScale = Vector3.zero; // 先縮到 0 大小
 
-            // 彈出效果（0.5秒放大到正常大小）
-            LeanTween.scale(ui, Vector3.one, 0.3f).setEaseOutBack();
+          // 彈出效果（0.5秒放大到正常大小）
+          LeanTween.scale(ui, Vector3.one, 0.3f).setEaseOutBack();
 
-            yield return new WaitForSeconds(startGameTime - 0.2f); // 留時間給縮小動畫
+          yield return new WaitForSeconds(startGameTime - 0.2f); // 留時間給縮小動畫
 
-            // 縮小效果（0.5秒縮小到 0）
-            LeanTween.scale(ui, Vector3.zero, 0.2f).setEaseInBack();
+          // 縮小效果（0.5秒縮小到 0）
+          LeanTween.scale(ui, Vector3.zero, 0.2f).setEaseInBack();
 
-            yield return new WaitForSeconds(0.2f); // 等縮小完
-            ui.SetActive(false);
+          yield return new WaitForSeconds(0.2f); // 等縮小完
+          ui.SetActive(false);
         }
+      }
     }
-}
-
-
-
-
+  }
 }

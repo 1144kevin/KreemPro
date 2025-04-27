@@ -881,8 +881,10 @@ MonoBehaviour:
   respawnCanvas: {fileID: 7302330609558429805}
   _kreemCollect: 0
   startGameTime: 2
-  startGameTime: 2
   kreemText: {fileID: 0}
+  sceneAudioSetter: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+    type: 3}
+  characterSoundIndex: 0
 --- !u!114 &5169379578169959142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1378,6 +1380,12 @@ PrefabInstance:
       objectReference: {fileID: 5397690685677028142}
     - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
+      propertyPath: sceneAudioSetter
+      value: 
+      objectReference: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+        type: 3}
+    - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
       propertyPath: countdownTextRect
       value: 
       objectReference: {fileID: 1001360160288058276}
@@ -1773,8 +1781,8 @@ PrefabInstance:
         type: 3}
       propertyPath: borderThreshold
       value: 50
-      propertyPath: borderThreshold
-      value: 50
+      propertyPath: middleDuration
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6427533221483861726, guid: b05ae51cebd82884fb015b5bd2ea43ff,
         type: 3}
@@ -1846,7 +1854,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4100899654008901286, guid: b05ae51cebd82884fb015b5bd2ea43ff,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2905308641698444170}
   m_SourcePrefab: {fileID: 100100000, guid: b05ae51cebd82884fb015b5bd2ea43ff, type: 3}
 --- !u!20 &422290161773047575 stripped
 Camera:
@@ -1860,3 +1872,17 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7937433348007436407}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6255006276337250001 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4100899654008901286, guid: b05ae51cebd82884fb015b5bd2ea43ff,
+    type: 3}
+  m_PrefabInstance: {fileID: 7937433348007436407}
+  m_PrefabAsset: {fileID: 0}
+--- !u!81 &2905308641698444170
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6255006276337250001}
+  m_Enabled: 1

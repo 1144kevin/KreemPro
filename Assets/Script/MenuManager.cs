@@ -43,6 +43,7 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] private string[] charactersName;
     [SerializeField] private GameObject[] charactersNameImage;
+    [SerializeField] private SceneAudioSetter sceneAudioSetter;
 
     private Button lastConfirmedButton;
     private Color lastButtonOriginalColor;
@@ -64,6 +65,7 @@ public class MenuManager : MonoBehaviour
 
     private async void OnCreateBtnClicked()
     {
+        sceneAudioSetter?.PlayConfirmSound();
         GameManager.Instance.PlayerName = playerName;
         GameManager.Instance.RoomName = "Kreem-1";
         createBtn.interactable = false;
@@ -71,6 +73,7 @@ public class MenuManager : MonoBehaviour
     }
     private async void OnJoinBtnClicked()
     {
+        sceneAudioSetter?.PlayConfirmSound();
         GameManager.Instance.PlayerName = playerName;
         GameManager.Instance.RoomName = "Kreem-1";
         joinBtn.interactable = false;
@@ -110,8 +113,9 @@ public class MenuManager : MonoBehaviour
         selectedBtn.transform.localScale = Vector3.one * 1.2f;
 
         EventSystem.current.SetSelectedGameObject(createBtn.gameObject);
+        sceneAudioSetter?.PlayConfirmSound();
+        
     }
-
 
     public void BackToCharacterSelection()
     {
@@ -127,12 +131,14 @@ public class MenuManager : MonoBehaviour
         }
 
         EventSystem.current.SetSelectedGameObject(firstCharacterButton.gameObject);
+        sceneAudioSetter?.PlayHoverSound();
     }
 
 
     private void OnStartBtnClicked()
     {
         GameManager.Instance.StartGame();
+        sceneAudioSetter?.PlayStartSound();
         Debug.Log("Start");
         startBtn.interactable = false;
     }
@@ -186,6 +192,7 @@ public class MenuManager : MonoBehaviour
 
         if (characterIndex >= 0)
         {
+            sceneAudioSetter?.PlayHoverSound();
             gameManager.SelectedCharacterIndex = characterIndex;
 
             var myPlayerRef = gameManager.networkRunner.LocalPlayer;
@@ -205,6 +212,7 @@ public class MenuManager : MonoBehaviour
 
             //characterName.text = charactersName[characterIndex];
             playerName = charactersName[characterIndex];
+
 
         }
 

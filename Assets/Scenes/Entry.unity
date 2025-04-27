@@ -119,6 +119,67 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &86164987
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 86164989}
+  - component: {fileID: 86164988}
+  m_Layer: 0
+  m_Name: SceneAudioSetter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &86164988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86164987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c1df28139a613848806793053ad83a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneBGM: {fileID: 0}
+  bgmVolume: 0.7
+  bgmLoop: 1
+  sceneIntroSFX: {fileID: 0}
+  sfxVolume: 10
+  playSFXOnStart: 0
+  loopingSFX: {fileID: 8300000, guid: 27d2fe86aa6879d4d9cd2c30b4c592f0, type: 3}
+  loopingSFXVolume: 10
+  playLoopingSFXOnStart: 1
+  hoverSFX: {fileID: 0}
+  confirmSFX: {fileID: 0}
+  startSFX: {fileID: 0}
+  dieSFX: {fileID: 0}
+  ringSFX: {fileID: 0}
+  kreemSFX: {fileID: 0}
+  characterAttackSFX: []
+  melodySequences: []
+--- !u!4 &86164989
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86164987}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2199.1484, y: 1100.3113, z: -674.05206}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &746546900 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7549887525064634789, guid: 3b41f1145499c7c4b913063137c7e28f,
@@ -803,4 +864,5 @@ SceneRoots:
   - {fileID: 1024343351}
   - {fileID: 2682571275714886864}
   - {fileID: 2095079459}
+  - {fileID: 86164989}
   - {fileID: 1692404964}

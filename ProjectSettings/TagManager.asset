@@ -20,6 +20,9 @@ TagManager:
   - Mushroom
   - Robot
   - KreemTower
+  - Mushroom
+  - Robot
+  - testBox
   layers:
   - Default
   - TransparentFX
