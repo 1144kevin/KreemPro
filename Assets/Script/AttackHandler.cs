@@ -8,20 +8,25 @@ using UnityEngine.Serialization;
 
 public class AttackHandler : NetworkBehaviour
 {
+    [Header("攻擊特效群組")]
+    [Tooltip("動畫 1 播的特效 (1,2)")]
+    [SerializeField] private ParticleSystem[] effectsForAnim1;
+    [Tooltip("動畫 2 播的特效 (3,4)")]
+    [SerializeField] private ParticleSystem[] effectsForAnim2;
     [SerializeField] private Transform CharacterTrans;
     [SerializeField] private LayerMask HitLayer = ~0;
     [SerializeField] private HitOptions HitOptions = HitOptions.IncludePhysX | HitOptions.SubtickAccuracy | HitOptions.IgnoreInputAuthority;
     [SerializeField] private int damage = 10;
     [SerializeField] private int attackDistance = 20;
-
+    [SerializeField] private float attackDelay = 0f; // 攻擊延遲時間
     [SerializeField] private ObjectSpawner objectSpawner;
+
+    // 將攻擊動畫類型定義成 enum，更直覺：
+    public enum AttackAnimType { Anim1 = 0, Anim2 = 1 }
 
 
     private void Awake()
     {
-        if (objectSpawner == null)
-            objectSpawner = GetComponent<ObjectSpawner>();
-
         if (CharacterTrans == null)
             CharacterTrans = transform;
 
@@ -30,7 +35,35 @@ public class AttackHandler : NetworkBehaviour
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
     public void Rpc_RequestAttack()
     {
-        PerformAttack(); // Host 幫忙做 Raycast 與傷害處理
+        objectSpawner?.SpawnSphere();
+        StartCoroutine(DespawnAfterDelay(3f));
+        // 延遲傷害判定
+        Invoke(nameof(PerformAttack), attackDelay);
+    }
+
+    public void PlayEffect_Anim1()
+    {
+        if (!Object.HasStateAuthority) return;
+        Rpc_PlayAttackEffect((int)AttackAnimType.Anim1);
+    }
+
+    public void PlayEffect_Anim2()
+    {
+        if (!Object.HasStateAuthority) return;
+        Rpc_PlayAttackEffect((int)AttackAnimType.Anim2);
+    }
+
+    [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
+    private void Rpc_PlayAttackEffect(int animType)
+    {
+        var group = animType == (int)AttackAnimType.Anim1
+                    ? effectsForAnim1
+                    : effectsForAnim2;
+        foreach (var ps in group)
+        {
+            ps?.Stop();
+            ps?.Play();
+        }
     }
 
     public void Attack()
@@ -43,13 +76,6 @@ public class AttackHandler : NetworkBehaviour
 
     private void PerformAttack()
     {
-        // if (Runner.LagCompensation == null)
-        // {
-        //     Debug.LogError("LagCompensation is null! This should only run on Host.");
-        // }
-        //Debug.Log($"[Runner Check] Runner: {Runner}, LagCompensation: {Runner.LagCompensation}, Runner.Mode: {Runner?.Mode}");
-        objectSpawner.SpawnSphere();
-        StartCoroutine(DespawnAfterDelay(3f));
 
         Vector3 rayOrigin = CharacterTrans.position + Vector3.up * 100f;
         Debug.DrawRay(rayOrigin, CharacterTrans.forward * attackDistance, Color.red, 1f);
@@ -79,7 +105,10 @@ public class AttackHandler : NetworkBehaviour
     private IEnumerator DespawnAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);  // 等待指定秒數
-        objectSpawner.DespawnAll();  // 3 秒後執行
+        if (objectSpawner != null)
+        {
+            objectSpawner.DespawnAll();  // 3 秒後執行
+        }
     }
 
 
