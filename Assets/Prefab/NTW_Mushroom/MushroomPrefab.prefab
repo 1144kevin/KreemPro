@@ -1184,6 +1184,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.003178159
       objectReference: {fileID: 0}
+    - target: {fileID: 9020138218250159475, guid: 47aa3751db49736479bd9b865887c590,
+        type: 3}
+      propertyPath: 'shotPrefab.RawGuidValue.Array.data[0]'
+      value: 4937774504418194567
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020138218250159475, guid: 47aa3751db49736479bd9b865887c590,
+        type: 3}
+      propertyPath: 'shotPrefab.RawGuidValue.Array.data[1]'
+      value: 7668275057915353035
+      objectReference: {fileID: 0}
     - target: {fileID: 9022633222815564536, guid: 47aa3751db49736479bd9b865887c590,
         type: 3}
       propertyPath: m_Name
