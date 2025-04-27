@@ -27,6 +27,8 @@ public class Player : NetworkBehaviour
   [SerializeField] private TMP_Text kreemText;
   [SerializeField] private SceneAudioSetter sceneAudioSetter;
   [SerializeField] private int characterSoundIndex = 0; // 攻擊音效用的角色 ID
+  private bool attackLocked = false;        // 攻擊鎖定旗標
+  [SerializeField] private float attackCooldown = 0.5f;      // 根據角色 name 指定的延遲時間
 
   private void Awake()
   {
@@ -68,6 +70,11 @@ public class Player : NetworkBehaviour
 
     if (respawnCanvas != null)
       respawnCanvas.SetActive(false);
+  }
+
+  private void UnlockAttack()
+  {
+    attackLocked = false;
   }
 
   [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -155,8 +162,11 @@ public class Player : NetworkBehaviour
       previousButton = data.buttons;
 
       // 播放攻擊動畫（只針對本地玩家）
-      if (buttonPressed.IsSet((int)InputButton.ATTACK) && Health > 0 && !isDead)
+      if (buttonPressed.IsSet((int)InputButton.ATTACK) && !isDead && !attackLocked)
       {
+        attackLocked = true;           // 立刻鎖住
+        Invoke(nameof(UnlockAttack), attackCooldown);  // 延遲解鎖
+
         bool isRunning = data.direction.magnitude > 0.1f;
 
         if (Object.HasStateAuthority)
