@@ -148,10 +148,15 @@ public class Player : NetworkBehaviour
       previousButton = data.buttons;
 
       // 播放攻擊動畫（只針對本地玩家）
-      if (Object.HasStateAuthority && buttonPressed.IsSet((int)InputButton.ATTACK) && Health > 0)
+      if (buttonPressed.IsSet((int)InputButton.ATTACK) && Health > 0 && !isDead)
       {
         bool isRunning = data.direction.magnitude > 0.1f;
-        RpcPlayAttackAnimation(isRunning);
+
+        if (Object.HasStateAuthority)
+          RpcPlayAttackAnimation(isRunning);
+
+        if (Object.HasInputAuthority)
+          AttackHandler.Attack();
       }
       if (!isDead)
       {
@@ -169,11 +174,6 @@ public class Player : NetworkBehaviour
         {
           AnimationHandler.PlayerAnimation(data.direction);
         }
-      }
-
-      if (data.buttons.IsSet(InputButton.ATTACK))
-      {
-        AttackHandler.Attack();
       }
 
       if (data.damageTrigger && !isDead)

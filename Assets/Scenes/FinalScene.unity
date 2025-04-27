@@ -17253,7 +17253,7 @@ PrefabInstance:
     - target: {fileID: 6088193411089176442, guid: 9a0ef069376c43449915ad6dfd400836,
         type: 3}
       propertyPath: matchDuration
-      value: 10
+      value: 180
       objectReference: {fileID: 0}
     - target: {fileID: 6088193411089176442, guid: 9a0ef069376c43449915ad6dfd400836,
         type: 3}
