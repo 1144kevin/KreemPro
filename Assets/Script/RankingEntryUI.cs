@@ -8,6 +8,8 @@ public class RankingEntryUI : MonoBehaviour
   [SerializeField] private TMP_Text scoreText;
   [SerializeField] private Transform iconContainer;
 
+  [SerializeField] private UnityEngine.UI.Image crownIcon;
+
   // 放在 RankingEntryUI 類別最上面
   private static readonly Dictionary<string, Vector3> prefabScales = new()
   {
@@ -67,5 +69,19 @@ public class RankingEntryUI : MonoBehaviour
             else
                 animator.Play("lose");
     }
+
+    if (crownIcon != null)
+        crownIcon.gameObject.SetActive(isWinner);
+
   }
+
+  private void Update()
+{
+    if (crownIcon != null && crownIcon.gameObject.activeSelf)
+    {
+        float scale = 1f + 0.1f * Mathf.Sin(Time.time * 2f); // 讓 scale 在 0.9~1.1 之間震盪
+        crownIcon.transform.localScale = new Vector3(scale, scale, 1f);
+    }
+}
+
 }
