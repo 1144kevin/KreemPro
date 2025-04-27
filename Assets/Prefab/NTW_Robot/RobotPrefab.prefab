@@ -153,37 +153,37 @@ PrefabInstance:
     - target: {fileID: 7211767173744176321, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.04663086
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7211767173744176321, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000059604645
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7211767173744176321, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.00048828125
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7211767173744176321, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99984676
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7211767173744176321, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7211767173744176321, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.01750879
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7211767173744176321, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7211767173744176321, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
@@ -193,7 +193,7 @@ PrefabInstance:
     - target: {fileID: 7211767173744176321, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 2.006
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7211767173744176321, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
@@ -496,7 +496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotPrefab:
-    RawGuidValue: c8252cdedd2c47245b2ff61571ead7ab
+    RawGuidValue: cdf94c94bb0ec994a847e2feec437138
 --- !u!114 &2998856429226848935
 MonoBehaviour:
   m_ObjectHideFlags: 0

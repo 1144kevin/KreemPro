@@ -16,7 +16,6 @@ public class AttackHandler : NetworkBehaviour
 
     [SerializeField] private ObjectSpawner objectSpawner;
 
-
     private void Awake()
     {
         if (objectSpawner == null)
@@ -27,33 +26,25 @@ public class AttackHandler : NetworkBehaviour
 
     }
 
-    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
-    public void Rpc_RequestAttack()
-    {
-        PerformAttack(); // Host 幫忙做 Raycast 與傷害處理
-    }
-
-    public void Attack()
+   public void Attack()
     {
         if (HasInputAuthority)
         {
-            Rpc_RequestAttack(); // 傳給 Host 處理
+            Rpc_RequestAttack(CharacterTrans.position, CharacterTrans.forward);
         }
     }
 
-    private void PerformAttack()
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    private void Rpc_RequestAttack(Vector3 origin, Vector3 direction)
     {
-        // if (Runner.LagCompensation == null)
-        // {
-        //     Debug.LogError("LagCompensation is null! This should only run on Host.");
-        // }
-        //Debug.Log($"[Runner Check] Runner: {Runner}, LagCompensation: {Runner.LagCompensation}, Runner.Mode: {Runner?.Mode}");
-        objectSpawner.SpawnSphere();
-        StartCoroutine(DespawnAfterDelay(3f));
+        PerformAttack(origin, direction);
+    }
 
-        Vector3 rayOrigin = CharacterTrans.position + Vector3.up * 100f;
-        Debug.DrawRay(rayOrigin, CharacterTrans.forward * attackDistance, Color.red, 1f);
-
+    private void PerformAttack(Vector3 origin, Vector3 direction)
+    {
+        Vector3 rayOrigin = origin + Vector3.up * 100f; // 角色的位置 + 一點高度
+        Vector3 shotOrigin= origin + Vector3.up * 150f;
+        //Debug.DrawRay(rayOrigin, CharacterTrans.forward * attackDistance, Color.red, 1f);
         if (Runner.LagCompensation.Raycast(
             rayOrigin,
             CharacterTrans.forward,
@@ -63,10 +54,9 @@ public class AttackHandler : NetworkBehaviour
             HitLayer,
             HitOptions))
         {
-            Debug.Log("hit");
+            Debug.Log(hit.GameObject.name);
             if (hit.GameObject.TryGetComponent<Player>(out var hitPlayer))
             {
-                Debug.Log(hitPlayer.gameObject.name);
                 hitPlayer.TakeDamage(damage);
             }
         }
@@ -74,6 +64,15 @@ public class AttackHandler : NetworkBehaviour
         {
             Debug.Log("hit fail");
         }
+
+        // 生成子彈
+        var bullet = objectSpawner.SpawnShot(shotOrigin, Quaternion.LookRotation(direction));
+        if (bullet != null)
+        {
+            bullet.Fire(direction);
+        }
+
+        //StartCoroutine(DespawnAfterDelay(3f));
     }
 
     private IEnumerator DespawnAfterDelay(float delay)

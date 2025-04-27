@@ -6,56 +6,35 @@ using Fusion.Addons.Physics;
 
 public class Shot : NetworkBehaviour
 {
-    [SerializeField]
-    private float initialImpulse = 100f;
-    [SerializeField]
-    private float lifeTime = 4f;
+    [SerializeField] private float speed = 30f;
+    [SerializeField] private float lifetime = 4f;
 
-    [Networked]
-    private TickTimer lifeCoolDown { get; set; }
-    [Networked]
-    private NetworkBool isDestroyed { get; set; }
+    [Networked] private TickTimer lifeTimer { get; set; }
 
-    private bool isDestroyedRender = false;
-    private float lifeTimeAfterHit = 2f;
-    private NetworkRigidbody3D rigiBody;
-    private Collider collider;
-    public void fireShot()
+    private Vector3 shootDirection;
+    private bool isFlying = false;
+
+    public void Fire(Vector3 direction)
     {
-        rigiBody.Rigidbody.AddForce(transform.forward * initialImpulse, ForceMode.Impulse);
-        if (lifeTime > 0f)
+        shootDirection = direction.normalized;
+        isFlying = true;
+
+        if (lifetime > 0f)
         {
-            lifeCoolDown = TickTimer.CreateFromSeconds(Runner, lifeTime);
-        }
-    }
-    //生成可能在attackhandeler控制
-    //objectspawner
-    // public override void FixedUpdateNetwork()
-    // {
-    //     collider.enabled = isDestroyed == false;
-
-    //     if (lifeCoolDown.IsRunning == true && lifeCoolDown.Expired(Runner) == true)
-    //     {
-    //         Runner.Despawn(Object);
-    //     }
-
-    // }
-
-    protected void OnCollisionEnter(Collision collision)
-    {
-        if (collision.rigidbody != null && Object != null)
-        {
-            ProcessHit();
+            lifeTimer = TickTimer.CreateFromSeconds(Runner, lifetime);
         }
     }
 
-    private void ProcessHit()
+    public override void FixedUpdateNetwork()
     {
-        isDestroyed=true;
+        if (isFlying)
+        {
+            transform.position += shootDirection * speed * Runner.DeltaTime;
+        }
 
-        lifeCoolDown=TickTimer.CreateFromSeconds(Runner,lifeTimeAfterHit);
-        collider.enabled=false;
+        if (lifeTimer.Expired(Runner))
+        {
+            Runner.Despawn(Object);
+        }
     }
-
-
 }
