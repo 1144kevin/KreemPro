@@ -26,7 +26,7 @@ public class AttackHandler : NetworkBehaviour
 
     }
 
-   public void Attack()
+    public void Attack()
     {
         if (HasInputAuthority)
         {
@@ -43,7 +43,6 @@ public class AttackHandler : NetworkBehaviour
     private void PerformAttack(Vector3 origin, Vector3 direction)
     {
         Vector3 rayOrigin = origin + Vector3.up * 100f; // 角色的位置 + 一點高度
-        Vector3 shotOrigin= origin + Vector3.up * 150f;
         //Debug.DrawRay(rayOrigin, CharacterTrans.forward * attackDistance, Color.red, 1f);
         if (Runner.LagCompensation.Raycast(
             rayOrigin,
@@ -66,14 +65,57 @@ public class AttackHandler : NetworkBehaviour
         }
 
         // 生成子彈
-        var bullet = objectSpawner.SpawnShot(shotOrigin, Quaternion.LookRotation(direction));
-        if (bullet != null)
-        {
-            bullet.Fire(direction);
-        }
+        StartCoroutine(spawnBullet(origin, direction));
+        // var bullet = objectSpawner.SpawnShot(shotOrigin, Quaternion.LookRotation(direction));
+        // if (bullet != null)
+        // {
+        //     bullet.Fire(direction);
+        // }
 
         //StartCoroutine(DespawnAfterDelay(3f));
     }
+
+    private IEnumerator spawnBullet(Vector3 origin, Vector3 direction)
+    {
+        string playerName = gameObject.name;
+        Debug.Log($"Spawning bullet for player: {playerName}");
+
+        if (playerName == "Robot")
+        {
+            Vector3 shotOrigin = origin + Vector3.up * 150f;
+            Vector3 right = Vector3.Cross(Vector3.up, direction).normalized;
+            float offsetDistance = 70f;
+            // 再打右邊子彈
+            Vector3 rightShotOrigin = shotOrigin + right * offsetDistance;
+            var rightBullet = objectSpawner.SpawnShot(rightShotOrigin, Quaternion.LookRotation(direction));
+            if (rightBullet != null)
+            {
+                rightBullet.Fire(direction);
+            }
+
+            // 等0.6秒
+            yield return new WaitForSeconds(0.6f);
+            
+            // 先打左邊子彈
+            Vector3 leftShotOrigin = shotOrigin - right * offsetDistance;
+            var leftBullet = objectSpawner.SpawnShot(leftShotOrigin, Quaternion.LookRotation(direction));
+            if (leftBullet != null)
+            {
+                leftBullet.Fire(direction);
+            }
+
+        }
+        else if (playerName == "Mushroom")
+        {
+            Vector3 shotOrigin = origin + Vector3.up * 100f;
+            var bullet = objectSpawner.SpawnShot(shotOrigin, Quaternion.LookRotation(direction));
+            if (bullet != null)
+            {
+                bullet.Fire(direction);
+            }
+        }
+    }
+
 
     private IEnumerator DespawnAfterDelay(float delay)
     {
