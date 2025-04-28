@@ -105,7 +105,7 @@ public class AttackHandler : NetworkBehaviour
     private void PerformAttack(Vector3 origin, Vector3 direction)
     {
         Vector3 rayOrigin = origin; 
-        //Debug.DrawRay(rayOrigin, CharacterTrans.forward * attackDistance, Color.red, 1f);
+        Debug.DrawRay(rayOrigin, CharacterTrans.forward * attackDistance, Color.red, 1f);
 
         if (Runner.LagCompensation.Raycast(
             rayOrigin,
