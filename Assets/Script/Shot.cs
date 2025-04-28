@@ -1,18 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Fusion;
+using Fusion.Addons.Physics;
 
-public class Shot : MonoBehaviour
+public class Shot : NetworkBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private float speed = 30f;
+    [SerializeField] private float lifetime = 4f;
+
+    [Networked] private TickTimer lifeTimer { get; set; }
+
+    private Vector3 shootDirection;
+    private bool isFlying = false;
+
+    public void Fire(Vector3 direction)
     {
-        
+        shootDirection = direction.normalized;
+        isFlying = true;
+
+        if (lifetime > 0f)
+        {
+            lifeTimer = TickTimer.CreateFromSeconds(Runner, lifetime);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void FixedUpdateNetwork()
     {
-        
+        if (isFlying)
+        {
+            transform.position += shootDirection * speed * Runner.DeltaTime;
+        }
+
+        if (lifeTimer.Expired(Runner))
+        {
+            isFlying = false;
+            Runner.Despawn(Object);
+        }
     }
 }

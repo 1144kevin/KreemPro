@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
             networkEvents.PlayerJoined.AddListener(OnPlayerJoined);
             networkEvents.PlayerLeft.AddListener(OnPlayerLeft);
             DontDestroyOnLoad(gameObject);
-        // ✅ 監聽場景切換事件
+            // ✅ 監聽場景切換事件
         }
         else
         {
@@ -72,21 +72,22 @@ public class GameManager : MonoBehaviour
             playerList.Remove(player);
         }
 
-}
-// public  void OnShutdown()
-// {
-//     Debug.LogWarning("❗ Fusion Shutdown 被呼叫（可能是 Host 離開）");
+    }
+    // public  void OnShutdown()
+    // {
+    //     Debug.LogWarning("❗ Fusion Shutdown 被呼叫（可能是 Host 離開）");
 
-//     if (!networkRunner.IsServer)
-//     {
-//         Debug.Log("📌 Client 偵測 Host 離線，自動跳轉 Entry Scene");
-//         SceneManager.LoadScene("Entry");
-//     }
-// }
+    //     if (!networkRunner.IsServer)
+    //     {
+    //         Debug.Log("📌 Client 偵測 Host 離線，自動跳轉 Entry Scene");
+    //         SceneManager.LoadScene("Entry");
+    //     }
+    // }
 
 
     private async void Start()
     {
+
         var result = await networkRunner.JoinSessionLobby(SessionLobby.ClientServer);
 
         if (result.Ok)
@@ -95,16 +96,18 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogError("shit");
+            Debug.LogError("Failed to join lobby");
         }
+
     }
+
 
     public async Task CreateRoom()
     {
         var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
         var result = await networkRunner.StartGame(new StartGameArgs()
         {
-            GameMode = GameMode.Host,
+            GameMode = GameMode.AutoHostOrClient,
             SessionName = RoomName,
             PlayerCount = 4,
             Scene = scene,
@@ -118,8 +121,20 @@ public class GameManager : MonoBehaviour
             var menuManager = FindObjectOfType<MenuManager>();
 
             menuManager.SwitchMenuType(MenuManager.MenuType.Room);
-            menuManager.SetStartBtnVisible(true);
-            Debug.Log("這是 Host (直連)");   // Host 永遠 Direct
+            bool isHost = networkRunner.IsServer;
+            menuManager.SetStartBtnVisible(isHost);
+            if (!isHost)
+            {
+                var myRef = networkRunner.LocalPlayer;
+                var conn = networkRunner.GetPlayerConnectionType(myRef);
+                Debug.Log(conn == ConnectionType.Relayed
+                          ? "目前使用 Photon 中繼 (Relay)"
+                          : "已建立 Client ⇄ Host 直連 (P2P)");
+            }
+            else
+            {
+                Debug.Log("Host 直連 (P2P)");
+            }
         }
         else
         {
@@ -182,11 +197,11 @@ public class GameManager : MonoBehaviour
         var menuManager = FindObjectOfType<MenuManager>();
         menuManager.UpdatePlayerList(playerInfos);
     }
-public void StartGame()
-{
-    networkRunner.LoadScene("Entry");
-    Debug.Log("📦 Host 已執行 LoadScene('Entry')");
-}
+    public void StartGame()
+    {
+        networkRunner.LoadScene("Entry");
+        Debug.Log("📦 Host 已執行 LoadScene('Entry')");
+    }
 
 
 

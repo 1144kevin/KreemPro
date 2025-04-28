@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class RankingManager : NetworkBehaviour
 {
@@ -17,9 +18,15 @@ public class RankingManager : NetworkBehaviour
     [SerializeField] private GameObject rankingEntryPrefab;
     [SerializeField] private GameObject[] characterPrefabs;
     [SerializeField] private string finalSceneName = "FinalScene";
+    [SerializeField] private SceneAudioSetter sceneAudioSetter;
 
     private Dictionary<PlayerRef, bool> restartVotes = new();
 
+
+    private void Start()
+    {
+        EventSystem.current.SetSelectedGameObject(returnButton.gameObject);
+    }
     public override void Spawned()
     {
         // 綁定按鈕事件（每個人都要）
@@ -93,8 +100,16 @@ public class RankingManager : NetworkBehaviour
             .OrderByDescending(kv => kv.Value)
             .Select(kv =>
             {
-                string prefix = kv.Value == max ? "🏆 " : "";
-                return $"{prefix}Player {kv.Key.PlayerId} - {kv.Value} Kreem";
+
+
+                string playerName = "Unknown";
+
+                if (GameManager.Instance.PlayerList.TryGetValue(kv.Key, out var pData))
+                {
+                    playerName = pData.PlayerName;
+                }
+
+                return $"{playerName} (Player {kv.Key.PlayerId}) - {kv.Value} Kreem";
             });
 
         rankingText.text = string.Join("\n", lines);
@@ -109,7 +124,10 @@ public class RankingManager : NetworkBehaviour
             return;
 
         var ordered = GameResultData.KreemCounts
-                     .OrderByDescending(kv => kv.Value);
+                     .OrderByDescending(kv => kv.Value)
+                     .ToList();
+
+        int highestScore = GameResultData.KreemCounts.Max(kv => kv.Value);
 
         foreach (var kv in ordered)
         {
@@ -126,9 +144,11 @@ public class RankingManager : NetworkBehaviour
                                 ? characterPrefabs[idx]
                                 : null;
 
+            bool isWinner = score == highestScore; // 判斷是否為最高分                    
+
             var entryGO = Instantiate(rankingEntryPrefab, contentParent);
             entryGO.GetComponent<RankingEntryUI>()
-                   .Setup(displayName, score, prefab);
+                   .Setup(displayName, score, prefab, isWinner);
         }
     }
 
@@ -140,12 +160,14 @@ public class RankingManager : NetworkBehaviour
 
     private void OnRestartClicked()
     {
+        sceneAudioSetter?.PlayConfirmSound();
         RpcVoteRestart(Runner.LocalPlayer);
         restartButton.interactable = false;
     }
 
     public void OnReturnClicked()
     {
+        sceneAudioSetter?.PlayConfirmSound();
         if (Object.HasStateAuthority)
         {
             Runner.Shutdown();

@@ -6,14 +6,13 @@ using System.Collections;
 public class RespawnCountdown : NetworkBehaviour
 {
     [SerializeField] private TMP_Text countdownText;
-    public float countdownTime = 5f;
+    [SerializeField] private float extraTime = 3f;
+    public float countdownTime = 3.5f;
     private float timer;
     public float RemainingTime
     {
         get { return timer; }
     }
-    // 參考玩家的 PlayerRespawn 組件，方便呼叫復活
-    private PlayerRespawn playerRespawn;
     private Vector2 initialAnchoredPos;
     private Vector3 initialScale;
     private Color initialColor;
@@ -63,7 +62,7 @@ public class RespawnCountdown : NetworkBehaviour
 
     public void OnInputError()
     {
-        timer += 5f;
+        timer += extraTime;
         isCounting = true;
         StartCoroutine(TweenCountdownText(0.5f));
     }
@@ -78,7 +77,7 @@ public class RespawnCountdown : NetworkBehaviour
         Vector2 startPos = rt.anchoredPosition;
         Vector2 targetPos = Vector2.zero;
         Vector3 startScale = rt.localScale;
-        Vector3 targetScale = startScale * 3f; 
+        Vector3 targetScale = startScale * 3f;
         Color startColor = countdownText.color;
         Color targetColor = new Color(1f, 0f, 0f, 1f); // 目標顏色：紅色
 

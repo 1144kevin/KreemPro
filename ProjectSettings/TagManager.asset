@@ -17,6 +17,12 @@ TagManager:
   - Kreem
   - Leopard
   - Eagle
+  - Mushroom
+  - Robot
+  - KreemTower
+  - Mushroom
+  - Robot
+  - testBox
   layers:
   - Default
   - TransparentFX
@@ -30,7 +36,7 @@ TagManager:
   - Trap
   - OutlineStuffBooster
   - Mine
-  - 
+  - KreemTower
   - 
   - 
   - 

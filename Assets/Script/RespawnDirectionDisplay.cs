@@ -17,13 +17,18 @@ public class RespawnDirectionDisplay : NetworkBehaviour
     private bool inputActive = true;
     public RectTransform countdownTextRect;
     [SerializeField] private PlayerRespawn playerRespawn;
+    [SerializeField] private Player player;
     [SerializeField] private RespawnCountdown respawnCountdown;
+    [SerializeField] private SceneAudioSetter sceneAudioSetter;
     private bool errorTriggered = false;
+    private int selectedMelodyIndex = 0;
+    private Coroutine melodyCoroutine;
 
     private void OnEnable()
     {
         ClearIcons();
         GenerateRandomIcons();
+        selectedMelodyIndex = Random.Range(0, sceneAudioSetter.GetMelodySequenceCount()); // 隨機挑一組
         currentIndex = 0;
         inputActive = true;
         errorTriggered = false;
@@ -110,6 +115,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
                     if (Object.HasInputAuthority)
                     {
                         playerRespawn.RpcRequestRespawn();
+                        player.DisableCameraClampClient();
                     }
                     return;
                 }
@@ -120,6 +126,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
                 if (Object.HasInputAuthority)
                 {
                     playerRespawn.RpcRequestRespawn();
+                    player.DisableCameraClampClient();
                 }
                 return;
             }
@@ -151,16 +158,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
             if (Object.HasInputAuthority)
             {
                 playerRespawn.RpcRequestRespawn();
-            }
-        }
-
-        if (currentIndex >= sequence.Count)
-        {
-            Debug.Log("所有方向輸入正確，提前復活！");
-            inputActive = false;
-            if (Object.HasInputAuthority)
-            {
-                playerRespawn.RpcRequestRespawn();
+                player.DisableCameraClampClient();
             }
         }
     }
@@ -178,6 +176,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
             {
                 iconCtrl.SetCorrect();
             }
+            PlayMelodyNote(currentIndex, sceneAudioSetter.melodyVolume);//撥放復活音符
             currentIndex++;
 
             if (currentIndex >= sequence.Count)
@@ -188,6 +187,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
                 if (Object.HasInputAuthority)
                 {
                     playerRespawn.RpcRequestRespawn();
+                    player.DisableCameraClampClient();
                 }
             }
         }
@@ -201,4 +201,27 @@ public class RespawnDirectionDisplay : NetworkBehaviour
             }
         }
     }
+    void PlayMelodyNote(int index, float volume)
+    {
+        if (sceneAudioSetter == null) return;
+
+        AudioClip[] selectedSequence = sceneAudioSetter.GetMelodySequenceByIndex(selectedMelodyIndex);
+        if (selectedSequence == null || selectedSequence.Length == 0) return;
+
+        if (index >= 0 && index < selectedSequence.Length)
+        {
+            if (melodyCoroutine != null)
+            {
+                StopCoroutine(melodyCoroutine);
+            }
+            melodyCoroutine = StartCoroutine(PlayNoteWithDelay(selectedSequence[index], volume));
+        }
+    }
+
+    private IEnumerator PlayNoteWithDelay(AudioClip clip, float volume)
+    {
+        yield return new WaitForSeconds(0.05f); // 延遲時間（可調，建議 0.05~0.2 秒）
+        AudioManager.Instance.PlaySFX(clip, volume);
+    }
+
 }

@@ -11,10 +11,9 @@ public class GameFlowManager : NetworkBehaviour
     [SerializeField] private float matchDuration = 180f;
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private GameObject winnerUI;
-    [SerializeField] private TMP_Text winnerText;
-    [SerializeField] private string singleWinnerFormat = "Player {0} wins Kreem {1}";
-    [SerializeField] private string tieWinnerFormat = "Players {0} tie with Kreem {1}";
     [SerializeField] private float waitBeforeRanking = 5f;
+    [SerializeField] private SceneAudioSetter sceneAudioSetter;
+
 
     [Networked] private float remainingTime { get; set; }
     private bool gameEnded = false;
@@ -24,9 +23,9 @@ public class GameFlowManager : NetworkBehaviour
         if (Object.HasStateAuthority)
         {
             remainingTime = matchDuration;
-    
         }
     }
+
     public override void FixedUpdateNetwork()
     {
         if (!Object.HasStateAuthority || gameEnded) return;
@@ -43,23 +42,66 @@ public class GameFlowManager : NetworkBehaviour
         }
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RpcUpdateTimer(float time)
+
+private HashSet<int> triggeredWarnings = new HashSet<int>();
+private bool isFinalCountdown = false;
+
+[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+private void RpcUpdateTimer(float time)
+{
+    if (timerText != null)
     {
-        if (timerText != null)
+        int min = Mathf.FloorToInt(time / 60f);
+        int sec = Mathf.FloorToInt(time % 60f);
+        timerText.text = $"{min:00}:{sec:00}";
+
+        int intTime = Mathf.CeilToInt(time);
+
+        if ((intTime == 61 || intTime == 31 || intTime == 11) && !triggeredWarnings.Contains(intTime))
         {
-            int min = Mathf.FloorToInt(time / 60f);
-            int sec = Mathf.FloorToInt(time % 60f);
-            timerText.text = $"{min:00}:{sec:00}";
+            triggeredWarnings.Add(intTime);
+            TriggerTimerWarning(false); // 普通提醒
+        }
+        else if (intTime == 10 && !triggeredWarnings.Contains(10))
+        {
+            triggeredWarnings.Add(10);
+            TriggerTimerWarning(true); // 進入最後倒數
         }
     }
+}
+
+private void TriggerTimerWarning(bool finalCountdown)
+{
+    if (timerText == null) return;
+
+    Color originalColor = timerText.color;
+    Vector3 originalScale = timerText.transform.localScale;
+
+    if (finalCountdown)
+    {
+        isFinalCountdown = true;
+        timerText.color = Color.red; // 進入最後倒數，直接變紅
+    }
+    else
+    {
+        timerText.color = Color.red; // 瞬間紅色
+        LeanTween.scale(timerText.gameObject, originalScale * 2f, 1f).setEaseOutBack()
+            .setOnComplete(() =>
+            {
+                LeanTween.scale(timerText.gameObject, originalScale, 1f).setEaseInBack();
+                if (!isFinalCountdown)
+                {
+                    timerText.color = originalColor; // 如果不是最後倒數，變回原本顏色
+                }
+            });
+    }
+}
+
 
     private void DecideWinner()
     {
-        int maxKreem = -1;
-        List<(Player player, PlayerRef playerRef)> topPlayers = new();
-        // GameResultData.KreemCounts.Clear(); // 🔁 準備儲存分數給下一場景用
         GameResultData.KreemCounts.Clear();
+        
         foreach (var playerRef in Runner.ActivePlayers)
         {
             var obj = Runner.GetPlayerObject(playerRef);
@@ -68,46 +110,36 @@ public class GameFlowManager : NetworkBehaviour
             Player p = obj.GetComponentInChildren<Player>();
             if (p == null) continue;
 
-            p.RpcSetGameEnded();;
-
-            GameResultData.KreemCounts[playerRef] = p.kreemCollect; // ✅ 儲存分數
-
-            if (p.kreemCollect > maxKreem)
-            {
-                maxKreem = p.kreemCollect;
-                topPlayers.Clear();
-                topPlayers.Add((p, playerRef));
-            }
-            else if (p.kreemCollect == maxKreem)
-            {
-                topPlayers.Add((p, playerRef));
-            }
+            p.RpcSetGameEnded();
+            GameResultData.KreemCounts[playerRef] = p.kreemCollect;
         }
 
-        if (topPlayers.Count == 0) return;
-
-        RpcShowWinners(topPlayers.Select(p => p.playerRef).ToArray(), maxKreem);
+        RpcEndGameUI();
         RpcDisableAllPlayerInput();
         StartCoroutine(LoadRankingSceneAfterDelay());
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    private void RpcShowWinners(PlayerRef[] winnerRefs, int score)
-    {
-        winnerUI.SetActive(true);
+    private void RpcEndGameUI()
+{
+    if (winnerUI == null) return;
+    
+    sceneAudioSetter?.PlayRingSound();
+    winnerUI.SetActive(true);
+    winnerUI.transform.localScale = Vector3.zero;
 
-        if (winnerRefs.Length == 1)
+    // 彈出動畫
+    LeanTween.scale(winnerUI, Vector3.one, 0.5f).setEaseOutBack()
+        .setOnComplete(() =>
         {
-            string formatted = string.Format(singleWinnerFormat, winnerRefs[0].PlayerId, score);
-            winnerText.text = formatted;
-        }
-        else
-        {
-            string names = string.Join(", ", winnerRefs.Select(r => $"Player {r.PlayerId}"));
-            string formatted = string.Format(tieWinnerFormat, names, score);
-            winnerText.text = formatted;
-        }
-    }
+            // 等 2 秒後，再縮回去
+            LeanTween.delayedCall(2f, () =>
+            {
+                LeanTween.scale(winnerUI, Vector3.zero, 0.5f).setEaseInBack();
+            });
+        });
+}
+
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RpcDisableAllPlayerInput()
@@ -126,7 +158,7 @@ public class GameFlowManager : NetworkBehaviour
 
         if (Object.HasStateAuthority)
         {
-            Runner.LoadScene("RankingScene"); // ✅ 實際 RankingScene 名稱
+            Runner.LoadScene("RankingScene");
         }
     }
 }
