@@ -37,9 +37,12 @@ public class SceneAudioSetter : MonoBehaviour
 
     [Header("各角色攻擊 SFX（依角色 index）")]
     [SerializeField] private AudioClip[] characterAttackSFX;
+    [SerializeField] private AudioClip RobotOneShotSFX;
 
     [Header("復活樂譜")]
     [SerializeField] private List<MelodySequence> melodySequences;
+    [Header("聲音大小設定")]
+    [SerializeField] public float melodyVolume = 1.0f; // 預設 1.0f，可拉高
 
 
 
@@ -116,6 +119,13 @@ public class SceneAudioSetter : MonoBehaviour
         if (dieSFX != null && AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX(dieSFX);
+        }
+    }
+    public void PlayOneShotSound()
+    {
+        if (RobotOneShotSFX != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(RobotOneShotSFX);
         }
     }
 public int GetMelodySequenceCount()

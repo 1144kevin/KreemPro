@@ -64,6 +64,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fe556c8a7562f6544ad12a1d79351eb9, type: 3}
   - {fileID: 8300000, guid: 9196f888c603e084c9da87489a3c531a, type: 3}
   - {fileID: 8300000, guid: 94c8fc31cec9c8644b9cd39a280ae2d0, type: 3}
+  RobotOneShotSFX: {fileID: 8300000, guid: c18409267e589f14599104fa9af78f42, type: 3}
   melodySequences:
   - notes:
     - {fileID: 8300000, guid: ee60061431a35dd429e55da896095521, type: 3}
@@ -81,3 +82,4 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 040efd409ce562647acf5b1830a38846, type: 3}
     - {fileID: 8300000, guid: 040efd409ce562647acf5b1830a38846, type: 3}
     - {fileID: 8300000, guid: 040efd409ce562647acf5b1830a38846, type: 3}
+  melodyVolume: 3

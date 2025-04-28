@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 //using System.Diagnostics;
 using Fusion;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -20,38 +21,73 @@ public class AttackHandler : NetworkBehaviour
     [SerializeField] private int attackDistance = 20;
     [SerializeField] private float attackDelay = 0f; // 攻擊延遲時間
     [SerializeField] private ObjectSpawner objectSpawner;
+    [SerializeField] private SceneAudioSetter sceneAudioSetter;
+    [SerializeField] private int characterSoundIndex = 0; // 攻擊音效用的角色 ID
 
     // 將攻擊動畫類型定義成 enum，更直覺：
     public enum AttackAnimType { Anim1 = 0, Anim2 = 1 }
 
-
     private void Awake()
     {
+        if (objectSpawner == null)
+            objectSpawner = GetComponent<ObjectSpawner>();
+
         if (CharacterTrans == null)
             CharacterTrans = transform;
 
     }
 
+    public void Attack()
+    {
+        if (HasInputAuthority)
+        {
+            Rpc_RequestAttack();
+        }
+    }
+
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
     public void Rpc_RequestAttack()
     {
-        objectSpawner?.SpawnSphere();
-        StartCoroutine(DespawnAfterDelay(3f));
-        // 延遲傷害判定
-        Invoke(nameof(PerformAttack), attackDelay);
+        StartCoroutine(spawnBullet());
     }
 
     public void PlayEffect_Anim1()
     {
         if (!Object.HasStateAuthority) return;
         Rpc_PlayAttackEffect((int)AttackAnimType.Anim1);
+        if (sceneAudioSetter != null) //攻擊音效
+        {
+            var clip = sceneAudioSetter.GetAttackSFXByCharacterIndex(characterSoundIndex);
+            if (clip != null)
+            {
+                AudioManager.Instance.PlaySFX(clip);
+            }
+        }
     }
 
     public void PlayEffect_Anim2()
     {
         if (!Object.HasStateAuthority) return;
+
         Rpc_PlayAttackEffect((int)AttackAnimType.Anim2);
+
+        if (sceneAudioSetter != null) //攻擊音效
+        {
+            if (characterSoundIndex == 0)
+            {
+                sceneAudioSetter?.PlayOneShotSound();
+            }
+            else
+            {
+                var clip = sceneAudioSetter.GetAttackSFXByCharacterIndex(characterSoundIndex);
+                if (clip != null)
+                {
+                    AudioManager.Instance.PlaySFX(clip);
+                }
+            }
+        }
     }
+
 
     [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
     private void Rpc_PlayAttackEffect(int animType)
@@ -66,50 +102,86 @@ public class AttackHandler : NetworkBehaviour
         }
     }
 
-    public void Attack()
+    private void PerformAttack(Vector3 origin, Vector3 direction)
     {
-        if (HasInputAuthority)
-        {
-            Rpc_RequestAttack(); // 傳給 Host 處理
-        }
-    }
-
-    private void PerformAttack()
-    {
-
-        Vector3 rayOrigin = CharacterTrans.position + Vector3.up * 100f;
-        Debug.DrawRay(rayOrigin, CharacterTrans.forward * attackDistance, Color.red, 1f);
+        Vector3 rayOrigin = origin; 
+        //Debug.DrawRay(rayOrigin, CharacterTrans.forward * attackDistance, Color.red, 1f);
 
         if (Runner.LagCompensation.Raycast(
             rayOrigin,
-            CharacterTrans.forward,
+            direction,
             attackDistance,
             Object.InputAuthority,
             out var hit,
             HitLayer,
             HitOptions))
         {
-            Debug.Log("hit");
+            Debug.Log(hit.GameObject.name);
+
             if (hit.GameObject.TryGetComponent<Player>(out var hitPlayer))
             {
-                Debug.Log(hitPlayer.gameObject.name);
-                hitPlayer.TakeDamage(damage);
+                if (hitPlayer.gameObject.name != gameObject.name && Object.InputAuthority != hitPlayer.Object.InputAuthority)
+                {
+                    hitPlayer.TakeDamage(damage);
+                }
             }
         }
-        else
-        {
-            Debug.Log("hit fail");
-        }
+
     }
 
-    private IEnumerator DespawnAfterDelay(float delay)
+    private IEnumerator spawnBullet()
     {
-        yield return new WaitForSeconds(delay);  // 等待指定秒數
-        if (objectSpawner != null)
+        yield return new WaitForSeconds(attackDelay);
+
+        string playerName = gameObject.name;
+        Vector3 origin=CharacterTrans.position;
+        Vector3 direction=CharacterTrans.forward;
+
+        if (playerName == "Robot")
         {
-            objectSpawner.DespawnAll();  // 3 秒後執行
+            Vector3 shotOrigin = origin + Vector3.up * 150f + direction * 150f;
+            Vector3 right = Vector3.Cross(Vector3.up, direction).normalized;
+            float offsetDistance = 70f;
+            // 再打右邊子彈
+            Vector3 rightShotOrigin = shotOrigin + right * offsetDistance;
+            var rightBullet = objectSpawner.SpawnShot(rightShotOrigin, Quaternion.LookRotation(direction));
+            if (rightBullet != null)
+            {
+                rightBullet.Fire(direction);
+                PerformAttack(rightShotOrigin, direction);
+            }
+
+            yield return new WaitForSeconds(0.3f);
+
+            // 先打左邊子彈
+            Vector3 leftShotOrigin = shotOrigin - right * offsetDistance;
+            var leftBullet = objectSpawner.SpawnShot(leftShotOrigin, Quaternion.LookRotation(direction));
+            if (leftBullet != null)
+            {
+                leftBullet.Fire(direction);
+                PerformAttack(leftShotOrigin, direction);
+            }
+
+            
+
         }
+        else if (playerName == "Mushroom")
+        {
+            Vector3 shotOrigin = origin + Vector3.up * 100f;
+            var bullet = objectSpawner.SpawnShot(shotOrigin, Quaternion.LookRotation(direction));
+            if (bullet != null)
+            {
+                bullet.Fire(direction);
+                PerformAttack(shotOrigin, direction);
+            }
+
+            //DespawnAfterDelay(5f);
+        }
+        else{
+            Vector3 shotOrigin = origin + Vector3.up * 100f;
+            PerformAttack(shotOrigin, direction);
+        }
+
+
     }
-
-
 }

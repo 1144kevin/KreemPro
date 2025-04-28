@@ -533,6 +533,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.0017524146
       objectReference: {fileID: 0}
+    - target: {fileID: 457072990483336745, guid: 47aa3751db49736479bd9b865887c590,
+        type: 3}
+      propertyPath: sceneAudioSetter
+      value: 
+      objectReference: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+        type: 3}
+    - target: {fileID: 457072990483336745, guid: 47aa3751db49736479bd9b865887c590,
+        type: 3}
+      propertyPath: characterSoundIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 816369532294013775, guid: 47aa3751db49736479bd9b865887c590,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1121,6 +1132,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8103339122165081595, guid: 47aa3751db49736479bd9b865887c590,
         type: 3}
+      propertyPath: Flags
+      value: 262145
+      objectReference: {fileID: 0}
+    - target: {fileID: 8103339122165081595, guid: 47aa3751db49736479bd9b865887c590,
+        type: 3}
       propertyPath: SortKey
       value: 704123585
       objectReference: {fileID: 0}
@@ -1183,6 +1199,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0.003178159
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020138218250159475, guid: 47aa3751db49736479bd9b865887c590,
+        type: 3}
+      propertyPath: 'shotPrefab.RawGuidValue.Array.data[0]'
+      value: 4937774504418194567
+      objectReference: {fileID: 0}
+    - target: {fileID: 9020138218250159475, guid: 47aa3751db49736479bd9b865887c590,
+        type: 3}
+      propertyPath: 'shotPrefab.RawGuidValue.Array.data[1]'
+      value: 7668275057915353035
       objectReference: {fileID: 0}
     - target: {fileID: 9022633222815564536, guid: 47aa3751db49736479bd9b865887c590,
         type: 3}
