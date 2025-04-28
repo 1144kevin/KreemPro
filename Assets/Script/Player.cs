@@ -26,7 +26,6 @@ public class Player : NetworkBehaviour
   [SerializeField] private float startGameTime = 2.0f;
   [SerializeField] private TMP_Text kreemText;
   [SerializeField] private SceneAudioSetter sceneAudioSetter;
-  [SerializeField] private int characterSoundIndex = 0; // 攻擊音效用的角色 ID
 
   private void Awake()
   {
@@ -164,14 +163,7 @@ public class Player : NetworkBehaviour
 
         if (Object.HasInputAuthority)
           AttackHandler.Attack();
-        if (sceneAudioSetter != null) //攻擊音效
-        {
-          var clip = sceneAudioSetter.GetAttackSFXByCharacterIndex(characterSoundIndex);
-          if (clip != null)
-          {
-            AudioManager.Instance.PlaySFX(clip);
-          }
-        }
+        
       }
       if (!isDead)
       {

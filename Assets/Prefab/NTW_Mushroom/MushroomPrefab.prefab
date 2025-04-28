@@ -473,6 +473,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7808893992661174624}
     m_Modifications:
+    - target: {fileID: 457072990483336745, guid: 47aa3751db49736479bd9b865887c590,
+        type: 3}
+      propertyPath: sceneAudioSetter
+      value: 
+      objectReference: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+        type: 3}
+    - target: {fileID: 457072990483336745, guid: 47aa3751db49736479bd9b865887c590,
+        type: 3}
+      propertyPath: characterSoundIndex
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 816369532294013775, guid: 47aa3751db49736479bd9b865887c590,
         type: 3}
       propertyPath: m_LocalPosition.x
