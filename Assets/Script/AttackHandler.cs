@@ -157,14 +157,14 @@ public class AttackHandler : NetworkBehaviour
     }
 
 
-    private IEnumerator DespawnAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);  // 等待指定秒數
-        if (objectSpawner != null)
-        {
-            objectSpawner.DespawnOne();  // 3 秒後執行
-        }
-    }
+    // private IEnumerator DespawnAfterDelay(float delay)
+    // {
+    //     yield return new WaitForSeconds(delay);  // 等待指定秒數
+    //     if (objectSpawner != null)
+    //     {
+    //         objectSpawner.DespawnOne();  // 3 秒後執行
+    //     }
+    // }
 
 
 }

@@ -7,7 +7,7 @@ public class ObjectSpawner : NetworkBehaviour
 {
     [SerializeField] private NetworkPrefabRef shotPrefab;
 
-    private readonly List<NetworkObject> spawnedObjects = new List<NetworkObject>();
+    private readonly HashSet<NetworkObject> spawnedObjects = new HashSet<NetworkObject>();
 
     public void SpawnKreem()//之後寫生成Kreem可以直接用
     {
@@ -23,20 +23,12 @@ public class ObjectSpawner : NetworkBehaviour
         if (Runner.IsClient)return null;
         
         var obj = Runner.Spawn(shotPrefab, position, rotation);
-        //spawnedObjects.Add(obj);
+        spawnedObjects.Add(obj);
         return obj.GetComponent<Shot>();
     }
 
-    public void DespawnOne()
-    {
-        if (Runner.IsClient) return;
-        if (spawnedObjects.Count == 0) return;
-
-        var obj = spawnedObjects[0];
-        if (obj != null)
-        {
-            Runner.Despawn(obj);
-        }
-        spawnedObjects.RemoveAt(0); // 從最老的開始刪除
+    public void DespawnShot(){
+        
     }
+
 }
