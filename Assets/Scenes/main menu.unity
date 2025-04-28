@@ -8169,8 +8169,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e0d1254ce988444292ee23efb8e9d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startBtn: {fileID: 1563816856}
   sceneAudioSetter: {fileID: 1685195347}
+  startBtn: {fileID: 1563816856}
 --- !u!1001 &855578053
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12127,12 +12127,15 @@ MonoBehaviour:
   hoverSFX: {fileID: 8300000, guid: e77ff96156084f449bc473f4d4ef3c9f, type: 3}
   confirmSFX: {fileID: 8300000, guid: 5eaa8806eaccfc14487a2f4f219ae1e4, type: 3}
   startSFX: {fileID: 0}
+  dieSFX: {fileID: 0}
+  ringSFX: {fileID: 8300000, guid: 60ebd7b7b8121524aadf3a787076e019, type: 3}
   kreemSFX: {fileID: 0}
   characterAttackSFX:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  RobotOneShotSFX: {fileID: 0}
   melodySequences:
   - notes:
     - {fileID: 0}
@@ -12141,6 +12144,7 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
+  melodyVolume: 1
 --- !u!4 &1685195348
 Transform:
   m_ObjectHideFlags: 0

@@ -14692,6 +14692,7 @@ GameObject:
   - component: {fileID: 8480745191852824704}
   - component: {fileID: 1862900892350957764}
   m_Layer: 0
+  m_Layer: 0
   m_Name: RobotPrefab
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -14811,6 +14812,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 561896081656246127, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: startDelay.scalar
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 673596375816351837, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: m_Layer
@@ -14819,6 +14825,11 @@ PrefabInstance:
     - target: {fileID: 679530012461185375, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 729177304352258292, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: startDelay.scalar
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 788809973353670550, guid: 5c85c8c3d61f73340994e1ec01d3451f,
@@ -14835,6 +14846,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -179.99965
+      objectReference: {fileID: 0}
+    - target: {fileID: 845524975736084365, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: startDelay.scalar
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 955691266471948448, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: startDelay.scalar
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 973136162542305334, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
@@ -15004,7 +15025,7 @@ PrefabInstance:
     - target: {fileID: 3349849517378919505, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: startDelay.scalar
-      value: 0.6
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 3680555140826422736, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
@@ -15046,10 +15067,15 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4122989565602027356, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: startDelay.scalar
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 4211338375778020012, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: startDelay.scalar
-      value: 0.6
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 4363672944775553574, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
@@ -15059,7 +15085,7 @@ PrefabInstance:
     - target: {fileID: 4458964859045745344, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: startDelay.scalar
-      value: 0.6
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 4865321290367283634, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
@@ -15099,7 +15125,7 @@ PrefabInstance:
     - target: {fileID: 5209373423181763874, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: startDelay.scalar
-      value: 0.6
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 5286310381610656899, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
@@ -15129,6 +15155,11 @@ PrefabInstance:
     - target: {fileID: 5654176601219104026, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5677595490408368243, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: startDelay.scalar
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5717968497903143138, guid: 5c85c8c3d61f73340994e1ec01d3451f,
@@ -15286,6 +15317,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7426123233501505802, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: startDelay.scalar
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7484237178532866746, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -15310,6 +15346,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7706817099437408013, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: startDelay.scalar
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 8009820610168966491, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
@@ -15701,15 +15742,15 @@ MonoBehaviour:
   - {fileID: 5506286144361396110}
   - {fileID: 3044351593331608372}
   effectsForAnim2:
-  - {fileID: 8843386339979927189}
   - {fileID: 1694015185722347255}
+  - {fileID: 8843386339979927189}
   CharacterTrans: {fileID: 8384365897964113241}
   HitLayer:
     serializedVersion: 2
     m_Bits: 1
   HitOptions: 13
-  damage: 10
-  attackDistance: 1000
+  damage: 25
+  attackDistance: 800
   attackDelay: 0.2
   objectSpawner: {fileID: 5593565038021555944}
   sceneAudioSetter: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,

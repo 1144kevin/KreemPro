@@ -134,12 +134,11 @@ public class AttackHandler : NetworkBehaviour
         yield return new WaitForSeconds(attackDelay);
 
         string playerName = gameObject.name;
-        Vector3 origin=CharacterTrans.position;
         Vector3 direction=CharacterTrans.forward;
 
         if (playerName == "Robot")
         {
-            Vector3 shotOrigin = origin + Vector3.up * 150f + direction * 150f;
+            Vector3 shotOrigin = CharacterTrans.position + Vector3.up * 150f + direction * 150f;
             Vector3 right = Vector3.Cross(Vector3.up, direction).normalized;
             float offsetDistance = 70f;
             // 再打右邊子彈
@@ -151,7 +150,7 @@ public class AttackHandler : NetworkBehaviour
                 PerformAttack(rightShotOrigin, direction);
             }
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.2f);
 
             // 先打左邊子彈
             Vector3 leftShotOrigin = shotOrigin - right * offsetDistance;
@@ -167,7 +166,7 @@ public class AttackHandler : NetworkBehaviour
         }
         else if (playerName == "Mushroom")
         {
-            Vector3 shotOrigin = origin + Vector3.up * 100f;
+            Vector3 shotOrigin =  CharacterTrans.position + Vector3.up * 100f;
             var bullet = objectSpawner.SpawnShot(shotOrigin, Quaternion.LookRotation(direction));
             if (bullet != null)
             {
@@ -178,7 +177,7 @@ public class AttackHandler : NetworkBehaviour
             //DespawnAfterDelay(5f);
         }
         else{
-            Vector3 shotOrigin = origin + Vector3.up * 100f;
+            Vector3 shotOrigin =  CharacterTrans.position  + Vector3.up * 100f;
             PerformAttack(shotOrigin, direction);
         }
 

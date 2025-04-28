@@ -8,7 +8,6 @@ public class Shot : NetworkBehaviour
 {
     [SerializeField] private float speed = 30f;
     [SerializeField] private float lifetime = 4f;
-    [SerializeField] private ObjectSpawner objectSpawner;
 
     [Networked] private TickTimer lifeTimer { get; set; }
 

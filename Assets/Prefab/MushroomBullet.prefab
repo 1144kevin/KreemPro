@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 478044599697926248}
-  - component: {fileID: 4310868258616132097}
   - component: {fileID: 5037168545718358068}
   - component: {fileID: 593465410226831337}
   m_Layer: 0
@@ -35,27 +34,6 @@ Transform:
   - {fileID: 6406505682774642443}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &4310868258616132097
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7731386595278410357}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 0.05, y: 0.05, z: 0.05}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &5037168545718358068
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -70,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 1651376437
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 593465410226831337}
@@ -87,8 +65,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a860e82218a50448c37f0a8eba8437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1000
-  lifetime: 1
+  speed: 2000
+  lifetime: 0.5
 --- !u!1 &8195580961365467836
 GameObject:
   m_ObjectHideFlags: 0

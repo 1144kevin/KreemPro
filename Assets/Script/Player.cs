@@ -194,16 +194,16 @@ public class Player : NetworkBehaviour
         }
       }
 
-      if (data.damageTrigger && !isDead)
-      {
-        TakeDamage(10);
-      }
+      // if (data.damageTrigger && !isDead)
+      // {
+      //   TakeDamage(10);
+      // }
 
-      if (Object.HasInputAuthority && isDead && data.respawnTrigger)
-      {
-        playerRespawn.RpcRequestRespawn();
-        DisableCameraClampClient();
-      }
+      // if (Object.HasInputAuthority && isDead && data.respawnTrigger)
+      // {
+      //   playerRespawn.RpcRequestRespawn();
+      //   DisableCameraClampClient();
+      // }
     }
 
     if (Object.HasInputAuthority)
