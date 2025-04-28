@@ -58,7 +58,7 @@ public class PlayerRespawn : NetworkBehaviour
     {
         if (respawnEffect != null)
         {
-            respawnEffect.Stop();
+            respawnEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             respawnEffect.Play();
         }
     }
