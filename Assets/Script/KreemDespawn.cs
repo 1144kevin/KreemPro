@@ -5,21 +5,23 @@ public class KreemDespawn : NetworkBehaviour
 {
     private bool alreadyCollected = false;
     [SerializeField] private SceneAudioSetter sceneAudioSetter;
+private void OnTriggerEnter(Collider other)
+{
+    if (alreadyCollected) return;
 
-    private void OnTriggerEnter(Collider other)
+    if (other.CompareTag("Player"))
     {
-        
-        if (alreadyCollected || !Runner.IsServer) return;
+        var player = other.GetComponent<Player>();
+        if (player == null) return;
 
-        if (other.CompareTag("Player"))
+        if (Runner.IsServer)
         {
-            sceneAudioSetter?.PlayKreemSound();
-            var player = other.GetComponent<Player>();
-            if (player == null) return;
-            
-                player.ServerAddKreem(); // 👈 Server 端加分
-                alreadyCollected = true;
-                Runner.Despawn(Object);  // 👈 伺服器統一消除 Kreem
+             player.RpcRequestPlayKreemSound(); // ★ 叫player自己觸發音效
+            player.ServerAddKreem();     // Server 端加分
+            alreadyCollected = true;
+            Runner.Despawn(Object);      // Server 端移除 Kreem
         }
     }
+}
+
 }

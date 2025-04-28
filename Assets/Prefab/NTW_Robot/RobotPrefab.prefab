@@ -15886,6 +15886,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnEffect: {fileID: 4337354361217388681}
+  sceneAudioSetter: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+    type: 3}
   KreemPrefab: {fileID: 389400009104322736, guid: 41508aa1a0f88fc4488ee2b1a0e33296,
     type: 3}
 --- !u!114 &5593565038021555944

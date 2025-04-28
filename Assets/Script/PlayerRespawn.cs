@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerRespawn : NetworkBehaviour
 {
     [SerializeField] private ParticleSystem respawnEffect;
+    [SerializeField] private SceneAudioSetter sceneAudioSetter;
 
     private NetworkCharacterController characterController;
     public GameObject KreemPrefab;
@@ -92,6 +93,7 @@ public class PlayerRespawn : NetworkBehaviour
 
         // 播放重生粒子特效
         RpcPlayRespawnEffect();
+        RpcRequestPlayRebornSound();   // 自己本地播聲音
     }
 
     // 重生請求 RPC，由 InputAuthority 發送給 State Authority
@@ -99,5 +101,19 @@ public class PlayerRespawn : NetworkBehaviour
     public void RpcRequestRespawn()
     {
         Respawn();
+    }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+    
+    public void RpcRequestPlayRebornSound()
+    {
+        PlayRebornSoundLocal();
+    }
+
+    private void PlayRebornSoundLocal()
+    {
+        if (sceneAudioSetter != null)
+        {
+            sceneAudioSetter.PlayRebornSound();
+        }
     }
 }

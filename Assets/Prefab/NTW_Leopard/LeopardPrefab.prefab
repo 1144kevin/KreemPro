@@ -15136,6 +15136,12 @@ PrefabInstance:
       propertyPath: respawnEffect
       value: 
       objectReference: {fileID: 1811164725567387826}
+    - target: {fileID: 2325846256895654303, guid: aa7bd307377670c4ea064297027d0aec,
+        type: 3}
+      propertyPath: sceneAudioSetter
+      value: 
+      objectReference: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+        type: 3}
     - target: {fileID: 2474762868458182375, guid: aa7bd307377670c4ea064297027d0aec,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15337,6 +15343,17 @@ PrefabInstance:
       propertyPath: characterSoundIndex
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5998134493558846215, guid: aa7bd307377670c4ea064297027d0aec,
+        type: 3}
+      propertyPath: sceneAudioSetter
+      value: 
+      objectReference: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+        type: 3}
+    - target: {fileID: 5998134493558846215, guid: aa7bd307377670c4ea064297027d0aec,
+        type: 3}
+      propertyPath: characterSoundIndex
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6369147643577968806, guid: aa7bd307377670c4ea064297027d0aec,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -15461,17 +15478,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 2.3924415e-14
-      objectReference: {fileID: 0}
-    - target: {fileID: 5998134493558846215, guid: aa7bd307377670c4ea064297027d0aec,
-        type: 3}
-      propertyPath: sceneAudioSetter
-      value: 
-      objectReference: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
-        type: 3}
-    - target: {fileID: 5998134493558846215, guid: aa7bd307377670c4ea064297027d0aec,
-        type: 3}
-      propertyPath: characterSoundIndex
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6092540764630253508, guid: 8a898734291f1c645bd11fe8261781cf,
         type: 3}

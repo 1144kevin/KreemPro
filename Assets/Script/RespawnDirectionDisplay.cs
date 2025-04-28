@@ -132,8 +132,10 @@ public class RespawnDirectionDisplay : NetworkBehaviour
             }
         }
 
-        if (!inputActive) return;
+        // ✅ 移到這邊：「只針對輸入部分中止」
+        if (!inputActive || errorTriggered) return;
 
+        // 以下是輸入檢查
         if ((Gamepad.current?.dpad.up.wasPressedThisFrame ?? false) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             ProcessInput(Direction.Up);
@@ -162,7 +164,6 @@ public class RespawnDirectionDisplay : NetworkBehaviour
             }
         }
     }
-
 
 
     // 處理玩家的方向輸入
@@ -196,6 +197,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
             if (!errorTriggered)
             {
                 Debug.Log("輸入錯誤，開始晃動錯誤圖示...");
+                sceneAudioSetter.PlayWrongSound();
                 errorTriggered = true;
                 StartCoroutine(ShakeAndClear(iconInstances[currentIndex]));
             }

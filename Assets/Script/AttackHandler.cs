@@ -53,31 +53,10 @@ public class AttackHandler : NetworkBehaviour
 
     public void PlayEffect_Anim1()
     {
-        if (!Object.HasStateAuthority) return;
-        Rpc_PlayAttackEffect((int)AttackAnimType.Anim1);
-        if (sceneAudioSetter != null) //攻擊音效
+        if (HasInputAuthority)
         {
-            var clip = sceneAudioSetter.GetAttackSFXByCharacterIndex(characterSoundIndex);
-            if (clip != null)
-            {
-                AudioManager.Instance.PlaySFX(clip);
-            }
-        }
-    }
-
-    public void PlayEffect_Anim2()
-    {
-        if (!Object.HasStateAuthority) return;
-
-        Rpc_PlayAttackEffect((int)AttackAnimType.Anim2);
-
-        if (sceneAudioSetter != null) //攻擊音效
-        {
-            if (characterSoundIndex == 0)
-            {
-                sceneAudioSetter?.PlayOneShotSound();
-            }
-            else
+            // 本地自己播攻擊音效
+            if (sceneAudioSetter != null)
             {
                 var clip = sceneAudioSetter.GetAttackSFXByCharacterIndex(characterSoundIndex);
                 if (clip != null)
@@ -86,7 +65,39 @@ public class AttackHandler : NetworkBehaviour
                 }
             }
         }
+
+        if (!Object.HasStateAuthority) return;
+
+        Rpc_PlayAttackEffect((int)AttackAnimType.Anim1);
     }
+
+
+    public void PlayEffect_Anim2()
+    {
+        if (HasInputAuthority)
+        {
+            if (sceneAudioSetter != null)
+            {
+                if (characterSoundIndex == 0)
+                {
+                    sceneAudioSetter?.PlayOneShotSound();
+                }
+                else
+                {
+                    var clip = sceneAudioSetter.GetAttackSFXByCharacterIndex(characterSoundIndex);
+                    if (clip != null)
+                    {
+                        AudioManager.Instance.PlaySFX(clip);
+                    }
+                }
+            }
+        }
+
+        if (!Object.HasStateAuthority) return;
+
+        Rpc_PlayAttackEffect((int)AttackAnimType.Anim2);
+    }
+
 
 
     [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
@@ -104,7 +115,7 @@ public class AttackHandler : NetworkBehaviour
 
     private void PerformAttack(Vector3 origin, Vector3 direction)
     {
-        Vector3 rayOrigin = origin; 
+        Vector3 rayOrigin = origin;
         Debug.DrawRay(rayOrigin, CharacterTrans.forward * attackDistance, Color.red, 1f);
 
         if (Runner.LagCompensation.Raycast(
@@ -134,7 +145,7 @@ public class AttackHandler : NetworkBehaviour
         yield return new WaitForSeconds(attackDelay);
 
         string playerName = gameObject.name;
-        Vector3 direction=CharacterTrans.forward;
+        Vector3 direction = CharacterTrans.forward;
 
         if (playerName == "Robot")
         {
@@ -161,12 +172,12 @@ public class AttackHandler : NetworkBehaviour
                 PerformAttack(leftShotOrigin, direction);
             }
 
-            
+
 
         }
         else if (playerName == "Mushroom")
         {
-            Vector3 shotOrigin =  CharacterTrans.position + Vector3.up * 100f;
+            Vector3 shotOrigin = CharacterTrans.position + Vector3.up * 100f;
             var bullet = objectSpawner.SpawnShot(shotOrigin, Quaternion.LookRotation(direction));
             if (bullet != null)
             {
@@ -176,8 +187,9 @@ public class AttackHandler : NetworkBehaviour
 
             //DespawnAfterDelay(5f);
         }
-        else{
-            Vector3 shotOrigin =  CharacterTrans.position  + Vector3.up * 100f;
+        else
+        {
+            Vector3 shotOrigin = CharacterTrans.position + Vector3.up * 100f;
             PerformAttack(shotOrigin, direction);
         }
 

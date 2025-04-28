@@ -540,6 +540,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 5.9644284
       objectReference: {fileID: 0}
+    - target: {fileID: 6658569250486503565, guid: bcad2930877ef234385009e80bb8a24c,
+        type: 3}
+      propertyPath: sceneAudioSetter
+      value: 
+      objectReference: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+        type: 3}
     - target: {fileID: 6692683260018012363, guid: bcad2930877ef234385009e80bb8a24c,
         type: 3}
       propertyPath: SortKey

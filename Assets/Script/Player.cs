@@ -149,7 +149,7 @@ public class Player : NetworkBehaviour
       isDead = true;
       LastDeathPosition = transform.position;
       playerRespawn.RpcSetPlayerVisibility(false);
-      sceneAudioSetter?.PlayDieSound();
+      RpcPlayDieSound();
       if (playerRespawn.KreemPrefab != null)
       {
         Runner.Spawn(playerRespawn.KreemPrefab, LastDeathPosition, Quaternion.identity, default(PlayerRef));
@@ -174,7 +174,7 @@ public class Player : NetworkBehaviour
 
         if (Object.HasInputAuthority)
           AttackHandler.Attack();
-        
+
       }
       if (!isDead)
       {
@@ -287,8 +287,6 @@ public class Player : NetworkBehaviour
     }
   }
 
-
-
   private IEnumerator EnableStartUI()
   {
     {
@@ -314,4 +312,31 @@ public class Player : NetworkBehaviour
       }
     }
   }
+  [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+  public void RpcRequestPlayKreemSound()
+  {
+    PlayKreemSoundLocal();
+  }
+
+  private void PlayKreemSoundLocal()
+  {
+    if (AudioManager.Instance != null)
+    {
+      var sceneAudioSetter = FindObjectOfType<SceneAudioSetter>();
+      if (sceneAudioSetter != null && sceneAudioSetter.kreemSFX != null)
+      {
+        AudioManager.Instance.PlaySFX(sceneAudioSetter.kreemSFX);
+      }
+    }
+  }
+
+  [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+  public void RpcPlayDieSound()
+  {
+    if (sceneAudioSetter != null)
+    {
+      sceneAudioSetter.PlayDieSound();
+    }
+  }
+
 }
