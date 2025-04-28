@@ -99,7 +99,16 @@ public class RankingManager : NetworkBehaviour
             .OrderByDescending(kv => kv.Value)
             .Select(kv =>
             {
-                return $"Player {kv.Key.PlayerId} - {kv.Value} Kreem";
+
+
+                string playerName = "Unknown";
+
+                if (GameManager.Instance.PlayerList.TryGetValue(kv.Key, out var pData))
+                {
+                    playerName = pData.PlayerName;
+                }
+
+                return $"{playerName} (Player {kv.Key.PlayerId}) - {kv.Value} Kreem";
             });
 
         rankingText.text = string.Join("\n", lines);
@@ -138,7 +147,7 @@ public class RankingManager : NetworkBehaviour
 
             var entryGO = Instantiate(rankingEntryPrefab, contentParent);
             entryGO.GetComponent<RankingEntryUI>()
-                   .Setup(displayName, score, prefab,isWinner);
+                   .Setup(displayName, score, prefab, isWinner);
         }
     }
 
