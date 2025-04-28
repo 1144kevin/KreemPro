@@ -120,7 +120,7 @@ public class AttackHandler : NetworkBehaviour
 
             if (hit.GameObject.TryGetComponent<Player>(out var hitPlayer))
             {
-                if (hitPlayer.gameObject.name != gameObject.name && Object.InputAuthority != hitPlayer.Object.InputAuthority)
+                if (Object.InputAuthority != hitPlayer.Object.InputAuthority)
                 {
                     hitPlayer.TakeDamage(damage);
                 }
