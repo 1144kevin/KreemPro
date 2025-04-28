@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 //using System.Diagnostics;
 using Fusion;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -33,14 +34,18 @@ public class AttackHandler : NetworkBehaviour
 
     }
 
+    public void Attack()
+    {
+        if (HasInputAuthority)
+        {
+            Rpc_RequestAttack();
+        }
+    }
+
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
     public void Rpc_RequestAttack()
     {
-        objectSpawner?.SpawnSphere();
-        StartCoroutine(DespawnAfterDelay(3f));
-        // 延遲傷害判定
-        // PerformAttack(origin, direction);
-        Invoke(nameof(PerformAttack), attackDelay);
+        StartCoroutine(spawnBullet());
     }
 
     public void PlayEffect_Anim1()
@@ -68,21 +73,14 @@ public class AttackHandler : NetworkBehaviour
         }
     }
 
-    public void Attack()
-    {
-        if (HasInputAuthority)
-        {
-            Rpc_RequestAttack();
-        }
-    }
-
     private void PerformAttack(Vector3 origin, Vector3 direction)
     {
-        Vector3 rayOrigin = origin + Vector3.up * 100f; // 角色的位置 + 一點高度
+        Vector3 rayOrigin = origin; 
         //Debug.DrawRay(rayOrigin, CharacterTrans.forward * attackDistance, Color.red, 1f);
+
         if (Runner.LagCompensation.Raycast(
             rayOrigin,
-            CharacterTrans.forward,
+            direction,
             attackDistance,
             Object.InputAuthority,
             out var hit,
@@ -90,35 +88,29 @@ public class AttackHandler : NetworkBehaviour
             HitOptions))
         {
             Debug.Log(hit.GameObject.name);
+
             if (hit.GameObject.TryGetComponent<Player>(out var hitPlayer))
             {
-                hitPlayer.TakeDamage(damage);
+                if (hitPlayer.gameObject.name != gameObject.name && Object.InputAuthority != hitPlayer.Object.InputAuthority)
+                {
+                    hitPlayer.TakeDamage(damage);
+                }
             }
         }
-        else
-        {
-            Debug.Log("hit fail");
-        }
 
-        // 生成子彈
-        StartCoroutine(spawnBullet(origin, direction));
-        // var bullet = objectSpawner.SpawnShot(shotOrigin, Quaternion.LookRotation(direction));
-        // if (bullet != null)
-        // {
-        //     bullet.Fire(direction);
-        // }
-
-        //StartCoroutine(DespawnAfterDelay(3f));
     }
 
-    private IEnumerator spawnBullet(Vector3 origin, Vector3 direction)
+    private IEnumerator spawnBullet()
     {
+        yield return new WaitForSeconds(attackDelay);
+
         string playerName = gameObject.name;
-        Debug.Log($"Spawning bullet for player: {playerName}");
+        Vector3 origin=CharacterTrans.position;
+        Vector3 direction=CharacterTrans.forward;
 
         if (playerName == "Robot")
         {
-            Vector3 shotOrigin = origin + Vector3.up * 150f;
+            Vector3 shotOrigin = origin + Vector3.up * 150f + direction * 150f;
             Vector3 right = Vector3.Cross(Vector3.up, direction).normalized;
             float offsetDistance = 70f;
             // 再打右邊子彈
@@ -127,18 +119,21 @@ public class AttackHandler : NetworkBehaviour
             if (rightBullet != null)
             {
                 rightBullet.Fire(direction);
+                PerformAttack(rightShotOrigin, direction);
             }
 
-            // 等0.6秒
-            yield return new WaitForSeconds(0.6f);
-            
+            yield return new WaitForSeconds(0.3f);
+
             // 先打左邊子彈
             Vector3 leftShotOrigin = shotOrigin - right * offsetDistance;
             var leftBullet = objectSpawner.SpawnShot(leftShotOrigin, Quaternion.LookRotation(direction));
             if (leftBullet != null)
             {
                 leftBullet.Fire(direction);
+                PerformAttack(leftShotOrigin, direction);
             }
+
+            //DespawnAfterDelay(5f);
 
         }
         else if (playerName == "Mushroom")
@@ -148,17 +143,26 @@ public class AttackHandler : NetworkBehaviour
             if (bullet != null)
             {
                 bullet.Fire(direction);
+                PerformAttack(shotOrigin, direction);
             }
+
+            //DespawnAfterDelay(5f);
         }
+        else{
+            Vector3 shotOrigin = origin + Vector3.up * 100f;
+            PerformAttack(shotOrigin, direction);
+        }
+
+
     }
 
 
     private IEnumerator DespawnAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);  // 等待指定秒數
-           if (objectSpawner != null)
+        if (objectSpawner != null)
         {
-            objectSpawner.DespawnAll();  // 3 秒後執行
+            objectSpawner.DespawnOne();  // 3 秒後執行
         }
     }
 

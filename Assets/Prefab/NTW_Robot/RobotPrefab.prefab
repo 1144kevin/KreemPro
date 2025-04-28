@@ -999,6 +999,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e78550d340810040b2d8cd92eeb25a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  effectsForAnim1: []
+  effectsForAnim2: []
   CharacterTrans: {fileID: 8384365897964113241}
   HitLayer:
     serializedVersion: 2
@@ -1006,8 +1008,8 @@ MonoBehaviour:
   HitOptions: 13
   damage: 10
   attackDistance: 1000
-  attackDelay: 0.5
-  objectSpawner: {fileID: 4920832661966811496}
+  attackDelay: 0.2
+  objectSpawner: {fileID: 5593565038021555944}
 --- !u!114 &2998856429226848935
 MonoBehaviour:
   m_ObjectHideFlags: 0

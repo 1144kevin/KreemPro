@@ -7,11 +7,11 @@ public class ObjectSpawner : NetworkBehaviour
 {
     [SerializeField] private NetworkPrefabRef shotPrefab;
 
-    private readonly HashSet<NetworkObject> spawnedObjects = new HashSet<NetworkObject>();
+    private readonly List<NetworkObject> spawnedObjects = new List<NetworkObject>();
 
-    public void SpawnSphere()
+    public void SpawnKreem()//之後寫生成Kreem可以直接用
     {
-        if (Runner.IsClient) return; // 確保只有伺服器能夠生成物件
+        if (Runner.IsClient) return; 
 
         var obj = Runner.Spawn(shotPrefab, transform.position + Random.insideUnitSphere * 3);
         spawnedObjects.Add(obj);
@@ -23,20 +23,20 @@ public class ObjectSpawner : NetworkBehaviour
         if (Runner.IsClient)return null;
         
         var obj = Runner.Spawn(shotPrefab, position, rotation);
+        //spawnedObjects.Add(obj);
         return obj.GetComponent<Shot>();
     }
 
-    public void DespawnAll()
+    public void DespawnOne()
     {
-        if (Runner.IsClient) return; // Clients can't despawn.
+        if (Runner.IsClient) return;
+        if (spawnedObjects.Count == 0) return;
 
-        if (spawnedObjects == null) return;
-
-        foreach (var obj in spawnedObjects)
+        var obj = spawnedObjects[0];
+        if (obj != null)
         {
             Runner.Despawn(obj);
         }
-
-        spawnedObjects.Clear();
+        spawnedObjects.RemoveAt(0); // 從最老的開始刪除
     }
 }
