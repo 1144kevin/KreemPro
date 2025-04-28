@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 220059287862656423}
   - component: {fileID: 836647280025433894}
   - component: {fileID: 2427414947218319046}
-  - component: {fileID: 8036747723377818147}
   m_Layer: 0
   m_Name: bullet
   m_TagString: Untagged
@@ -100,8 +99,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a860e82218a50448c37f0a8eba8437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1000
-  lifetime: 1
+  speed: 1500
+  lifetime: 0.25
+  objectSpawner: {fileID: 0}
 --- !u!114 &2427414947218319046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,24 +121,3 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 836647280025433894}
   ForceRemoteRenderTimeframe: 0
---- !u!65 &8036747723377818147
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6611746220143071387}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 0.16444042, y: 0.1644416, z: 0.3981039}
-  m_Center: {x: 0.00035605207, y: -0.00015245378, z: 0}

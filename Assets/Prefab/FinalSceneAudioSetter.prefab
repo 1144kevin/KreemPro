@@ -60,11 +60,11 @@ MonoBehaviour:
   ringSFX: {fileID: 8300000, guid: 60ebd7b7b8121524aadf3a787076e019, type: 3}
   kreemSFX: {fileID: 8300000, guid: 458209799e9ca9b47a6778f479342e01, type: 3}
   characterAttackSFX:
-  - {fileID: 8300000, guid: c18409267e589f14599104fa9af78f42, type: 3}
+  - {fileID: 8300000, guid: 0152535f8847bd449a5ee3a03dcfcee2, type: 3}
   - {fileID: 8300000, guid: fe556c8a7562f6544ad12a1d79351eb9, type: 3}
   - {fileID: 8300000, guid: 9196f888c603e084c9da87489a3c531a, type: 3}
   - {fileID: 8300000, guid: 94c8fc31cec9c8644b9cd39a280ae2d0, type: 3}
-  RobotOneShotSFX: {fileID: 8300000, guid: c18409267e589f14599104fa9af78f42, type: 3}
+  RobotOneShotSFX: {fileID: 8300000, guid: e322184985f75404cbb86f2754aa03db, type: 3}
   melodySequences:
   - notes:
     - {fileID: 8300000, guid: ee60061431a35dd429e55da896095521, type: 3}

@@ -18,6 +18,7 @@ public class RankingManager : NetworkBehaviour
     [SerializeField] private GameObject rankingEntryPrefab;
     [SerializeField] private GameObject[] characterPrefabs;
     [SerializeField] private string finalSceneName = "FinalScene";
+    [SerializeField] private SceneAudioSetter sceneAudioSetter;
 
     private Dictionary<PlayerRef, bool> restartVotes = new();
 
@@ -159,12 +160,14 @@ public class RankingManager : NetworkBehaviour
 
     private void OnRestartClicked()
     {
+        sceneAudioSetter?.PlayConfirmSound();
         RpcVoteRestart(Runner.LocalPlayer);
         restartButton.interactable = false;
     }
 
     public void OnReturnClicked()
     {
+        sceneAudioSetter?.PlayConfirmSound();
         if (Object.HasStateAuthority)
         {
             Runner.Shutdown();
