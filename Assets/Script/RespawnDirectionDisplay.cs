@@ -22,6 +22,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
     [SerializeField] private SceneAudioSetter sceneAudioSetter;
     private bool errorTriggered = false;
     private int selectedMelodyIndex = 0;
+    private Coroutine melodyCoroutine;
 
     private void OnEnable()
     {
@@ -175,7 +176,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
             {
                 iconCtrl.SetCorrect();
             }
-            PlayMelodyNote(currentIndex);//撥放復活音符
+            PlayMelodyNote(currentIndex, sceneAudioSetter.melodyVolume);//撥放復活音符
             currentIndex++;
 
             if (currentIndex >= sequence.Count)
@@ -200,7 +201,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
             }
         }
     }
-    void PlayMelodyNote(int index)
+    void PlayMelodyNote(int index, float volume)
     {
         if (sceneAudioSetter == null) return;
 
@@ -209,8 +210,18 @@ public class RespawnDirectionDisplay : NetworkBehaviour
 
         if (index >= 0 && index < selectedSequence.Length)
         {
-            AudioManager.Instance.PlaySFX(selectedSequence[index]);
+            if (melodyCoroutine != null)
+            {
+                StopCoroutine(melodyCoroutine);
+            }
+            melodyCoroutine = StartCoroutine(PlayNoteWithDelay(selectedSequence[index], volume));
         }
+    }
+
+    private IEnumerator PlayNoteWithDelay(AudioClip clip, float volume)
+    {
+        yield return new WaitForSeconds(0.05f); // 延遲時間（可調，建議 0.05~0.2 秒）
+        AudioManager.Instance.PlaySFX(clip, volume);
     }
 
 }

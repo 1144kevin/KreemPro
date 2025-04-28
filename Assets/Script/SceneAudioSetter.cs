@@ -41,6 +41,8 @@ public class SceneAudioSetter : MonoBehaviour
 
     [Header("復活樂譜")]
     [SerializeField] private List<MelodySequence> melodySequences;
+    [Header("聲音大小設定")]
+    [SerializeField] public float melodyVolume = 1.0f; // 預設 1.0f，可拉高
 
 
 

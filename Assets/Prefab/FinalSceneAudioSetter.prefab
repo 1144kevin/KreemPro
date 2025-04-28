@@ -82,3 +82,4 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 040efd409ce562647acf5b1830a38846, type: 3}
     - {fileID: 8300000, guid: 040efd409ce562647acf5b1830a38846, type: 3}
     - {fileID: 8300000, guid: 040efd409ce562647acf5b1830a38846, type: 3}
+  melodyVolume: 3
