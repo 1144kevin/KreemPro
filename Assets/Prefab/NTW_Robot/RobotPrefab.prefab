@@ -14692,7 +14692,6 @@ GameObject:
   - component: {fileID: 8480745191852824704}
   - component: {fileID: 1862900892350957764}
   m_Layer: 0
-  m_Layer: 0
   m_Name: RobotPrefab
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -15750,7 +15749,7 @@ MonoBehaviour:
     m_Bits: 1
   HitOptions: 13
   damage: 25
-  attackDistance: 800
+  attackDistance: 550
   attackDelay: 0.2
   objectSpawner: {fileID: 5593565038021555944}
   sceneAudioSetter: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
