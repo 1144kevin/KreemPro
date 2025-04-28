@@ -35,8 +35,8 @@ public class Shot : NetworkBehaviour
 
         if (lifeTimer.Expired(Runner))
         {
+            isFlying = false;
             Runner.Despawn(Object);
-            //objectSpawner.DespawnShot();
         }
     }
 }
