@@ -61,7 +61,7 @@ public class AttackHandler : NetworkBehaviour
                     : effectsForAnim2;
         foreach (var ps in group)
         {
-            ps?.Stop();
+            ps?.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
             ps?.Play();
         }
     }
