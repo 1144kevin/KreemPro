@@ -174,14 +174,7 @@ public class Player : NetworkBehaviour
 
         if (Object.HasInputAuthority)
           AttackHandler.Attack();
-        if (sceneAudioSetter != null) //攻擊音效
-        {
-          var clip = sceneAudioSetter.GetAttackSFXByCharacterIndex(characterSoundIndex);
-          if (clip != null)
-          {
-            AudioManager.Instance.PlaySFX(clip);
-          }
-        }
+        
       }
       if (!isDead)
       {

@@ -21,6 +21,9 @@ public class AttackHandler : NetworkBehaviour
     [SerializeField] private int attackDistance = 20;
     [SerializeField] private float attackDelay = 0f; // 攻擊延遲時間
     [SerializeField] private ObjectSpawner objectSpawner;
+    [SerializeField] private SceneAudioSetter sceneAudioSetter;
+    [SerializeField] private int characterSoundIndex = 0; // 攻擊音效用的角色 ID
+
     // 將攻擊動畫類型定義成 enum，更直覺：
     public enum AttackAnimType { Anim1 = 0, Anim2 = 1 }
 
@@ -52,13 +55,39 @@ public class AttackHandler : NetworkBehaviour
     {
         if (!Object.HasStateAuthority) return;
         Rpc_PlayAttackEffect((int)AttackAnimType.Anim1);
+        if (sceneAudioSetter != null) //攻擊音效
+        {
+            var clip = sceneAudioSetter.GetAttackSFXByCharacterIndex(characterSoundIndex);
+            if (clip != null)
+            {
+                AudioManager.Instance.PlaySFX(clip);
+            }
+        }
     }
 
     public void PlayEffect_Anim2()
     {
         if (!Object.HasStateAuthority) return;
+
         Rpc_PlayAttackEffect((int)AttackAnimType.Anim2);
+
+        if (sceneAudioSetter != null) //攻擊音效
+        {
+            if (characterSoundIndex == 0)
+            {
+                sceneAudioSetter?.PlayOneShotSound();
+            }
+            else
+            {
+                var clip = sceneAudioSetter.GetAttackSFXByCharacterIndex(characterSoundIndex);
+                if (clip != null)
+                {
+                    AudioManager.Instance.PlaySFX(clip);
+                }
+            }
+        }
     }
+
 
     [Rpc(sources: RpcSources.StateAuthority, targets: RpcTargets.All)]
     private void Rpc_PlayAttackEffect(int animType)
