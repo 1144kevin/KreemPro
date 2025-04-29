@@ -139,6 +139,7 @@ public class Player : NetworkBehaviour
     }
     if (Object.HasStateAuthority && !isDead && transform.position.y < -400f)
     {
+      RpcPlayDieSound();
       isDead = true;
       playerRespawn.RpcSetPlayerVisibility(false);
     }
