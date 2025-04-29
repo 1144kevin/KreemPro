@@ -7,6 +7,8 @@ public class AudioManager : MonoBehaviour
   public static AudioManager Instance { get; private set; }
 
   [Header("Mixer & Source")]
+  [SerializeField] private AudioMixerGroup bgmMixerGroup;
+[SerializeField] private AudioMixerGroup sfxMixerGroup;
   [SerializeField] private AudioMixer mainMixer;
   [SerializeField] private AudioSource bgmSource;
   [SerializeField] private AudioSource sfxSource;
@@ -14,6 +16,8 @@ public class AudioManager : MonoBehaviour
 
   void Awake()
   {
+    bgmSource.outputAudioMixerGroup = bgmMixerGroup;
+    sfxSource.outputAudioMixerGroup = sfxMixerGroup;
     if (Instance != null)
     {
       Destroy(gameObject);

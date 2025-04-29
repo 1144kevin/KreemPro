@@ -8,38 +8,52 @@ public class ObjectSpawner : NetworkBehaviour
     [SerializeField] private NetworkPrefabRef shotPrefab;
 
     private readonly HashSet<NetworkObject> spawnedObjects = new HashSet<NetworkObject>();
-    
-    
-    public void SpawnSphere()
+
+    public void SpawnKreem()//之後寫生成Kreem可以直接用
     {
-        if (Runner.IsClient) return; // 確保只有伺服器能夠生成物件
-        
-        var obj =Runner.Spawn(shotPrefab, transform.position + Random.insideUnitSphere * 3);
+        if (Runner.IsClient) return;
+
+        var obj = Runner.Spawn(shotPrefab, transform.position + Random.insideUnitSphere * 3);
         spawnedObjects.Add(obj);
-        
-        // if (obj == null)
-        // {
-        //     obj = Runner.Spawn(shotPrefab, transform.position + Random.insideUnitSphere * 3);
-        //     spawnedObjects.Add(obj);
-        // }
-        // else
-        // {
-        //     obj.gameObject.SetActive(true);
-        //     spawnedObjects.Add(obj);
-        // }
+
     }
 
-    public void DespawnAll()
+    public Shot SpawnShot(Vector3 position, Quaternion rotation)
     {
-        if (Runner.IsClient) return; // Clients can't despawn.
-        
-        if (spawnedObjects == null) return;
+        if (Runner.IsClient) return null;
 
-        foreach (var obj in spawnedObjects)
-        {
-            Runner.Despawn(obj);
-        }
-        
-        spawnedObjects.Clear();
+        var obj = Runner.Spawn(shotPrefab, position, rotation);
+        //spawnedObjects.Add(obj);
+        return obj.GetComponent<Shot>();
     }
+
+    // public void DespawnShot(NetworkObject shot)
+    // { 
+    //     Debug.Log("despawn");
+    //     if (shot == null) return;
+
+    //     if (spawnedObjects.Contains(shot))
+    //     {
+           
+    //         // spawnedObjects.Remove(shot);
+    //         spawnedObjects.Clear();
+    //     }
+
+    //     Runner.Despawn(shot);
+    // }
+
+    // public void DespawnAll()
+    // {
+    //     if (Runner.IsClient) return; // Clients can't despawn.
+
+    //     if (spawnedObjects == null) return;
+
+    //     foreach (var obj in spawnedObjects)
+    //     {
+    //         Runner.Despawn(obj);
+    //     }
+
+    //     spawnedObjects.Clear();
+    // }
+
 }

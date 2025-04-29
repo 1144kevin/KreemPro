@@ -27,6 +27,8 @@ public class Player : NetworkBehaviour
   [SerializeField] private TMP_Text kreemText;
   [SerializeField] private SceneAudioSetter sceneAudioSetter;
   [SerializeField] private int characterSoundIndex = 0; // 攻擊音效用的角色 ID
+  private bool attackLocked = false;        // 攻擊鎖定旗標
+  [SerializeField] private float attackCooldown = 0.5f;      // 根據角色 name 指定的延遲時間
 
   private void Awake()
   {
@@ -68,6 +70,11 @@ public class Player : NetworkBehaviour
 
     if (respawnCanvas != null)
       respawnCanvas.SetActive(false);
+  }
+
+  private void UnlockAttack()
+  {
+    attackLocked = false;
   }
 
   [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -132,6 +139,7 @@ public class Player : NetworkBehaviour
     }
     if (Object.HasStateAuthority && !isDead && transform.position.y < -400f)
     {
+      RpcPlayDieSound();
       isDead = true;
       playerRespawn.RpcSetPlayerVisibility(false);
     }
@@ -142,7 +150,7 @@ public class Player : NetworkBehaviour
       isDead = true;
       LastDeathPosition = transform.position;
       playerRespawn.RpcSetPlayerVisibility(false);
-      sceneAudioSetter?.PlayDieSound();
+      RpcPlayDieSound();
       if (playerRespawn.KreemPrefab != null)
       {
         Runner.Spawn(playerRespawn.KreemPrefab, LastDeathPosition, Quaternion.identity, default(PlayerRef));
@@ -155,8 +163,11 @@ public class Player : NetworkBehaviour
       previousButton = data.buttons;
 
       // 播放攻擊動畫（只針對本地玩家）
-      if (buttonPressed.IsSet((int)InputButton.ATTACK) && Health > 0 && !isDead)
+      if (buttonPressed.IsSet((int)InputButton.ATTACK) && !isDead && !attackLocked)
       {
+        attackLocked = true;           // 立刻鎖住
+        Invoke(nameof(UnlockAttack), attackCooldown);  // 延遲解鎖
+
         bool isRunning = data.direction.magnitude > 0.1f;
 
         if (Object.HasStateAuthority)
@@ -164,14 +175,7 @@ public class Player : NetworkBehaviour
 
         if (Object.HasInputAuthority)
           AttackHandler.Attack();
-        if (sceneAudioSetter != null) //攻擊音效
-        {
-          var clip = sceneAudioSetter.GetAttackSFXByCharacterIndex(characterSoundIndex);
-          if (clip != null)
-          {
-            AudioManager.Instance.PlaySFX(clip);
-          }
-        }
+
       }
       if (!isDead)
       {
@@ -191,16 +195,16 @@ public class Player : NetworkBehaviour
         }
       }
 
-      if (data.damageTrigger && !isDead)
-      {
-        TakeDamage(10);
-      }
+      // if (data.damageTrigger && !isDead)
+      // {
+      //   TakeDamage(10);
+      // }
 
-      if (Object.HasInputAuthority && isDead && data.respawnTrigger)
-      {
-        playerRespawn.RpcRequestRespawn();
-        DisableCameraClampClient();
-      }
+      // if (Object.HasInputAuthority && isDead && data.respawnTrigger)
+      // {
+      //   playerRespawn.RpcRequestRespawn();
+      //   DisableCameraClampClient();
+      // }
     }
 
     if (Object.HasInputAuthority)
@@ -284,8 +288,6 @@ public class Player : NetworkBehaviour
     }
   }
 
-
-
   private IEnumerator EnableStartUI()
   {
     {
@@ -311,4 +313,31 @@ public class Player : NetworkBehaviour
       }
     }
   }
+  [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+  public void RpcRequestPlayKreemSound()
+  {
+    PlayKreemSoundLocal();
+  }
+
+  private void PlayKreemSoundLocal()
+  {
+    if (AudioManager.Instance != null)
+    {
+      var sceneAudioSetter = FindObjectOfType<SceneAudioSetter>();
+      if (sceneAudioSetter != null && sceneAudioSetter.kreemSFX != null)
+      {
+        AudioManager.Instance.PlaySFX(sceneAudioSetter.kreemSFX);
+      }
+    }
+  }
+
+  [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+  public void RpcPlayDieSound()
+  {
+    if (sceneAudioSetter != null)
+    {
+      sceneAudioSetter.PlayDieSound();
+    }
+  }
+
 }

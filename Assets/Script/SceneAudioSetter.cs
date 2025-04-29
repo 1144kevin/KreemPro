@@ -30,16 +30,23 @@ public class SceneAudioSetter : MonoBehaviour
     [SerializeField] private AudioClip startSFX;
     [SerializeField] private AudioClip dieSFX;
     [SerializeField] private AudioClip ringSFX;
+    [SerializeField] private AudioClip rebornSFX;
 
 
     [Header("場上物件")]
-    [SerializeField] private AudioClip kreemSFX;
+    [SerializeField] public AudioClip kreemSFX;
 
     [Header("各角色攻擊 SFX（依角色 index）")]
     [SerializeField] private AudioClip[] characterAttackSFX;
+    [SerializeField] private AudioClip RobotOneShotSFX;
 
     [Header("復活樂譜")]
     [SerializeField] private List<MelodySequence> melodySequences;
+    [SerializeField] private AudioClip wrongSFX;
+
+    [Header("聲音大小設定")]
+    [SerializeField] public float melodyVolume = 1.0f; // 預設 1.0f，可拉高
+    [SerializeField] public float rebornVolume = 1.0f;
 
 
 
@@ -73,8 +80,21 @@ public class SceneAudioSetter : MonoBehaviour
             Debug.Log($"[SceneAudioSetter] 播放持續 SFX：{loopingSFX.name}");
         }
     }
-
-
+    public void PlayWrongSound()
+    {
+        if (wrongSFX != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(wrongSFX);
+        }
+    }
+    public void PlayRebornSound()
+    {
+        if (rebornSFX != null && AudioManager.Instance != null)
+        {
+             float safeVolume = Mathf.Clamp(rebornVolume, 0f, 1f);
+            AudioManager.Instance.PlaySFX(rebornSFX,  safeVolume);
+        }
+    }
     public void PlayKreemSound()
     {
         if (kreemSFX != null && AudioManager.Instance != null)
@@ -118,16 +138,23 @@ public class SceneAudioSetter : MonoBehaviour
             AudioManager.Instance.PlaySFX(dieSFX);
         }
     }
-public int GetMelodySequenceCount()
-{
-    return melodySequences.Count;
-}
+    public void PlayOneShotSound()
+    {
+        if (RobotOneShotSFX != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(RobotOneShotSFX);
+        }
+    }
+    public int GetMelodySequenceCount()
+    {
+        return melodySequences.Count;
+    }
 
-public AudioClip[] GetMelodySequenceByIndex(int index)
-{
-    if (index < 0 || index >= melodySequences.Count) return null;
-    return melodySequences[index].notes;
-}
+    public AudioClip[] GetMelodySequenceByIndex(int index)
+    {
+        if (index < 0 || index >= melodySequences.Count) return null;
+        return melodySequences[index].notes;
+    }
 
 
 

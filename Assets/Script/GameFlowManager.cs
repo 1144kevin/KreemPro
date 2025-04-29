@@ -12,6 +12,8 @@ public class GameFlowManager : NetworkBehaviour
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private GameObject winnerUI;
     [SerializeField] private float waitBeforeRanking = 5f;
+    [SerializeField] private SceneAudioSetter sceneAudioSetter;
+
 
     [Networked] private float remainingTime { get; set; }
     private bool gameEnded = false;
@@ -121,7 +123,8 @@ private void TriggerTimerWarning(bool finalCountdown)
     private void RpcEndGameUI()
 {
     if (winnerUI == null) return;
-
+    
+    sceneAudioSetter?.PlayRingSound();
     winnerUI.SetActive(true);
     winnerUI.transform.localScale = Vector3.zero;
 

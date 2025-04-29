@@ -22,6 +22,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
     [SerializeField] private SceneAudioSetter sceneAudioSetter;
     private bool errorTriggered = false;
     private int selectedMelodyIndex = 0;
+    private Coroutine melodyCoroutine;
 
     private void OnEnable()
     {
@@ -131,8 +132,10 @@ public class RespawnDirectionDisplay : NetworkBehaviour
             }
         }
 
-        if (!inputActive) return;
+        // ✅ 移到這邊：「只針對輸入部分中止」
+        if (!inputActive || errorTriggered) return;
 
+        // 以下是輸入檢查
         if ((Gamepad.current?.dpad.up.wasPressedThisFrame ?? false) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             ProcessInput(Direction.Up);
@@ -163,7 +166,6 @@ public class RespawnDirectionDisplay : NetworkBehaviour
     }
 
 
-
     // 處理玩家的方向輸入
     void ProcessInput(Direction inputDir)
     {
@@ -175,7 +177,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
             {
                 iconCtrl.SetCorrect();
             }
-            PlayMelodyNote(currentIndex);//撥放復活音符
+            PlayMelodyNote(currentIndex, sceneAudioSetter.melodyVolume);//撥放復活音符
             currentIndex++;
 
             if (currentIndex >= sequence.Count)
@@ -195,12 +197,13 @@ public class RespawnDirectionDisplay : NetworkBehaviour
             if (!errorTriggered)
             {
                 Debug.Log("輸入錯誤，開始晃動錯誤圖示...");
+                sceneAudioSetter.PlayWrongSound();
                 errorTriggered = true;
                 StartCoroutine(ShakeAndClear(iconInstances[currentIndex]));
             }
         }
     }
-    void PlayMelodyNote(int index)
+    void PlayMelodyNote(int index, float volume)
     {
         if (sceneAudioSetter == null) return;
 
@@ -209,8 +212,18 @@ public class RespawnDirectionDisplay : NetworkBehaviour
 
         if (index >= 0 && index < selectedSequence.Length)
         {
-            AudioManager.Instance.PlaySFX(selectedSequence[index]);
+            if (melodyCoroutine != null)
+            {
+                StopCoroutine(melodyCoroutine);
+            }
+            melodyCoroutine = StartCoroutine(PlayNoteWithDelay(selectedSequence[index], volume));
         }
+    }
+
+    private IEnumerator PlayNoteWithDelay(AudioClip clip, float volume)
+    {
+        yield return new WaitForSeconds(0.05f); // 延遲時間（可調，建議 0.05~0.2 秒）
+        AudioManager.Instance.PlaySFX(clip, volume);
     }
 
 }
