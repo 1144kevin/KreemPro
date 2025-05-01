@@ -195,4 +195,9 @@ public class AttackHandler : NetworkBehaviour
 
 
     }
+public Transform GetCharacterTrans()
+{
+    return CharacterTrans;
+}
+
 }

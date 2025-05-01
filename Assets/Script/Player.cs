@@ -5,6 +5,9 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using ExitGames.Client.Photon.StructWrapping; // ← 加這個
 
+
+
+
 public class Player : NetworkBehaviour
 {
   [SerializeField] private NetworkCharacterController CharacterController;
@@ -25,10 +28,42 @@ public class Player : NetworkBehaviour
   private bool lastMoving = false;
   [SerializeField] private float startGameTime = 2.0f;
   [SerializeField] private TMP_Text kreemText;
-  [SerializeField] private SceneAudioSetter sceneAudioSetter;
-  [SerializeField] private int characterSoundIndex = 0; // 攻擊音效用的角色 ID
+
   private bool attackLocked = false;        // 攻擊鎖定旗標
   [SerializeField] private float attackCooldown = 0.5f;      // 根據角色 name 指定的延遲時間
+  
+  [Header("Attack Effect")]
+  [SerializeField] public ParticleSystem getHitEffect;
+  [SerializeField] private ParticleSystem sharedHitEffect;
+
+  [Header("Audio")]
+  [SerializeField] private SceneAudioSetter sceneAudioSetter;
+  [SerializeField] private int characterSoundIndex = 0; // 攻擊音效用的角色 ID
+
+  [Header("Attack Direction UI")]
+  [SerializeField] public Transform CharacterTrans;
+  [SerializeField] private Transform attackDirectionUI; // 指向 UI 根物件
+  [SerializeField] private float arrowDistance = 4f; // 前方距離
+  [SerializeField] private float arrowHeight = 1.5f;  // 高度
+  [SerializeField] private Vector3 arrowOffset = Vector3.zero; // 額外位置偏移
+
+  private void Update()
+  {
+    if (!Object.HasInputAuthority || attackDirectionUI == null || AttackHandler == null) return;
+
+    Transform charTrans = AttackHandler.GetCharacterTrans();
+    if (charTrans == null) return;
+
+    Vector3 forward = charTrans.forward;
+    Vector3 offset = forward * arrowDistance + Vector3.up * arrowHeight;
+
+    // 加入世界空間偏移量（旋轉下的偏移）
+    Vector3 adjustedOffset = charTrans.rotation * arrowOffset;
+
+    attackDirectionUI.position = charTrans.position + offset + adjustedOffset;
+  }
+
+
 
   private void Awake()
   {
@@ -42,6 +77,18 @@ public class Player : NetworkBehaviour
 
   public override void Spawned()
   {
+    //attackDirection權限
+    if (Object.HasInputAuthority)
+    {
+      if (attackDirectionUI != null)
+        attackDirectionUI.gameObject.SetActive(true);
+    }
+    else
+    {
+      if (attackDirectionUI != null)
+        attackDirectionUI.gameObject.SetActive(false);
+    }
+
     if (Object.HasInputAuthority)
     {
       // 只有本地玩家的相機會啟用
@@ -195,10 +242,10 @@ public class Player : NetworkBehaviour
         }
       }
 
-      // if (data.damageTrigger && !isDead)
-      // {
-      //   TakeDamage(10);
-      // }
+      if (data.damageTrigger && !isDead)
+      {
+        TakeDamage(10);
+      }
 
       // if (Object.HasInputAuthority && isDead && data.respawnTrigger)
       // {
@@ -242,6 +289,8 @@ public class Player : NetworkBehaviour
     Debug.Log("hit");
 
     RpcUpdateHealth(Health);
+    RpcPlayHitEffect();
+    RpcPlaySharedHitEffect(); // 給所有人看的受擊特效
   }
 
   // 當重生完成後，重置 Health 與死亡狀態，並顯示角色
@@ -252,6 +301,11 @@ public class Player : NetworkBehaviour
     isDead = false;
     RpcUpdateHealth(Health);
     playerRespawn.RpcSetPlayerVisibility(true);
+    // 👉 重啟受擊特效物件
+    if (getHitEffect != null && !getHitEffect.gameObject.activeSelf)
+    {
+        getHitEffect.gameObject.SetActive(true);
+    }
   }
 
   // 給 Server 呼叫的加分邏輯
@@ -339,5 +393,62 @@ public class Player : NetworkBehaviour
       sceneAudioSetter.PlayDieSound();
     }
   }
+private void PlayHitEffectLocal()
+{
+    if (getHitEffect != null)
+    {
+        if (!getHitEffect.gameObject.activeSelf)
+            getHitEffect.gameObject.SetActive(true);
+
+        getHitEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        getHitEffect.Play();
+
+        // 自動關閉特效物件（延遲一點）
+        StartCoroutine(DisableAfterSeconds(getHitEffect.gameObject, 0.5f));
+    }
+}
+private IEnumerator DisableAfterSeconds(GameObject go, float delay)
+{
+    yield return new WaitForSeconds(delay);
+    if (go != null)
+        go.SetActive(false);
+}
+
+
+  [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
+  public void RpcPlayHitEffect()
+  {
+    PlayHitEffectLocal();
+  }
+
+private void PlaySharedHitEffectLocal()
+{
+    if (sharedHitEffect != null)
+    {
+        Debug.Log("✅ PlaySharedHitEffectLocal: trying to play");
+
+        // 不停用 GameObject，只停用粒子本身
+        sharedHitEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        sharedHitEffect.Play();
+
+        // 如果你真的需要手動清除尾巴殘影，可加這行延遲清尾
+        StartCoroutine(ClearSharedHitEffect(0.5f));
+    }
+}
+
+private IEnumerator ClearSharedHitEffect(float delay)
+{
+    yield return new WaitForSeconds(delay);
+    if (sharedHitEffect != null)
+    {
+        sharedHitEffect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+    }
+}
+
+[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+public void RpcPlaySharedHitEffect()
+{
+    PlaySharedHitEffectLocal();
+}
 
 }
