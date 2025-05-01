@@ -67,7 +67,7 @@ public class MenuManager : MonoBehaviour
     {
         sceneAudioSetter?.PlayConfirmSound();
         GameManager.Instance.PlayerName = playerName;
-        GameManager.Instance.RoomName = "Kreem-1";
+        GameManager.Instance.RoomName = "Kreem-13";
         createBtn.interactable = false;
         await GameManager.Instance.CreateRoom();
     }
@@ -75,7 +75,7 @@ public class MenuManager : MonoBehaviour
     {
         sceneAudioSetter?.PlayConfirmSound();
         GameManager.Instance.PlayerName = playerName;
-        GameManager.Instance.RoomName = "Kreem-1";
+        GameManager.Instance.RoomName = "Kreem-13";
         joinBtn.interactable = false;
         await GameManager.Instance.JoinRoom();
     }
