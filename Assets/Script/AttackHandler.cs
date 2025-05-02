@@ -23,6 +23,8 @@ public class AttackHandler : NetworkBehaviour
     [SerializeField] private ObjectSpawner objectSpawner;
     [SerializeField] private SceneAudioSetter sceneAudioSetter;
     [SerializeField] private int characterSoundIndex = 0; // 攻擊音效用的角色 ID
+    [SerializeField] private Vector3 attackRange = new Vector3(200f, 200f, 400f);
+    //private Vector3 boxHalfExtents = new Vector3(200f, 400f, 400f);//數字再調
 
     // 將攻擊動畫類型定義成 enum，更直覺：
     public enum AttackAnimType { Anim1 = 0, Anim2 = 1 }
@@ -113,32 +115,78 @@ public class AttackHandler : NetworkBehaviour
         }
     }
 
-    private void PerformAttack(Vector3 origin, Vector3 direction)
+    private void PerformAttack(Vector3 rayorigin, Vector3 direction)
     {
-        Vector3 rayOrigin = origin;
-        Debug.DrawRay(rayOrigin, CharacterTrans.forward * attackDistance, Color.red, 1f);
-
-        if (Runner.LagCompensation.Raycast(
-            rayOrigin,
-            direction,
-            attackDistance,
-            Object.InputAuthority,
-            out var hit,
-            HitLayer,
-            HitOptions))
+        Quaternion attackQuaternion = Quaternion.LookRotation(CharacterTrans.forward);
+        string playerName = gameObject.name;
+        if (playerName == "Robot" || playerName == "Mushroom")
         {
-            Debug.Log(hit.GameObject.name);
+            //Debug.DrawRay(rayorigin, CharacterTrans.forward * attackDistance, Color.red, 1f);
 
-            if (hit.GameObject.TryGetComponent<Player>(out var hitPlayer))
+            if (Runner.LagCompensation.Raycast(
+                rayorigin,
+                direction,
+                attackDistance,
+                Object.InputAuthority,
+                out var hit,
+                HitLayer,
+                HitOptions))
             {
-                if (Object.InputAuthority != hitPlayer.Object.InputAuthority)
+                Debug.Log(hit.GameObject.name);
+
+                if (hit.GameObject.TryGetComponent<Player>(out var hitPlayer))
                 {
-                    hitPlayer.TakeDamage(damage);
+                    if (Object.InputAuthority != hitPlayer.Object.InputAuthority)
+                    {
+                        hitPlayer.TakeDamage(damage);
+                    }
                 }
             }
         }
+        else
+        {
+            rayorigin=rayorigin+CharacterTrans.forward*200f;
+            //Debug.DrawRay(rayorigin, CharacterTrans.forward * attackRange.z, Color.red, 1f);
+            
+            List<LagCompensatedHit> hits = new List<LagCompensatedHit>();
+            if (Runner.LagCompensation.OverlapBox(
+                rayorigin,
+                attackRange,
+                attackQuaternion,
+                Object.InputAuthority,
+                hits,
+                HitLayer,
+                HitOptions) > 0)
+            {
+                foreach (var hit in hits)
+                {
+                    Debug.Log(hit.GameObject.name);
+
+                    if (hit.GameObject.TryGetComponent<Player>(out var hitPlayer))
+                    {
+                        if (Object.InputAuthority != hitPlayer.Object.InputAuthority)
+                        {
+                            hitPlayer.TakeDamage(damage);
+                        }
+                    }
+                }
+                
+            };
+        }
 
     }
+    // private void OnDrawGizmos()
+    // {
+    //     Gizmos.color = Color.red;
+    //     Vector3 forward = CharacterTrans.forward;
+    //     Vector3 center = CharacterTrans.position+CharacterTrans.forward*200f+Vector3.up * 150f;
+    //     Quaternion rotation = Quaternion.LookRotation(forward);
+    //     Vector3 size = new Vector3(200f, 200f, 400f);
+
+    //     Gizmos.matrix = Matrix4x4.TRS(center, rotation, Vector3.one);
+    //     Gizmos.DrawWireCube(Vector3.zero, size);
+    // }
+
 
     private IEnumerator spawnBullet()
     {
@@ -189,7 +237,7 @@ public class AttackHandler : NetworkBehaviour
         }
         else
         {
-            Vector3 shotOrigin = CharacterTrans.position + Vector3.up * 100f;
+            Vector3 shotOrigin = CharacterTrans.position+Vector3.up * 100f;
             PerformAttack(shotOrigin, direction);
         }
 

@@ -728,6 +728,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8953749999587203104, guid: bcad2930877ef234385009e80bb8a24c,
         type: 3}
+      propertyPath: attackRange.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953749999587203104, guid: bcad2930877ef234385009e80bb8a24c,
+        type: 3}
+      propertyPath: attackRange.z
+      value: 350
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953749999587203104, guid: bcad2930877ef234385009e80bb8a24c,
+        type: 3}
       propertyPath: attackDistance
       value: 350
       objectReference: {fileID: 0}
