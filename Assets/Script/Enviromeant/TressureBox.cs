@@ -9,111 +9,68 @@ public class TreasureBox : NetworkBehaviour
     [SerializeField] public List<NetworkObject> brokenPiecePrefabs = new List<NetworkObject>();
     [SerializeField] private NetworkPrefabRef specialItemPrefab;
     [SerializeField] private float explosionForce = 10f;
-    [SerializeField] private float detectRadius = 2.5f;
-    [SerializeField] private LayerMask detectLayer;
     [SerializeField] private int spawnBatchSize = 10;
-    [SerializeField] private float despawnDelay = 3f;
 
     private bool exploded = false;
-    private readonly List<NetworkObject> spawnedPieces = new List<NetworkObject>();
 
-private void FixedUpdate()
-{
-    if (!Runner.IsServer) return;
-    if (exploded) return;
-
-    // 防止BrokenPiecePrefabs或其他參數未設定
-    if (brokenPiecePrefabs == null || brokenPiecePrefabs.Count == 0) return;
-    if (detectLayer.value == 0) return;
-
-    Collider[] hits = Physics.OverlapSphere(transform.position, detectRadius, detectLayer);
-
-    foreach (var hit in hits)
+    private void OnTriggerEnter(Collider other)
     {
-        // if (hit == null || hit.gameObject == null) continue;
+        if (!Runner || !Runner.IsServer || exploded) return;
 
-        string tagSafe = "Untagged";
-        try
+        if (other.CompareTag("Player") || other.CompareTag("testBox"))
         {
-            tagSafe = hit.gameObject.tag;
-        }
-        catch
-        {
-            continue;
-        }
-
-        if (tagSafe == "Player" || tagSafe == "testBox")
-        {
+            Debug.Log($"[TreasureBox] 玩家觸發爆破：{other.name}");
             exploded = true;
             StartCoroutine(Explode());
-            break;
         }
     }
-}
-
 
     private IEnumerator Explode()
     {
-        // 分批Spawn碎片
         int count = 0;
+
         foreach (var prefab in brokenPiecePrefabs)
         {
             if (prefab == null) continue;
 
-            var piece = Runner.Spawn(prefab, transform.position, Random.rotation);
+            var piece = Runner.Spawn(prefab, transform.position, Random.rotation, inputAuthority: null);
             if (piece != null)
             {
-                spawnedPieces.Add(piece);
+                Debug.Log($"[TreasureBox] Spawn 成功：{piece.name}, IsValid: {piece.IsValid}");
 
                 if (piece.TryGetComponent<Rigidbody>(out var rb))
                 {
-                    Vector3 randomDirection = Vector3.up + new Vector3(
-                        Random.Range(-0.5f, 0.5f),
-                        0,
-                        Random.Range(-0.5f, 0.5f)
-                    );
-                    rb.AddForce(randomDirection.normalized * explosionForce, ForceMode.Impulse);
-                    rb.AddTorque(Random.insideUnitSphere * explosionForce, ForceMode.Impulse);
+                    var col = piece.GetComponent<Collider>();
+                    if (col != null) col.isTrigger = true;
+
+                    Vector3 randomDir = Random.onUnitSphere;
+                    randomDir.y = Mathf.Abs(randomDir.y);
+
+                    rb.AddForce(randomDir * explosionForce * 2f, ForceMode.Impulse);
+                    rb.AddTorque(Random.insideUnitSphere * explosionForce * 2f, ForceMode.Impulse);
                 }
+            }
+            else
+            {
+                Debug.LogWarning($"[TreasureBox] Spawn 碎片失敗：{prefab.name}");
             }
 
             count++;
             if (count % spawnBatchSize == 0)
-            {
-                yield return null; // 分批等待
-            }
+                yield return null;
         }
 
-        // Spawn 特殊掉落物 (Kreem)
+        // 特殊掉落物
         if (specialItemPrefab.IsValid)
         {
-            var item = Runner.Spawn(specialItemPrefab, transform.position + Vector3.up * 1.0f, Quaternion.identity);
+            var item = Runner.Spawn(specialItemPrefab, transform.position + Vector3.up, Quaternion.identity, inputAuthority: null);
             if (item.TryGetComponent<Rigidbody>(out var itemRb))
             {
-                Vector3 launchDirection = Vector3.up + new Vector3(Random.Range(-0.5f, 0.5f), 0, Random.Range(-0.5f, 0.5f));
-                itemRb.AddForce(launchDirection.normalized * explosionForce, ForceMode.Impulse);
+                Vector3 launchDir = Vector3.up + new Vector3(Random.Range(-0.5f, 0.5f), 0, Random.Range(-0.5f, 0.5f));
+                itemRb.AddForce(launchDir.normalized * explosionForce, ForceMode.Impulse);
             }
         }
 
-        // 自己消失
         Runner.Despawn(Object);
-
-        // 碎片延遲自動消失
-        StartCoroutine(DespawnSpawnedPieces());
-    }
-
-    private IEnumerator DespawnSpawnedPieces()
-    {
-        yield return new WaitForSeconds(despawnDelay);
-
-        foreach (var piece in spawnedPieces)
-        {
-            if (piece != null && piece.IsValid)
-            {
-                Runner.Despawn(piece);
-            }
-        }
-
-        spawnedPieces.Clear();
     }
 }
