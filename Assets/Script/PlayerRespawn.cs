@@ -52,6 +52,12 @@ public class PlayerRespawn : NetworkBehaviour
         {
             Debug.LogWarning($"[Respawn] Canvas not found for player {Object.InputAuthority}");
         }
+            // 🔧 加這段：重新啟用 hitEffect
+        var player = GetComponent<Player>();
+        if (player != null && player.getHitEffect != null)
+        {
+            player.getHitEffect.gameObject.SetActive(isVisible);
+        }
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

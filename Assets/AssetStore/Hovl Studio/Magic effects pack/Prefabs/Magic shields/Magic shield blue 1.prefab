@@ -4874,7 +4874,7 @@ GameObject:
   - component: {fileID: 2955197092750843386}
   - component: {fileID: 8241726842330886118}
   m_Layer: 0
-  m_Name: Magic shield blue
+  m_Name: Magic shield blue 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
