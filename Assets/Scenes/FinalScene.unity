@@ -6575,7 +6575,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 712387665}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: efe7e9f2ba8a0ea4aadfaf492fe6bc50, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -10814,7 +10814,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 389400009104322736, guid: 41508aa1a0f88fc4488ee2b1a0e33296,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1109650049}
   m_SourcePrefab: {fileID: 100100000, guid: 41508aa1a0f88fc4488ee2b1a0e33296, type: 3}
 --- !u!4 &1109650047 stripped
 Transform:
@@ -10822,6 +10826,24 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1109650046}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1109650048 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 389400009104322736, guid: 41508aa1a0f88fc4488ee2b1a0e33296,
+    type: 3}
+  m_PrefabInstance: {fileID: 1109650046}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1109650049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109650048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64ce9dd27c7aacb478fba7ba986202b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1130788013
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14894,6 +14916,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Court
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d9834cdfa29de884e81ceb52f4e93eed,
+        type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18173,7 +18200,7 @@ PrefabInstance:
     - target: {fileID: 6088193411089176442, guid: 9a0ef069376c43449915ad6dfd400836,
         type: 3}
       propertyPath: matchDuration
-      value: 120
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6088193411089176442, guid: 9a0ef069376c43449915ad6dfd400836,
         type: 3}

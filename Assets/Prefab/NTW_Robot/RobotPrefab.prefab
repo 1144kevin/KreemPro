@@ -15604,6 +15604,8 @@ MonoBehaviour:
   CharacterController: {fileID: 5155748780580143678}
   MaxHealth: 100
   HealthBar: {fileID: 1468749117270787743}
+  healRate: 10
+  healDelay: 5
   AttackHandler: {fileID: 8254917698597635303}
   AnimationHandler: {fileID: 3406697922935151365}
   Speed: 50
@@ -16234,6 +16236,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3428480130749982753, guid: f7cb3b322cfcdb048af2294927fa9043,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 78.3114
+      objectReference: {fileID: 0}
+    - target: {fileID: 3428480130749982753, guid: f7cb3b322cfcdb048af2294927fa9043,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 47.155685
       objectReference: {fileID: 0}
     - target: {fileID: 3630368535254528679, guid: f7cb3b322cfcdb048af2294927fa9043,
         type: 3}
