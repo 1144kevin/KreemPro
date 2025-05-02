@@ -8,7 +8,8 @@ public class Shot : NetworkBehaviour
 {
     [SerializeField] private float speed = 30f;
     [SerializeField] private float lifetime = 4f;
-
+    [SerializeField] private float maxDistance = 100f;
+    [SerializeField] private LayerMask hitLayer;
     [Networked] private TickTimer lifeTimer { get; set; }
 
     private Vector3 shootDirection;
@@ -25,11 +26,28 @@ public class Shot : NetworkBehaviour
         }
     }
 
-    public override void FixedUpdateNetwork()
+     public override void FixedUpdateNetwork()
     {
         if (isFlying)
         {
             transform.position += shootDirection * speed * Runner.DeltaTime;
+        }
+
+        Debug.DrawRay(transform.position,shootDirection, Color.red, 1f);
+        // Raycast from current to next position to detect hit
+        if (Physics.Raycast(transform.position, shootDirection, out RaycastHit hit, speed * Runner.DeltaTime, hitLayer))
+        {
+            Debug.Log("Shot hit: " + hit.collider.name);
+
+            // 處理命中物件
+            // if (hit.collider.TryGetComponent(out Player target))
+            // {
+            //     target.TakeDamage(10); // 你可以改這數字或改成變數
+            // }
+
+            // 停止飛行並回收
+            isFlying = false;
+            Runner.Despawn(Object);
         }
 
         if (lifeTimer.Expired(Runner))

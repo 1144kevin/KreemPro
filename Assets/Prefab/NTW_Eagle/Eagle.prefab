@@ -5197,6 +5197,14 @@ MonoBehaviour:
   _kreemCollect: 0
   startGameTime: 2
   kreemText: {fileID: 0}
+  sceneAudioSetter: {fileID: 0}
+  characterSoundIndex: 0
+  attackCooldown: 0.5
+  CharacterTrans: {fileID: 0}
+  attackDirectionUI: {fileID: 0}
+  arrowDistance: 150
+  arrowHeight: 200
+  arrowOffset: {x: 113, y: 0, z: 180}
 --- !u!114 &6658569250486503565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5210,6 +5218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnEffect: {fileID: 8794726875183877703}
+  sceneAudioSetter: {fileID: 0}
   KreemPrefab: {fileID: 389400009104322736, guid: 41508aa1a0f88fc4488ee2b1a0e33296,
     type: 3}
 --- !u!114 &4875404874980950714
@@ -5396,6 +5405,8 @@ MonoBehaviour:
   attackDistance: 400
   attackDelay: 0.7
   objectSpawner: {fileID: 0}
+  sceneAudioSetter: {fileID: 0}
+  characterSoundIndex: 0
 --- !u!1 &1701747600767264778
 GameObject:
   m_ObjectHideFlags: 0
