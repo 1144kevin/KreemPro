@@ -56275,6 +56275,8 @@ MonoBehaviour:
   CharacterController: {fileID: 6086485354843749300}
   MaxHealth: 100
   HealthBar: {fileID: 828724139984230104}
+  healRate: 10
+  healDelay: 5
   AttackHandler: {fileID: 457072990483336745}
   AnimationHandler: {fileID: 8560114280272259522}
   Speed: 50
@@ -56283,6 +56285,9 @@ MonoBehaviour:
   _kreemCollect: 0
   startGameTime: 2
   kreemText: {fileID: 0}
+  sceneAudioSetter: {fileID: 0}
+  characterSoundIndex: 0
+  attackCooldown: 0.5
 --- !u!114 &3147865196673559300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56296,6 +56301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnEffect: {fileID: 6186277327258550628}
+  sceneAudioSetter: {fileID: 0}
   KreemPrefab: {fileID: 389400009104322736, guid: 41508aa1a0f88fc4488ee2b1a0e33296,
     type: 3}
 --- !u!114 &8103339122165081595
@@ -56552,6 +56558,8 @@ MonoBehaviour:
   attackDistance: 1000
   attackDelay: 0.8
   objectSpawner: {fileID: 9020138218250159475}
+  sceneAudioSetter: {fileID: 0}
+  characterSoundIndex: 0
 --- !u!114 &9020138218250159475
 MonoBehaviour:
   m_ObjectHideFlags: 0

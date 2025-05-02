@@ -96,6 +96,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 522453494037709433, guid: bcad2930877ef234385009e80bb8a24c,
         type: 3}
+      propertyPath: healRate
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 522453494037709433, guid: bcad2930877ef234385009e80bb8a24c,
+        type: 3}
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 989176866577924110}
@@ -419,6 +424,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -8.520053
+      objectReference: {fileID: 0}
+    - target: {fileID: 4868423751964097440, guid: bcad2930877ef234385009e80bb8a24c,
+        type: 3}
+      propertyPath: m_margin.z
+      value: -47.422195
       objectReference: {fileID: 0}
     - target: {fileID: 4959822547042880968, guid: bcad2930877ef234385009e80bb8a24c,
         type: 3}

@@ -48,11 +48,18 @@ public class MenuManager : MonoBehaviour
     private Button lastConfirmedButton;
     private Color lastButtonOriginalColor;
 
+    [SerializeField] private GameObject startConfirmationPopup;
+    [SerializeField] private Button yesButton;
+    [SerializeField] private Button noButton;
+
     private void Start()
     {
         createBtn.onClick.AddListener(OnCreateBtnClicked);
         joinBtn.onClick.AddListener(OnJoinBtnClicked);
         startBtn.onClick.AddListener(OnStartBtnClicked);
+
+        yesButton.onClick.AddListener(OnYesButtonClicked);
+        noButton.onClick.AddListener(OnNoButtonClicked);
 
         EventSystem.current.SetSelectedGameObject(firstCharacterButton.gameObject);
     }
@@ -67,7 +74,7 @@ public class MenuManager : MonoBehaviour
     {
         sceneAudioSetter?.PlayConfirmSound();
         GameManager.Instance.PlayerName = playerName;
-        GameManager.Instance.RoomName = "Kreem-1";
+        GameManager.Instance.RoomName = "Kreem-11";
         createBtn.interactable = false;
         await GameManager.Instance.CreateRoom();
     }
@@ -75,7 +82,7 @@ public class MenuManager : MonoBehaviour
     {
         sceneAudioSetter?.PlayConfirmSound();
         GameManager.Instance.PlayerName = playerName;
-        GameManager.Instance.RoomName = "Kreem-1";
+        GameManager.Instance.RoomName = "Kreem-11";
         joinBtn.interactable = false;
         await GameManager.Instance.JoinRoom();
     }
@@ -114,7 +121,7 @@ public class MenuManager : MonoBehaviour
 
         EventSystem.current.SetSelectedGameObject(createBtn.gameObject);
         sceneAudioSetter?.PlayConfirmSound();
-        
+
     }
 
     public void BackToCharacterSelection()
@@ -137,10 +144,25 @@ public class MenuManager : MonoBehaviour
 
     private void OnStartBtnClicked()
     {
+        sceneAudioSetter?.PlayConfirmSound();
+        startConfirmationPopup.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(yesButton.gameObject);
+    }
+
+    private void OnYesButtonClicked()
+    {
         GameManager.Instance.StartGame();
-        sceneAudioSetter?.PlayStartSound();
-        Debug.Log("Start");
+        sceneAudioSetter?.PlayConfirmSound();
+        Debug.Log("✅ 開始遊戲！");
         startBtn.interactable = false;
+        startConfirmationPopup.SetActive(false); // ✅ 關閉視窗
+    }
+
+    private void OnNoButtonClicked()
+    {
+        sceneAudioSetter?.PlayConfirmSound(); // 如果你有取消音效
+        startConfirmationPopup.SetActive(false); // ✅ 關閉視窗
+         EventSystem.current.SetSelectedGameObject(startBtn.gameObject);
     }
     public void SetStartBtnVisible(bool isVisible)
     {
@@ -157,7 +179,7 @@ public class MenuManager : MonoBehaviour
             case MenuType.Room:
                 menuPanel.SetActive(false);
                 roomPanel.SetActive(true);
-                EventSystem.current.SetSelectedGameObject(playerListContent.gameObject);
+                EventSystem.current.SetSelectedGameObject(startBtn.gameObject);
                 break;
             default:
                 break;

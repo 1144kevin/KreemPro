@@ -15292,6 +15292,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -0.50207585
       objectReference: {fileID: 0}
+    - target: {fileID: 4570443854092309258, guid: aa7bd307377670c4ea064297027d0aec,
+        type: 3}
+      propertyPath: m_margin.z
+      value: -40.801777
+      objectReference: {fileID: 0}
     - target: {fileID: 4781138787736282596, guid: aa7bd307377670c4ea064297027d0aec,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -15317,6 +15322,11 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 1350840647234293431}
+    - target: {fileID: 5954896813284386893, guid: aa7bd307377670c4ea064297027d0aec,
+        type: 3}
+      propertyPath: healRate
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 5954896813284386893, guid: aa7bd307377670c4ea064297027d0aec,
         type: 3}
       propertyPath: playerCamera

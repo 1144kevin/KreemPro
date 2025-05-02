@@ -9,9 +9,13 @@ public class HealthBar2 : MonoBehaviour
     public new Camera camera;
     public Transform target;
     public Vector3 offset;
-    
+
     private float currentHealth = 100f;
     private float maxHealth = 100f;
+
+    private float lastDamageTime;
+    public float timeToStartHealing = 5f;
+    public float healRate = 5f; // 每秒回幾滴血
 
     void Start()
     {
@@ -21,11 +25,11 @@ public class HealthBar2 : MonoBehaviour
             Debug.LogError("Slider is not assigned to HealthBar2!");
             return;
         }
-        
+
         // Set the slider's min and max values
         slider.minValue = 0f;
         slider.maxValue = 1f;
-        
+
         // Initialize health bar
         Debug.Log($"Initializing health bar: Current Health = {currentHealth}, Max Health = {maxHealth}");
         UpdateHealthBar(currentHealth, maxHealth);
@@ -44,9 +48,10 @@ public class HealthBar2 : MonoBehaviour
     public void TakeDamage(float damageAmount)
     {
         currentHealth = Mathf.Max(0, currentHealth - damageAmount);
+        lastDamageTime = Time.time; // 記錄最後一次受傷的時間
         Debug.Log($"Taking damage: {damageAmount}. New health: {currentHealth}");
         UpdateHealthBar(currentHealth, maxHealth);
-        
+
         if (currentHealth <= 0)
         {
             Debug.Log("Player has died!");
@@ -71,6 +76,13 @@ public class HealthBar2 : MonoBehaviour
         {
             transform.rotation = camera.transform.rotation;
             transform.position = target.position + offset;
+        }
+
+        if (currentHealth < maxHealth && Time.time - lastDamageTime >= timeToStartHealing)
+        {
+            currentHealth += healRate * Time.deltaTime;
+            currentHealth = Mathf.Min(currentHealth, maxHealth);
+            UpdateHealthBar(currentHealth, maxHealth);
         }
     }
 }

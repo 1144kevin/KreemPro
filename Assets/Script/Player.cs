@@ -10,6 +10,12 @@ public class Player : NetworkBehaviour
   [SerializeField] private NetworkCharacterController CharacterController;
   [SerializeField] private int MaxHealth = 100;
   [SerializeField] private HealthBar HealthBar;
+
+  private float lastDamageTime = 0f;
+  private float healAccumulator = 0f;
+  [SerializeField] private float healRate = 10f;     // 每秒回血量（例如：5）
+  [SerializeField] private float healDelay = 5f;    // 幾秒沒受傷後開始回血（例如：5秒）
+
   [SerializeField] private AttackHandler AttackHandler;
   [SerializeField] private AnimationHandler AnimationHandler;
   [SerializeField] private float Speed = 500f;
@@ -151,10 +157,45 @@ public class Player : NetworkBehaviour
       LastDeathPosition = transform.position;
       playerRespawn.RpcSetPlayerVisibility(false);
       RpcPlayDieSound();
+
       if (playerRespawn.KreemPrefab != null)
       {
-        Runner.Spawn(playerRespawn.KreemPrefab, LastDeathPosition, Quaternion.identity, default(PlayerRef));
+        int dropCount = Mathf.Max(kreemCollect, 1); // 至少掉 1 顆
+        kreemCollect = 0; // 清空分數
+
+        //for (int i = 0; i < dropCount; i++)
+        //{
+        //  Vector3 offset = new Vector3(Random.Range(-90f, 90f),0, Random.Range(-90f, 90f));
+        //  Runner.Spawn(playerRespawn.KreemPrefab, LastDeathPosition + offset, Quaternion.identity, default(PlayerRef));
+        //}
+
+        for (int i = 0; i < dropCount; i++)
+        {
+          // 生成位置稍微往上偏移
+          Vector3 spawnPos = LastDeathPosition + Vector3.up * 150f;
+
+          // 生成 Kreem 實體
+          var kreem = Runner.Spawn(playerRespawn.KreemPrefab, spawnPos, Quaternion.identity, default);
+
+          // 加入彈射效果（需有 Rigidbody）
+          if (kreem.TryGetComponent<Rigidbody>(out var rb))
+          {
+            Vector3 randomDir = new Vector3(
+                Random.Range(-10f, 10f),
+                Random.Range(-50f, 0f),
+                Random.Range(-10f, 10f)
+            ).normalized;
+
+            float force = 2000f; // 彈出力量
+            rb.AddForce(randomDir * force, ForceMode.Impulse);
+            
+
+            //rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+          }
+         
+        }
       }
+
     }
 
     if (GetInput(out NetworkInputData data))
@@ -195,16 +236,16 @@ public class Player : NetworkBehaviour
         }
       }
 
-      // if (data.damageTrigger && !isDead)
-      // {
-      //   TakeDamage(10);
-      // }
+      if (data.damageTrigger && !isDead)
+      {
+        TakeDamage(10);
+      }
 
-      // if (Object.HasInputAuthority && isDead && data.respawnTrigger)
-      // {
-      //   playerRespawn.RpcRequestRespawn();
-      //   DisableCameraClampClient();
-      // }
+      if (Object.HasInputAuthority && isDead && data.respawnTrigger)
+      {
+        playerRespawn.RpcRequestRespawn();
+        DisableCameraClampClient();
+      }
     }
 
     if (Object.HasInputAuthority)
@@ -222,6 +263,26 @@ public class Player : NetworkBehaviour
           respawnCanvas.SetActive(false);
       }
     }
+
+    // 回血邏輯：幾秒沒受傷就開始慢慢回血
+    if (Object.HasStateAuthority && !isDead && Health < MaxHealth)
+    {
+      if (Time.time - lastDamageTime >= healDelay)
+      {
+        healAccumulator += Runner.DeltaTime * healRate;
+
+        if (healAccumulator >= 1f)
+        {
+          int healAmount = Mathf.FloorToInt(healAccumulator);
+          Health = Mathf.Clamp(Health + healAmount, 0, MaxHealth);
+          healAccumulator -= healAmount;
+
+          RpcUpdateHealth(Health);
+        }
+      }
+    }
+
+
   }
 
   private void LateUpdate()
@@ -239,6 +300,7 @@ public class Player : NetworkBehaviour
 
     Health -= damage;
     Health = Mathf.Clamp(Health, 0, MaxHealth);
+    lastDamageTime = Time.time; // 記錄最後受傷時間
     Debug.Log("hit");
 
     RpcUpdateHealth(Health);
