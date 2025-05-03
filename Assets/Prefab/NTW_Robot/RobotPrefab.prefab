@@ -15935,12 +15935,13 @@ MonoBehaviour:
     m_Bits: 1
   HitOptions: 13
   damage: 25
-  attackDistance: 550
+  attackDistance: 700
   attackDelay: 0.2
   objectSpawner: {fileID: 5593565038021555944}
   sceneAudioSetter: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
     type: 3}
   characterSoundIndex: 0
+  attackRange: {x: 200, y: 200, z: 400}
 --- !u!114 &2998856429226848935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15956,9 +15957,9 @@ MonoBehaviour:
   Type: 1
   SphereRadius: 50.31
   CapsuleRadius: 100
-  BoxExtents: {x: 90, y: 110, z: 50}
+  BoxExtents: {x: 90, y: 110, z: 100}
   CapsuleExtents: 0
-  Offset: {x: 0, y: 100, z: 0}
+  Offset: {x: 0, y: 100, z: 41.2}
   Root: {fileID: 8049165696522912852}
   GizmosColor: {r: 1, g: 0.8791481, b: 0.015686274, a: 1}
 --- !u!114 &8049165696522912852

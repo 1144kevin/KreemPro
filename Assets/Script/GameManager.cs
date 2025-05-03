@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Failed to join lobby");
         }
+        
 
     }
 
@@ -105,6 +106,7 @@ public class GameManager : MonoBehaviour
     public async Task CreateRoom()
     {
         var scene = SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex);
+        
         var result = await networkRunner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.AutoHostOrClient,

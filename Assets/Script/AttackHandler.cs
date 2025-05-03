@@ -24,7 +24,6 @@ public class AttackHandler : NetworkBehaviour
     [SerializeField] private SceneAudioSetter sceneAudioSetter;
     [SerializeField] private int characterSoundIndex = 0; // 攻擊音效用的角色 ID
     [SerializeField] private Vector3 attackRange = new Vector3(200f, 200f, 400f);
-    //private Vector3 boxHalfExtents = new Vector3(200f, 400f, 400f);//數字再調
 
     // 將攻擊動畫類型定義成 enum，更直覺：
     public enum AttackAnimType { Anim1 = 0, Anim2 = 1 }
@@ -121,7 +120,7 @@ public class AttackHandler : NetworkBehaviour
         string playerName = gameObject.name;
         if (playerName == "Robot" || playerName == "Mushroom")
         {
-            //Debug.DrawRay(rayorigin, CharacterTrans.forward * attackDistance, Color.red, 1f);
+            Debug.DrawRay(rayorigin, direction * attackDistance, Color.red, 1f);
 
             if (Runner.LagCompensation.Raycast(
                 rayorigin,
@@ -206,6 +205,7 @@ public class AttackHandler : NetworkBehaviour
             if (rightBullet != null)
             {
                 rightBullet.Fire(direction);
+                rightShotOrigin=rightShotOrigin-direction * 150f;
                 PerformAttack(rightShotOrigin, direction);
             }
 
@@ -217,6 +217,7 @@ public class AttackHandler : NetworkBehaviour
             if (leftBullet != null)
             {
                 leftBullet.Fire(direction);
+                leftShotOrigin=leftShotOrigin-direction * 150f;
                 PerformAttack(leftShotOrigin, direction);
             }
 
