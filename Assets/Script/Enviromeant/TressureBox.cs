@@ -21,8 +21,14 @@ public class TreasureBox : NetworkBehaviour
         {
             Debug.Log($"[TreasureBox] 玩家觸發爆破：{other.name}");
             exploded = true;
-            StartCoroutine(Explode());
+            StartCoroutine(DelayExplode(0.3f)); // 延遲避免 Spawn 在 (0,0,0)
         }
+    }
+
+    private IEnumerator DelayExplode(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        StartCoroutine(Explode());
     }
 
     private IEnumerator Explode()
@@ -33,26 +39,42 @@ public class TreasureBox : NetworkBehaviour
         {
             if (prefab == null) continue;
 
-            var piece = Runner.Spawn(prefab, transform.position, Random.rotation, inputAuthority: null);
-            if (piece != null)
+            // 加入隨機位移，避免碎片重疊生成
+            Vector3 spawnOffset = new Vector3(
+                Random.Range(-0.3f, 0.3f),
+                Random.Range(0f, 0.2f),
+                Random.Range(-0.3f, 0.3f)
+            );
+
+            var piece = Runner.Spawn(prefab, transform.position + spawnOffset, Random.rotation, inputAuthority: null);
+            if (piece != null && piece.TryGetComponent<Rigidbody>(out var rb))
             {
                 Debug.Log($"[TreasureBox] Spawn 成功：{piece.name}, IsValid: {piece.IsValid}");
 
-                if (piece.TryGetComponent<Rigidbody>(out var rb))
-                {
-                    var col = piece.GetComponent<Collider>();
-                    if (col != null) col.isTrigger = true;
+                var col = piece.GetComponent<Collider>();
+                if (col != null) col.isTrigger = false;
 
-                    Vector3 randomDir = Random.onUnitSphere;
-                    randomDir.y = Mathf.Abs(randomDir.y);
+                // 碎片物理設定
+                rb.mass = 1.5f;
+                rb.drag = 0.1f;
+                rb.angularDrag = 0.2f;
+                rb.useGravity = true;
+                rb.interpolation = RigidbodyInterpolation.Interpolate;
+                rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
-                    rb.AddForce(randomDir * explosionForce * 2f, ForceMode.Impulse);
-                    rb.AddTorque(Random.insideUnitSphere * explosionForce * 2f, ForceMode.Impulse);
-                }
+                // 四散方向與推力
+                Vector3 randomDir = Random.insideUnitSphere;
+                randomDir.y = Mathf.Abs(randomDir.y * 0.5f) + 0.3f;
+                randomDir.x *= 1.5f;
+                randomDir.z *= 1.5f;
+
+                float finalForce = explosionForce * 2.0f;
+                rb.AddForce(randomDir * finalForce, ForceMode.Impulse);
+                rb.AddTorque(Random.insideUnitSphere * explosionForce * 1.5f, ForceMode.Impulse);
             }
             else
             {
-                Debug.LogWarning($"[TreasureBox] Spawn 碎片失敗：{prefab.name}");
+                Debug.LogWarning($"[TreasureBox] Spawn 碎片失敗：{prefab?.name}");
             }
 
             count++;

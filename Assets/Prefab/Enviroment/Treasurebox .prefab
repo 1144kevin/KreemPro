@@ -154,9 +154,8 @@ MonoBehaviour:
   - {fileID: 4122790398174028793, guid: 7b5a1dd54b000bc4996971176087d616, type: 3}
   specialItemPrefab:
     RawGuidValue: 41508aa1a0f88fc4488ee2b1a0e33296
-  explosionForce: 20
+  explosionForce: 70
   spawnBatchSize: 20
-  despawnDelay: 3
 --- !u!114 &-1351366712818350110
 MonoBehaviour:
   m_ObjectHideFlags: 0
