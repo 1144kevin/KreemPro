@@ -15716,6 +15716,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 5593565038021555944}
+    - targetCorrespondingSourceObject: {fileID: 8578148826100666246, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6064200786324297855}
   m_SourcePrefab: {fileID: 100100000, guid: 5c85c8c3d61f73340994e1ec01d3451f, type: 3}
 --- !u!198 &1694015185722347255 stripped
 ParticleSystem:
@@ -15765,6 +15769,7 @@ MonoBehaviour:
   - {fileID: 5155748780580143678}
   - {fileID: 6859441601257407347}
   - {fileID: 5593565038021555944}
+  - {fileID: 6064200786324297855}
   ForceRemoteRenderTimeframe: 0
 --- !u!114 &4172546606788238143
 MonoBehaviour:
@@ -15785,7 +15790,8 @@ MonoBehaviour:
   healDelay: 5
   AttackHandler: {fileID: 8254917698597635303}
   AnimationHandler: {fileID: 3406697922935151365}
-  Speed: 50
+  Speed: 300
+  debugSpeedOverride: -1
   playerCamera: {fileID: 422290161773047575}
   respawnCanvas: {fileID: 7302330609558429805}
   _kreemCollect: 0
@@ -15892,6 +15898,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 38a858b0-3285-4e3b-a01b-d4b6e7f1831f
     m_ActionName: 'PlayerControls/Damage[/Keyboard/space,/DualShock4GamepadHID/buttonWest]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9137234512249844172}
+        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
+        m_MethodName: OnBooster
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8531e53c-31c6-4c75-ab21-bd8b2834e8a9
+    m_ActionName: 'PlayerControls/Booster[/Keyboard/f,/DualShock4GamepadHID/buttonSouth]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerControls
@@ -15941,6 +15963,7 @@ MonoBehaviour:
   sceneAudioSetter: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
     type: 3}
   characterSoundIndex: 0
+  attackRange: {x: 200, y: 200, z: 400}
 --- !u!114 &2998856429226848935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16090,6 +16113,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotPrefab:
     RawGuidValue: cdf94c94bb0ec994a847e2feec437138
+--- !u!114 &6064200786324297855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7441543886461136414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54f03e16206ad044292d1fe931c42ca4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  refillTime: 5
+  boostTime: 2
+  speedMultiplier: 2
 --- !u!4 &8384365897964113241 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7211767173744176321, guid: 5c85c8c3d61f73340994e1ec01d3451f,

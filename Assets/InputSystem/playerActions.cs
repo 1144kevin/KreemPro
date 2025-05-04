@@ -44,6 +44,33 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Respawn"",
+                    ""type"": ""Button"",
+                    ""id"": ""82b5ebfb-78df-420a-b247-1eedc36b4e9e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Damage"",
+                    ""type"": ""Button"",
+                    ""id"": ""38a858b0-3285-4e3b-a01b-d4b6e7f1831f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Booster"",
+                    ""type"": ""Button"",
+                    ""id"": ""8531e53c-31c6-4c75-ab21-bd8b2834e8a9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -134,6 +161,72 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c19d075-429b-4274-ac4e-c9daa7518970"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Respawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""853d3eb1-6c4b-44e4-819b-a369d95f49bb"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Respawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""09d30ad4-8ae5-4fc5-9d5f-94a48eb1e889"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Damage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1b179484-14e3-40c4-b736-868eaaa794fb"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Damage"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8d39e8a-ff0c-4431-ab65-0ba0d7d27ae5"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Booster"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""35537b0b-aa2f-430a-aa6c-a06526babc98"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Booster"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -144,6 +237,9 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
         m_PlayerControls = asset.FindActionMap("PlayerControls", throwIfNotFound: true);
         m_PlayerControls_Attack = m_PlayerControls.FindAction("Attack", throwIfNotFound: true);
         m_PlayerControls_Movement = m_PlayerControls.FindAction("Movement", throwIfNotFound: true);
+        m_PlayerControls_Respawn = m_PlayerControls.FindAction("Respawn", throwIfNotFound: true);
+        m_PlayerControls_Damage = m_PlayerControls.FindAction("Damage", throwIfNotFound: true);
+        m_PlayerControls_Booster = m_PlayerControls.FindAction("Booster", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -207,12 +303,18 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     private List<IPlayerControlsActions> m_PlayerControlsActionsCallbackInterfaces = new List<IPlayerControlsActions>();
     private readonly InputAction m_PlayerControls_Attack;
     private readonly InputAction m_PlayerControls_Movement;
+    private readonly InputAction m_PlayerControls_Respawn;
+    private readonly InputAction m_PlayerControls_Damage;
+    private readonly InputAction m_PlayerControls_Booster;
     public struct PlayerControlsActions
     {
         private @PlayerActions m_Wrapper;
         public PlayerControlsActions(@PlayerActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Attack => m_Wrapper.m_PlayerControls_Attack;
         public InputAction @Movement => m_Wrapper.m_PlayerControls_Movement;
+        public InputAction @Respawn => m_Wrapper.m_PlayerControls_Respawn;
+        public InputAction @Damage => m_Wrapper.m_PlayerControls_Damage;
+        public InputAction @Booster => m_Wrapper.m_PlayerControls_Booster;
         public InputActionMap Get() { return m_Wrapper.m_PlayerControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -228,6 +330,15 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Movement.started += instance.OnMovement;
             @Movement.performed += instance.OnMovement;
             @Movement.canceled += instance.OnMovement;
+            @Respawn.started += instance.OnRespawn;
+            @Respawn.performed += instance.OnRespawn;
+            @Respawn.canceled += instance.OnRespawn;
+            @Damage.started += instance.OnDamage;
+            @Damage.performed += instance.OnDamage;
+            @Damage.canceled += instance.OnDamage;
+            @Booster.started += instance.OnBooster;
+            @Booster.performed += instance.OnBooster;
+            @Booster.canceled += instance.OnBooster;
         }
 
         private void UnregisterCallbacks(IPlayerControlsActions instance)
@@ -238,6 +349,15 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
             @Movement.started -= instance.OnMovement;
             @Movement.performed -= instance.OnMovement;
             @Movement.canceled -= instance.OnMovement;
+            @Respawn.started -= instance.OnRespawn;
+            @Respawn.performed -= instance.OnRespawn;
+            @Respawn.canceled -= instance.OnRespawn;
+            @Damage.started -= instance.OnDamage;
+            @Damage.performed -= instance.OnDamage;
+            @Damage.canceled -= instance.OnDamage;
+            @Booster.started -= instance.OnBooster;
+            @Booster.performed -= instance.OnBooster;
+            @Booster.canceled -= instance.OnBooster;
         }
 
         public void RemoveCallbacks(IPlayerControlsActions instance)
@@ -259,5 +379,8 @@ public partial class @PlayerActions: IInputActionCollection2, IDisposable
     {
         void OnAttack(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
+        void OnRespawn(InputAction.CallbackContext context);
+        void OnDamage(InputAction.CallbackContext context);
+        void OnBooster(InputAction.CallbackContext context);
     }
 }

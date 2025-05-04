@@ -8,6 +8,7 @@ using ExitGames.Client.Photon.StructWrapping; // ← 加這個
 
 
 
+
 public class Player : NetworkBehaviour
 {
   [SerializeField] private NetworkCharacterController CharacterController;
@@ -21,7 +22,8 @@ public class Player : NetworkBehaviour
 
   [SerializeField] private AttackHandler AttackHandler;
   [SerializeField] private AnimationHandler AnimationHandler;
-  [SerializeField] private float Speed = 500f;
+  [SerializeField] public float Speed = 500f;
+  [SerializeField] private float debugSpeedOverride = -1f;
   [Networked] private int Health { get; set; }
   [Networked] private bool isDead { get; set; } = false;
   [Networked] private NetworkButtons previousButton { get; set; }
@@ -37,7 +39,7 @@ public class Player : NetworkBehaviour
 
   private bool attackLocked = false;        // 攻擊鎖定旗標
   [SerializeField] private float attackCooldown = 0.5f;      // 根據角色 name 指定的延遲時間
-  
+
   [Header("Attack Effect")]
   [SerializeField] public ParticleSystem getHitEffect;
   [SerializeField] private ParticleSystem sharedHitEffect;
@@ -235,11 +237,11 @@ public class Player : NetworkBehaviour
 
             float force = 2000f; // 彈出力量
             rb.AddForce(randomDir * force, ForceMode.Impulse);
-            
+
 
             //rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
           }
-         
+
         }
       }
 
@@ -265,10 +267,24 @@ public class Player : NetworkBehaviour
           AttackHandler.Attack();
 
       }
+
       if (!isDead)
       {
         data.direction.Normalize();
-        CharacterController.Move(Speed * data.direction * Runner.DeltaTime);
+        float boosterMultiplier = GetComponent<Booster>()?.GetSpeedMultiplier() ?? 1f;
+        float actualSpeed = ((debugSpeedOverride > 0f) ? debugSpeedOverride : Speed) * boosterMultiplier;
+
+        CharacterController.maxSpeed = actualSpeed;  // ✅ 不用反射，直接設定！
+
+        Vector3 moveDelta = actualSpeed * data.direction * Runner.DeltaTime;
+        CharacterController.Move(moveDelta);
+
+
+        if (Object.HasInputAuthority)
+        {
+          Debug.Log($"🚀 Speed={actualSpeed}, MoveDelta={moveDelta.magnitude}");
+        }
+
 
         bool currentMoving = data.direction.magnitude > 0.1f;
 
@@ -366,7 +382,7 @@ public class Player : NetworkBehaviour
     // 👉 重啟受擊特效物件
     if (getHitEffect != null && !getHitEffect.gameObject.activeSelf)
     {
-        getHitEffect.gameObject.SetActive(true);
+      getHitEffect.gameObject.SetActive(true);
     }
   }
 
@@ -455,26 +471,26 @@ public class Player : NetworkBehaviour
       sceneAudioSetter.PlayDieSound();
     }
   }
-private void PlayHitEffectLocal()
-{
+  private void PlayHitEffectLocal()
+  {
     if (getHitEffect != null)
     {
-        if (!getHitEffect.gameObject.activeSelf)
-            getHitEffect.gameObject.SetActive(true);
+      if (!getHitEffect.gameObject.activeSelf)
+        getHitEffect.gameObject.SetActive(true);
 
-        getHitEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-        getHitEffect.Play();
+      getHitEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+      getHitEffect.Play();
 
-        // 自動關閉特效物件（延遲一點）
-        StartCoroutine(DisableAfterSeconds(getHitEffect.gameObject, 0.5f));
+      // 自動關閉特效物件（延遲一點）
+      StartCoroutine(DisableAfterSeconds(getHitEffect.gameObject, 0.5f));
     }
-}
-private IEnumerator DisableAfterSeconds(GameObject go, float delay)
-{
+  }
+  private IEnumerator DisableAfterSeconds(GameObject go, float delay)
+  {
     yield return new WaitForSeconds(delay);
     if (go != null)
-        go.SetActive(false);
-}
+      go.SetActive(false);
+  }
 
 
   [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
@@ -483,34 +499,34 @@ private IEnumerator DisableAfterSeconds(GameObject go, float delay)
     PlayHitEffectLocal();
   }
 
-private void PlaySharedHitEffectLocal()
-{
+  private void PlaySharedHitEffectLocal()
+  {
     if (sharedHitEffect != null)
     {
-        Debug.Log("✅ PlaySharedHitEffectLocal: trying to play");
+      Debug.Log("✅ PlaySharedHitEffectLocal: trying to play");
 
-        // 不停用 GameObject，只停用粒子本身
-        sharedHitEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-        sharedHitEffect.Play();
+      // 不停用 GameObject，只停用粒子本身
+      sharedHitEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+      sharedHitEffect.Play();
 
-        // 如果你真的需要手動清除尾巴殘影，可加這行延遲清尾
-        StartCoroutine(ClearSharedHitEffect(0.5f));
+      // 如果你真的需要手動清除尾巴殘影，可加這行延遲清尾
+      StartCoroutine(ClearSharedHitEffect(0.5f));
     }
-}
+  }
 
-private IEnumerator ClearSharedHitEffect(float delay)
-{
+  private IEnumerator ClearSharedHitEffect(float delay)
+  {
     yield return new WaitForSeconds(delay);
     if (sharedHitEffect != null)
     {
-        sharedHitEffect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+      sharedHitEffect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
     }
-}
+  }
 
-[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-public void RpcPlaySharedHitEffect()
-{
+  [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+  public void RpcPlaySharedHitEffect()
+  {
     PlaySharedHitEffectLocal();
-}
+  }
 
 }

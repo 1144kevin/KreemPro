@@ -12,5 +12,6 @@ public struct NetworkInputData : INetworkInput
   public NetworkButtons buttons;
   public bool damageTrigger;
   public bool respawnTrigger;
+    public bool boostTrigger; // 👈 新增這行
 
 }
