@@ -8,6 +8,7 @@ using ExitGames.Client.Photon.StructWrapping; // ← 加這個
 
 
 
+
 public class Player : NetworkBehaviour
 {
   [SerializeField] private NetworkCharacterController CharacterController;
@@ -21,7 +22,8 @@ public class Player : NetworkBehaviour
 
   [SerializeField] private AttackHandler AttackHandler;
   [SerializeField] private AnimationHandler AnimationHandler;
-  [SerializeField] private float Speed = 500f;
+  [SerializeField] public float Speed = 500f;
+  [SerializeField] private float debugSpeedOverride = -1f;
   [Networked] private int Health { get; set; }
   [Networked] private bool isDead { get; set; } = false;
   [Networked] private NetworkButtons previousButton { get; set; }
@@ -268,10 +270,18 @@ public class Player : NetworkBehaviour
           AttackHandler.Attack();
 
       }
+
       if (!isDead)
       {
+        //移動速度
         data.direction.Normalize();
-        CharacterController.Move(Speed * data.direction * Runner.DeltaTime);
+        float boosterMultiplier = GetComponent<Booster>()?.GetSpeedMultiplier() ?? 1f;
+        float actualSpeed = ((debugSpeedOverride > 0f) ? debugSpeedOverride : Speed) * boosterMultiplier;
+
+        CharacterController.maxSpeed = actualSpeed;  // ✅ 不用反射，直接設定！
+
+        Vector3 moveDelta = actualSpeed * data.direction * Runner.DeltaTime;
+        CharacterController.Move(moveDelta);
 
         bool currentMoving = data.direction.magnitude > 0.1f;
 

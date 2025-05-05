@@ -12,6 +12,7 @@ public class InputHandler : NetworkBehaviour
     public bool inputEnabled = true; // ✅ 改為非靜態（每位玩家自己有自己的值）
 
     private bool attackInput;
+    private bool boosterTriggered;
 
     public void DisableInput()
     {
@@ -65,6 +66,14 @@ public class InputHandler : NetworkBehaviour
             attackInput = true;
         }
     }
+   public void OnBooster(CallbackContext context)
+{
+    if (context.performed)
+    {
+        boosterTriggered = true;
+        Debug.Log("✅ Booster input received (F or X)");
+    }
+}
 public void OnInput(NetworkRunner runner, NetworkInput input)
 {
     if (!inputEnabled)
@@ -80,6 +89,7 @@ public void OnInput(NetworkRunner runner, NetworkInput input)
             direction = new Vector3(moveInput.x, 0, moveInput.y),
             damageTrigger = damageTriggered,
             respawnTrigger = respawnTrigger,
+             boostTrigger = boosterTriggered, // 👈 加入這行
             buttons = buttons,
         };
 
@@ -94,7 +104,9 @@ public void OnInput(NetworkRunner runner, NetworkInput input)
     // Reset one-time triggers
     damageTriggered = false;
     respawnTrigger = false;
+    boosterTriggered = false; // ✅ 別忘了重設這個
 }
+
 
 }
 
