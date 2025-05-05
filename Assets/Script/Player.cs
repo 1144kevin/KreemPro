@@ -104,7 +104,6 @@ public class Player : NetworkBehaviour
     {
       // 只有本地玩家的相機會啟用
       StartCoroutine(EnableStartUI());
-      sceneAudioSetter?.PlayRingSound();
       playerCamera.enabled = true;
       playerCamera.gameObject.SetActive(true);
     }
