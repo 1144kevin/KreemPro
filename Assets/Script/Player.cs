@@ -270,6 +270,7 @@ public class Player : NetworkBehaviour
 
       if (!isDead)
       {
+        //移動速度
         data.direction.Normalize();
         float boosterMultiplier = GetComponent<Booster>()?.GetSpeedMultiplier() ?? 1f;
         float actualSpeed = ((debugSpeedOverride > 0f) ? debugSpeedOverride : Speed) * boosterMultiplier;
@@ -278,13 +279,6 @@ public class Player : NetworkBehaviour
 
         Vector3 moveDelta = actualSpeed * data.direction * Runner.DeltaTime;
         CharacterController.Move(moveDelta);
-
-
-        if (Object.HasInputAuthority)
-        {
-          Debug.Log($"🚀 Speed={actualSpeed}, MoveDelta={moveDelta.magnitude}");
-        }
-
 
         bool currentMoving = data.direction.magnitude > 0.1f;
 
