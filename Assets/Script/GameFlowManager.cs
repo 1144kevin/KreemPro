@@ -8,7 +8,8 @@ using System.Linq;
 
 public class GameFlowManager : NetworkBehaviour
 {
-    private bool countdownStarted = false;
+    // 直接當成 networked 屬性
+    [Networked] public bool countdownStarted { get; set; }
     private bool gameStarted = false;
 
     [SerializeField] private float matchDuration = 180f;
