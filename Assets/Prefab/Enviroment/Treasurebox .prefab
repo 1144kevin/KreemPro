@@ -142,13 +142,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e78b58f2e2c49245ad7d1e11d6e43e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BrokenBoxPrefab:
-    RawGuidValue: 00000000000000000000000000000000
-  SpecialItemPrefab:
-    RawGuidValue: 00000000000000000000000000000000
-  coinForce: 10
-  brokenUpwardForce: 5
-  brokenPieceDespawnTime: 3
+  brokenPiecePrefabs:
+  - {fileID: 6966067299445206304, guid: 28d2afe6082c477468e5f09d26ea805d, type: 3}
+  - {fileID: 6544146808149917073, guid: 146965e4284f47f49ba4b34e0fb24ff5, type: 3}
+  - {fileID: 4982479962975493479, guid: 275ba3ef876461341af7087ec0ba45a2, type: 3}
+  - {fileID: -1111561245867513133, guid: 6372a8907c0ff69499b68c3c01ed9975, type: 3}
+  - {fileID: -3696107934844955917, guid: 106460a7808d1344797b86ba6887ffdf, type: 3}
+  - {fileID: -7369658638290877872, guid: c3fcc6ac79f9116459c1115cad07538a, type: 3}
+  - {fileID: 7927039610341072551, guid: d139e996887231c4f8764b94f31ec4f9, type: 3}
+  - {fileID: 8981004875098485034, guid: 210c9900ef1be6548a9f38e838e48b1f, type: 3}
+  - {fileID: 4122790398174028793, guid: 7b5a1dd54b000bc4996971176087d616, type: 3}
+  specialItemPrefab:
+    RawGuidValue: 41508aa1a0f88fc4488ee2b1a0e33296
+  explosionForce: 70
+  spawnBatchSize: 20
 --- !u!114 &-1351366712818350110
 MonoBehaviour:
   m_ObjectHideFlags: 0
