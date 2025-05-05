@@ -16151,32 +16151,32 @@ PrefabInstance:
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 230
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 230
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 230
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00020540677
+      value: -40
       objectReference: {fileID: 0}
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.0004108136
+      value: 350
       objectReference: {fileID: 0}
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.5968903e-11
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
@@ -16940,6 +16940,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AttackDirectionUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7187066571118290727, guid: 17091630fe2b65e44850e2f1de417a45,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
