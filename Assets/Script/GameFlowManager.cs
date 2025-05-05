@@ -43,65 +43,74 @@ public class GameFlowManager : NetworkBehaviour
     }
 
 
-private HashSet<int> triggeredWarnings = new HashSet<int>();
-private bool isFinalCountdown = false;
+    private HashSet<int> triggeredWarnings = new HashSet<int>();
+    private bool isFinalCountdown = false;
 
-[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-private void RpcUpdateTimer(float time)
-{
-    if (timerText != null)
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RpcUpdateTimer(float time)
     {
-        int min = Mathf.FloorToInt(time / 60f);
-        int sec = Mathf.FloorToInt(time % 60f);
-        timerText.text = $"{min:00}:{sec:00}";
-
-        int intTime = Mathf.CeilToInt(time);
-
-        if ((intTime == 61 || intTime == 31 || intTime == 11) && !triggeredWarnings.Contains(intTime))
+        if (timerText != null)
         {
-            triggeredWarnings.Add(intTime);
-            TriggerTimerWarning(false); // 普通提醒
-        }
-        else if (intTime == 10 && !triggeredWarnings.Contains(10))
-        {
-            triggeredWarnings.Add(10);
-            TriggerTimerWarning(true); // 進入最後倒數
-        }
-    }
-}
+            int min = Mathf.FloorToInt(time / 60f);
+            int sec = Mathf.FloorToInt(time % 60f);
+            timerText.text = $"{min:00}:{sec:00}";
 
-private void TriggerTimerWarning(bool finalCountdown)
-{
-    if (timerText == null) return;
+            int intTime = Mathf.CeilToInt(time);
 
-    Color originalColor = timerText.color;
-    Vector3 originalScale = timerText.transform.localScale;
-
-    if (finalCountdown)
-    {
-        isFinalCountdown = true;
-        timerText.color = Color.red; // 進入最後倒數，直接變紅
-    }
-    else
-    {
-        timerText.color = Color.red; // 瞬間紅色
-        LeanTween.scale(timerText.gameObject, originalScale * 2f, 1f).setEaseOutBack()
-            .setOnComplete(() =>
+            if ((intTime == 61 || intTime == 31) && !triggeredWarnings.Contains(intTime))
             {
-                LeanTween.scale(timerText.gameObject, originalScale, 1f).setEaseInBack();
-                if (!isFinalCountdown)
-                {
-                    timerText.color = originalColor; // 如果不是最後倒數，變回原本顏色
-                }
-            });
+                triggeredWarnings.Add(intTime);
+                TriggerTimerWarning(false); // 普通提醒
+                sceneAudioSetter?.PlayTimeNotifySound(); // 播放提示音效
+            }
+            else if (intTime == 11 && !triggeredWarnings.Contains(11))
+            {
+                triggeredWarnings.Add(11);
+                TriggerTimerWarning(false);
+                sceneAudioSetter?.PlayTenSecCoundownSound();//播放倒數10秒音效
+            }
+            else if (intTime == 10 && !triggeredWarnings.Contains(10))
+            {
+                
+                triggeredWarnings.Add(10);
+                TriggerTimerWarning(true);
+                
+            }
+        }
     }
-}
+
+    private void TriggerTimerWarning(bool finalCountdown)
+    {
+        if (timerText == null) return;
+
+        Color originalColor = timerText.color;
+        Vector3 originalScale = timerText.transform.localScale;
+
+        if (finalCountdown)
+        {
+            isFinalCountdown = true;
+            timerText.color = Color.red; // 進入最後倒數，直接變紅
+        }
+        else
+        {
+            timerText.color = Color.red; // 瞬間紅色
+            LeanTween.scale(timerText.gameObject, originalScale * 2f, 1f).setEaseOutBack()
+                .setOnComplete(() =>
+                {
+                    LeanTween.scale(timerText.gameObject, originalScale, 1f).setEaseInBack();
+                    if (!isFinalCountdown)
+                    {
+                        timerText.color = originalColor; // 如果不是最後倒數，變回原本顏色
+                    }
+                });
+        }
+    }
 
 
     private void DecideWinner()
     {
         GameResultData.KreemCounts.Clear();
-        
+
         foreach (var playerRef in Runner.ActivePlayers)
         {
             var obj = Runner.GetPlayerObject(playerRef);
@@ -121,24 +130,24 @@ private void TriggerTimerWarning(bool finalCountdown)
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RpcEndGameUI()
-{
-    if (winnerUI == null) return;
-    
-    sceneAudioSetter?.PlayRingSound();
-    winnerUI.SetActive(true);
-    winnerUI.transform.localScale = Vector3.zero;
+    {
+        if (winnerUI == null) return;
 
-    // 彈出動畫
-    LeanTween.scale(winnerUI, Vector3.one, 0.5f).setEaseOutBack()
-        .setOnComplete(() =>
-        {
-            // 等 2 秒後，再縮回去
-            LeanTween.delayedCall(2f, () =>
+        sceneAudioSetter?.PlayRingSound();
+        winnerUI.SetActive(true);
+        winnerUI.transform.localScale = Vector3.zero;
+
+        // 彈出動畫
+        LeanTween.scale(winnerUI, Vector3.one, 0.5f).setEaseOutBack()
+            .setOnComplete(() =>
             {
-                LeanTween.scale(winnerUI, Vector3.zero, 0.5f).setEaseInBack();
+                // 等 2 秒後，再縮回去
+                LeanTween.delayedCall(2f, () =>
+                {
+                    LeanTween.scale(winnerUI, Vector3.zero, 0.5f).setEaseInBack();
+                });
             });
-        });
-}
+    }
 
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

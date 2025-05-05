@@ -31,6 +31,10 @@ public class SceneAudioSetter : MonoBehaviour
     [SerializeField] private AudioClip dieSFX;
     [SerializeField] private AudioClip ringSFX;
     [SerializeField] private AudioClip rebornSFX;
+    [SerializeField] private AudioClip TimeNotifySFX;
+    [SerializeField] private AudioClip TenSecCountdownSFX;
+
+
 
 
     [Header("場上物件")]
@@ -47,6 +51,7 @@ public class SceneAudioSetter : MonoBehaviour
     [Header("聲音大小設定")]
     [SerializeField] public float melodyVolume = 1.0f; // 預設 1.0f，可拉高
     [SerializeField] public float rebornVolume = 1.0f;
+    [SerializeField] public float TimerNotifyVolume = 1.0f;
 
 
 
@@ -87,12 +92,26 @@ public class SceneAudioSetter : MonoBehaviour
             AudioManager.Instance.PlaySFX(wrongSFX);
         }
     }
+    public void PlayTenSecCoundownSound()
+    {
+        if (TenSecCountdownSFX != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(TenSecCountdownSFX);
+        }
+    }
+    public void PlayTimeNotifySound()
+    {
+        if (TimeNotifySFX != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(TimeNotifySFX,TimerNotifyVolume);
+        }
+    }
     public void PlayRebornSound()
     {
         if (rebornSFX != null && AudioManager.Instance != null)
         {
-             float safeVolume = Mathf.Clamp(rebornVolume, 0f, 1f);
-            AudioManager.Instance.PlaySFX(rebornSFX,  safeVolume);
+            float safeVolume = Mathf.Clamp(rebornVolume, 0f, 1f);
+            AudioManager.Instance.PlaySFX(rebornSFX, safeVolume);
         }
     }
     public void PlayKreemSound()
