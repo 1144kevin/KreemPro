@@ -8,11 +8,17 @@ using System.Linq;
 
 public class GameFlowManager : NetworkBehaviour
 {
+    private bool countdownStarted = false;
+    private bool gameStarted = false;
+
     [SerializeField] private float matchDuration = 180f;
+    [SerializeField] private float waitBeforeRanking = 5f;
+    [SerializeField] private TMP_Text countdownText;
+    [SerializeField] private GameObject startGameUI;
     [SerializeField] private TMP_Text timerText;
     [SerializeField] private GameObject winnerUI;
-    [SerializeField] private float waitBeforeRanking = 5f;
     [SerializeField] private SceneAudioSetter sceneAudioSetter;
+
 
 
     [Networked] private float remainingTime { get; set; }
@@ -23,12 +29,14 @@ public class GameFlowManager : NetworkBehaviour
         if (Object.HasStateAuthority)
         {
             remainingTime = matchDuration;
+            StartCoroutine(StartCountdown());
         }
     }
 
     public override void FixedUpdateNetwork()
     {
-        if (!Object.HasStateAuthority || gameEnded) return;
+
+        if (!gameStarted || gameEnded || !Object.HasStateAuthority) return;
 
         if (remainingTime > 0)
         {
@@ -71,10 +79,10 @@ public class GameFlowManager : NetworkBehaviour
             }
             else if (intTime == 10 && !triggeredWarnings.Contains(10))
             {
-                
+
                 triggeredWarnings.Add(10);
                 TriggerTimerWarning(true);
-                
+
             }
         }
     }
@@ -170,4 +178,75 @@ public class GameFlowManager : NetworkBehaviour
             Runner.LoadScene("RankingScene");
         }
     }
+    private IEnumerator StartCountdown()
+    {
+        countdownStarted = true;
+        RpcDisableAllPlayerInput();
+        SetCameraClampEnabled(false); // ✅ 關閉邊界限制
+
+        for (int i = 3; i > 0; i--)
+        {
+            RpcUpdateCountdownText(i.ToString());
+            yield return new WaitForSeconds(1f);
+        }
+
+        RpcUpdateCountdownText(""); // 清空
+        RpcStartGame();
+    }
+    
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RpcUpdateCountdownText(string text)
+    {
+        if (countdownText != null)
+        {
+            countdownText.text = text;
+            countdownText.gameObject.SetActive(!string.IsNullOrEmpty(text));
+        }
+    }
+    
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RpcStartGame()
+    {
+        // ✅ 啟用所有玩家的輸入
+        foreach (var handler in FindObjectsOfType<InputHandler>())
+        {
+            handler.inputEnabled = true;
+        }
+        SetCameraClampEnabled(true); // ✅ 開啟邊界限制
+
+        // ✅ 顯示 StartGame UI，1 秒後自動淡出
+        if (startGameUI != null)
+        {
+            sceneAudioSetter?.PlayRingSound();
+            startGameUI.SetActive(true);
+            startGameUI.transform.localScale = Vector3.zero;
+            LeanTween.scale(startGameUI, Vector3.one, 0.5f).setEaseOutBack();
+
+            // 延遲關閉 UI
+            LeanTween.delayedCall(1.5f, () =>
+            {
+                LeanTween.scale(startGameUI, Vector3.zero, 0.5f).setEaseInBack()
+                    .setOnComplete(() => startGameUI.SetActive(false));
+            });
+        }
+        if (timerText != null){
+           timerText.gameObject.SetActive(true);
+        }
+
+        // ✅ 開始計時
+        gameStarted = true;
+        if (Object.HasStateAuthority)
+            remainingTime = matchDuration;
+    }
+    private void SetCameraClampEnabled(bool enabled)
+    {
+        foreach (var cam in FindObjectsOfType<CameraFollower>())
+        {
+            if (enabled)
+                cam.EnableCameraClamp();
+            else
+                cam.DisableCameraClamp();
+        }
+    }
+
 }
