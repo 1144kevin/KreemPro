@@ -134,7 +134,7 @@ public class Player : NetworkBehaviour
 
   private void OnInputReceived(NetworkInputData input, NetworkButtons pressed)
   {
-    playerMovement?.HandleMove(input, Runner);
+    // playerMovement?.HandleMove(input, Runner);
     playerCombat?.HandleAttack(input, pressed, Runner);
   }
 
@@ -168,25 +168,18 @@ public class Player : NetworkBehaviour
   }
 public override void FixedUpdateNetwork()
 {
-    // ✅ Client 自己本地模擬動畫（但不移動角色）
+    // ✅ 處理輸入（供其他模組如攻擊用）
     if (Object.HasInputAuthority)
     {
         inputHandler?.HandleInput(Runner, Object.InputAuthority);
-        playerMovement?.HandleMove(inputHandler.LatestInput, Runner);
     }
 
-    // ✅ Host 對所有擁有 StateAuthority 的角色做實際移動
+    // ✅ Host 每幀回血
     if (Object.HasStateAuthority)
     {
-        if (inputHandler != null)
-        {
-            inputHandler.HandleInput(Runner, Object.InputAuthority);
-
-            playerMovement?.HandleMove(inputHandler.LatestInput, Runner);
-        }
-
         playerHealth?.TickHeal(Runner);
     }
+
     // ✅ UI 更新
     if (Object.HasInputAuthority)
     {
@@ -195,6 +188,7 @@ public override void FixedUpdateNetwork()
         playerUI?.RefreshRespawnUI();
     }
 }
+
 
   public void TakeDamage(int damage)
   {

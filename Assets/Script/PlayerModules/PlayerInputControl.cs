@@ -2,7 +2,7 @@ using Fusion;
 using UnityEngine;
 using System;
 
-public class PlayerInputControl : MonoBehaviour
+public class PlayerInputControl :  NetworkBehaviour
 {
     public event Action<NetworkInputData, NetworkButtons> OnInputReceived;
     public NetworkInputData LatestInput { get; private set; }

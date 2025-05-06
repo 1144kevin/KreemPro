@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-public class PlayerCombat : MonoBehaviour
+public class PlayerCombat :  NetworkBehaviour
 {
     [SerializeField] private float attackCooldown = 0.5f;
 
