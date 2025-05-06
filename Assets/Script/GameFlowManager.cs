@@ -212,8 +212,8 @@ public class GameFlowManager : NetworkBehaviour
         foreach (var handler in FindObjectsOfType<InputHandler>())
         {
             handler.inputEnabled = true;
+            countdownStarted = false;
         }
-        SetCameraClampEnabled(true); // ✅ 開啟邊界限制
 
         // ✅ 顯示 StartGame UI，1 秒後自動淡出
         if (startGameUI != null)
