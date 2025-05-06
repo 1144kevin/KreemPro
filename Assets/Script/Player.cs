@@ -5,39 +5,28 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using ExitGames.Client.Photon.StructWrapping; // ← 加這個
 
-
-
-
-
 public class Player : NetworkBehaviour
 {
-
-  //NEW
+  // PlayerModule
   private PlayerInputControl inputHandler;
   private NewPlayerMovement playerMovement;
   private PlayerCombat playerCombat;
-  public PlayerHealth playerHealth { get; private set; }
+  private PlayerRespawn playerRespawn;
   private PlayerUIManager playerUI;
-  public bool HasGameEnded => hasGameEnded;
+  public PlayerHealth playerHealth { get; private set; }
   public PlayerAudio playerAudio { get; private set; }
+  public bool HasGameEnded { get; private set; } = false;
 
+  [Header("Newtwork Objects Status")]
+  [Networked] public int kreemCollect { get; set; } = 0;
 
-
+  [Header("Game Objects")]
   [SerializeField] private NetworkCharacterController CharacterController;
-  [SerializeField] private int MaxHealth = 100;
   [SerializeField] private HealthBar HealthBar;
-
+  [SerializeField] private Camera playerCamera;
   [SerializeField] private AttackHandler AttackHandler;
   [SerializeField] private AnimationHandler AnimationHandler;
-  [SerializeField] public float Speed = 500f;
-  [SerializeField] private float debugSpeedOverride = -1f;
-  [Networked] private NetworkButtons previousButton { get; set; }
-  [SerializeField] private Camera playerCamera;
-  private bool hasGameEnded = false;
-  [Networked] public int kreemCollect { get; set; } = 0;
-  private PlayerRespawn playerRespawn;
-  private bool lastMoving = false;
-  private bool attackLocked = false;        // 攻擊鎖定旗標
+  public NetworkPrefabRef kreemPrefab;
 
   [Header("Attack Effect")]
   [SerializeField] public ParticleSystem getHitEffect;
@@ -153,7 +142,7 @@ public class Player : NetworkBehaviour
   [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
   public void RpcSetGameEnded()
   {
-    hasGameEnded = true; // 本地旗標
+    HasGameEnded = true;
 
     playerUI?.RefreshRespawnUI();
 
@@ -177,25 +166,35 @@ public class Player : NetworkBehaviour
   {
     playerHealth?.Heal(amount);
   }
-
-  public override void FixedUpdateNetwork()
-  {
-    // ✅ Step① - 由 PlayerInputControl 統一處理輸入
-    if (inputHandler != null && Object.HasInputAuthority)
-    {
-      inputHandler.HandleInput(Runner, Object.InputAuthority);
-    }
-
-    // ✅ Step① - canvas控制（可保留）
+public override void FixedUpdateNetwork()
+{
+    // ✅ Client 自己本地模擬動畫（但不移動角色）
     if (Object.HasInputAuthority)
     {
-      if (hasGameEnded)
-        return;
-
-      playerUI?.RefreshRespawnUI();
+        inputHandler?.HandleInput(Runner, Object.InputAuthority);
+        playerMovement?.HandleMove(inputHandler.LatestInput, Runner);
     }
-    playerUI?.RefreshRespawnUI();
-  }
+
+    // ✅ Host 對所有擁有 StateAuthority 的角色做實際移動
+    if (Object.HasStateAuthority)
+    {
+        if (inputHandler != null)
+        {
+            inputHandler.HandleInput(Runner, Object.InputAuthority);
+
+            playerMovement?.HandleMove(inputHandler.LatestInput, Runner);
+        }
+
+        playerHealth?.TickHeal(Runner);
+    }
+    // ✅ UI 更新
+    if (Object.HasInputAuthority)
+    {
+        if (HasGameEnded)
+            return;
+        playerUI?.RefreshRespawnUI();
+    }
+}
 
   public void TakeDamage(int damage)
   {
@@ -220,25 +219,48 @@ public class Player : NetworkBehaviour
       Debug.Log("Kreem UI 更新由 PlayerUIManager 處理");
     }
   }
-  private void PlayHitEffectLocal()
+
+  //以下關於攻擊特效
+  private void PlayEffect(ParticleSystem effect)
   {
-    if (getHitEffect != null)
+    if (effect == null) return;
+
+    // 確保不疊加播放
+    if (effect.isPlaying)
     {
-      if (!getHitEffect.gameObject.activeSelf)
-        getHitEffect.gameObject.SetActive(true);
-
-      getHitEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-      getHitEffect.Play();
-
-      // 自動關閉特效物件（延遲一點）
-      StartCoroutine(DisableAfterSeconds(getHitEffect.gameObject, 0.5f));
+      effect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+      effect.Clear(true);
     }
+
+    effect.Play();
+    StartCoroutine(ClearEffectAfterDelay(effect, effect.main.duration));
   }
-  private IEnumerator DisableAfterSeconds(GameObject go, float delay)
+
+  private IEnumerator ClearEffectAfterDelay(ParticleSystem effect, float delay)
   {
     yield return new WaitForSeconds(delay);
-    if (go != null)
-      go.SetActive(false);
+    StopAllParticles(effect);
+  }
+
+
+  private void StopAllParticles(ParticleSystem root)
+  {
+    foreach (var ps in root.GetComponentsInChildren<ParticleSystem>())
+    {
+      ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+      ps.Clear(true);
+    }
+  }
+
+  private void PlaySharedHitEffectLocal()
+  {
+    PlayEffect(sharedHitEffect);
+  }
+
+
+  private void PlayHitEffectLocal()
+  {
+    PlayEffect(getHitEffect);
   }
 
 
@@ -248,29 +270,6 @@ public class Player : NetworkBehaviour
     PlayHitEffectLocal();
   }
 
-  private void PlaySharedHitEffectLocal()
-  {
-    if (sharedHitEffect != null)
-    {
-      Debug.Log("✅ PlaySharedHitEffectLocal: trying to play");
-
-      // 不停用 GameObject，只停用粒子本身
-      sharedHitEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-      sharedHitEffect.Play();
-
-      // 如果你真的需要手動清除尾巴殘影，可加這行延遲清尾
-      StartCoroutine(ClearSharedHitEffect(0.5f));
-    }
-  }
-
-  private IEnumerator ClearSharedHitEffect(float delay)
-  {
-    yield return new WaitForSeconds(delay);
-    if (sharedHitEffect != null)
-    {
-      sharedHitEffect.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-    }
-  }
 
   [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
   public void RpcPlaySharedHitEffect()

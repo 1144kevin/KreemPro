@@ -5,9 +5,10 @@ using System;
 public class PlayerInputControl : MonoBehaviour
 {
     public event Action<NetworkInputData, NetworkButtons> OnInputReceived;
-
+    public NetworkInputData LatestInput { get; private set; }
 
     private NetworkButtons previousButtons;
+
 
     public void HandleInput(NetworkRunner runner, PlayerRef playerRef)
     {
@@ -19,8 +20,9 @@ public class PlayerInputControl : MonoBehaviour
         var pressed = input.Value.buttons.GetPressed(previousButtons);
         previousButtons = input.Value.buttons;
 
-        OnInputReceived?.Invoke(input.Value, pressed);
+        LatestInput = input.Value;
 
+        OnInputReceived?.Invoke(input.Value, pressed);
     }
 
 }

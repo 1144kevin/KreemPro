@@ -30,6 +30,8 @@ public class PlayerHealth : NetworkBehaviour
         {
             healthBar.SetHealth(Health);
         }
+        if (playerRespawn == null)
+            playerRespawn = GetComponent<PlayerRespawn>();
     }
 
     public void TickHeal(NetworkRunner runner)
@@ -49,18 +51,73 @@ public class PlayerHealth : NetworkBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int amount)
     {
-        if (!Object.HasStateAuthority || IsDead) return;
+        if (!Object.HasStateAuthority) return;
 
-        Health -= damage;
+        Health -= amount;
         Health = Mathf.Clamp(Health, 0, maxHealth);
+
         lastDamageTime = Time.time;
+
+        if (Health <= 0 && !IsDead)
+        {
+            HandleDeath(); // ✅ 改成呼叫內部簡化版
+        }
 
         RpcUpdateHealth(Health);
         RpcPlayHitEffect();
         RpcPlaySharedHitEffect();
     }
+    private void HandleDeath()
+    {
+        IsDead = true;
+        LastDeathPosition = transform.position;
+
+        if (playerRespawn == null)
+            playerRespawn = GetComponent<PlayerRespawn>();
+
+        playerRespawn?.RpcSetPlayerVisibility(false);
+        RpcPlayDieSound();
+
+        // ✅ 整合 Kreem 掉落
+        if (Object.HasStateAuthority)
+        {
+            var player = GetComponent<Player>();
+            var kreemCount = player.kreemCollect;
+            int dropCount = Mathf.Max(kreemCount, 1);
+            player.kreemCollect = 0;
+
+            for (int i = 0; i < dropCount; i++)
+            {
+                Vector3 spawnPos = LastDeathPosition + Vector3.up * 150f;
+                var kreem = Runner.Spawn(
+                    player.kreemPrefab,
+                    spawnPos,
+                    Quaternion.identity,
+                    Object.InputAuthority
+                );
+
+                if (kreem != null && kreem.TryGetComponent<Rigidbody>(out var rb))
+                {
+                    Vector3 randomDir = new Vector3(
+                        Random.Range(-10f, 10f),
+                        Random.Range(-50f, 0f),
+                        Random.Range(-10f, 10f)
+                    ).normalized;
+                    rb.AddForce(randomDir * 2000f, ForceMode.Impulse);
+                }
+            }
+        }
+
+        if (Object.HasInputAuthority)
+        {
+            playerRespawn?.RpcSetPlayerVisibility(false); // ✅ 觸發 復活UI 模組
+        }
+    }
+
+
+
     public void Heal(int amount)
     {
         if (!Object.HasStateAuthority || IsDead) return;
@@ -68,34 +125,8 @@ public class PlayerHealth : NetworkBehaviour
         RpcUpdateHealth(Health);
     }
 
-    public void CheckDeathDrop(NetworkRunner runner, Transform playerTransform, ref int kreemCount, NetworkPrefabRef kreemPrefab)
-    {
-        if (!Object.HasStateAuthority || IsDead || Health > 0) return;
 
-        IsDead = true;
-        LastDeathPosition = playerTransform.position;
-        playerRespawn.RpcSetPlayerVisibility(false);
-        RpcPlayDieSound();
 
-        int dropCount = Mathf.Max(kreemCount, 1);
-        kreemCount = 0;
-
-        for (int i = 0; i < dropCount; i++)
-        {
-            Vector3 spawnPos = LastDeathPosition + Vector3.up * 150f;
-            var kreem = runner.Spawn(kreemPrefab, spawnPos, Quaternion.identity, Object.InputAuthority);
-
-            if (kreem.TryGetComponent<Rigidbody>(out var rb))
-            {
-                Vector3 randomDir = new Vector3(
-                    Random.Range(-10f, 10f),
-                    Random.Range(-50f, 0f),
-                    Random.Range(-10f, 10f)
-                ).normalized;
-                rb.AddForce(randomDir * 2000f, ForceMode.Impulse);
-            }
-        }
-    }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RpcUpdateHealth(int currentHealth)
@@ -113,24 +144,15 @@ public class PlayerHealth : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
     private void RpcPlayHitEffect()
     {
-        if (getHitEffect != null)
-        {
-            if (!getHitEffect.gameObject.activeSelf)
-                getHitEffect.gameObject.SetActive(true);
-
-            getHitEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            getHitEffect.Play();
-        }
+        var player = GetComponent<Player>();
+        player?.RpcPlayHitEffect(); // ✅ 呼叫 Player.cs 裡那個會幫你清的版本
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RpcPlaySharedHitEffect()
     {
-        if (sharedHitEffect != null)
-        {
-            sharedHitEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-            sharedHitEffect.Play();
-        }
+        var player = GetComponent<Player>();
+        player?.RpcPlaySharedHitEffect(); // ✅ 同樣交給 Player 管
     }
 
     public void Revive()

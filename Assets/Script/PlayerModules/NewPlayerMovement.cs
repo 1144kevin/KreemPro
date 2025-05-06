@@ -20,36 +20,46 @@ public class NewPlayerMovement : MonoBehaviour
         netObj = GetComponent<NetworkObject>();
     }
 
-    public void HandleMove(NetworkInputData input, NetworkRunner runner)
+
+public void HandleMove(NetworkInputData input, NetworkRunner runner)
+{
+    if (netObj == null || characterController == null)
+        return;
+
+    Vector3 direction = input.direction.normalized;
+    float boosterMultiplier = booster?.GetSpeedMultiplier() ?? 1f;
+    float actualSpeed = ((debugSpeedOverride > 0f) ? debugSpeedOverride : baseSpeed) * boosterMultiplier;
+    Vector3 moveDelta = actualSpeed * direction * runner.DeltaTime;
+
+    // ✅ Host 負責真實物理移動
+    if (netObj.HasStateAuthority)
     {
-        if (netObj == null || characterController == null || netObj.HasStateAuthority == false)
-            return;
-
-        // normalize direction
-        Vector3 direction = input.direction;
-        direction.Normalize();
-
-        float boosterMultiplier = booster?.GetSpeedMultiplier() ?? 1f;
-        float actualSpeed = ((debugSpeedOverride > 0f) ? debugSpeedOverride : baseSpeed) * boosterMultiplier;
-
-        Vector3 moveDelta = actualSpeed * direction * runner.DeltaTime;
-        characterController.maxSpeed = actualSpeed;
         characterController.Move(moveDelta);
-
-        // 判斷是否切換動畫
-        bool nowMoving = direction.magnitude > 0.1f;
-        if (nowMoving != isMoving)
-        {
-            isMoving = nowMoving;
-            RpcUpdateAnimationState(direction);
-        }
-
-        // InputAuthority 自己播放本地動畫
-        if (netObj.HasInputAuthority)
-        {
-            animationHandler?.PlayerAnimation(direction);
-        }
     }
+
+    // ✅ Client 本地模擬畫面（不會同步給其他人）
+    if (netObj.HasInputAuthority && !netObj.HasStateAuthority)
+    {
+        // 模擬移動使畫面不延遲
+        transform.position += moveDelta;
+    }
+
+    // ✅ 所有人都更新動畫狀態（Host 負責 RPC 廣播）
+    bool nowMoving = direction.magnitude > 0.1f;
+    if (nowMoving != isMoving)
+    {
+        isMoving = nowMoving;
+        RpcUpdateAnimationState(direction);
+    }
+
+    // ✅ Client 自己播放動畫（立即回饋）
+    if (netObj.HasInputAuthority)
+    {
+        animationHandler?.PlayerAnimation(direction);
+    }
+}
+
+
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RpcUpdateAnimationState(Vector3 input)

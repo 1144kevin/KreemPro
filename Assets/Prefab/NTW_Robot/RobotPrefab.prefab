@@ -14745,10 +14745,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8384365897964113241}
     m_Modifications:
+    - target: {fileID: 4642848129145531053, guid: 402c999d11843b4429c4abf59571ec4a,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4642848129145531053, guid: 402c999d11843b4429c4abf59571ec4a,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4642848129145531053, guid: 402c999d11843b4429c4abf59571ec4a,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6823302871133167919, guid: 402c999d11843b4429c4abf59571ec4a,
         type: 3}
       propertyPath: m_Name
       value: HitEffect_Shared
+      objectReference: {fileID: 0}
+    - target: {fileID: 6823302871133167919, guid: 402c999d11843b4429c4abf59571ec4a,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7264847263909231863, guid: 402c999d11843b4429c4abf59571ec4a,
         type: 3}
@@ -14883,7 +14903,17 @@ PrefabInstance:
     - target: {fileID: 2944396702758532163, guid: cb94c4744fc04e34fa3f644e17e561ca,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3891973445508218817, guid: cb94c4744fc04e34fa3f644e17e561ca,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3891973445508218817, guid: cb94c4744fc04e34fa3f644e17e561ca,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15783,7 +15813,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 1023662804
   ObjectInterest: 1
-  Flags: 262145
+  Flags: 786433
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 4172546606788238143}
@@ -15809,15 +15839,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e6d88210b7485b468247b4690fc9567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _kreemCollect: 0
   CharacterController: {fileID: 5155748780580143678}
-  MaxHealth: 100
   HealthBar: {fileID: 1468749117270787743}
+  playerCamera: {fileID: 422290161773047575}
   AttackHandler: {fileID: 8254917698597635303}
   AnimationHandler: {fileID: 3406697922935151365}
-  Speed: 300
-  debugSpeedOverride: -1
-  playerCamera: {fileID: 422290161773047575}
-  _kreemCollect: 0
+  kreemPrefab:
+    RawGuidValue: 41508aa1a0f88fc4488ee2b1a0e33296
   getHitEffect: {fileID: 4096132802688154822}
   sharedHitEffect: {fileID: 5349644457884034499}
   sceneAudioSetter: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
@@ -16160,7 +16189,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c19a5029fb88f88459fc360c8cf87719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 300
+  baseSpeed: 400
   debugSpeedOverride: -1
 --- !u!114 &2200015903103443924
 MonoBehaviour:
