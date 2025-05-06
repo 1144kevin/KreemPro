@@ -168,25 +168,22 @@ public class Player : NetworkBehaviour
   }
 public override void FixedUpdateNetwork()
 {
-    // ✅ 處理輸入（供其他模組如攻擊用）
     if (Object.HasInputAuthority)
-    {
         inputHandler?.HandleInput(Runner, Object.InputAuthority);
-    }
 
-    // ✅ Host 每幀回血
     if (Object.HasStateAuthority)
-    {
         playerHealth?.TickHeal(Runner);
-    }
 
-    // ✅ UI 更新
-    if (Object.HasInputAuthority)
-    {
-        if (HasGameEnded)
-            return;
+    if (Object.HasInputAuthority && !HasGameEnded)
         playerUI?.RefreshRespawnUI();
-    }
+
+    // ✅ 統一處理移動
+      var input = Runner.GetInputForPlayer<NetworkInputData>(Object.InputAuthority);
+      if (input != null)
+      {
+          Vector3 direction = input.Value.direction.normalized;
+          playerMovement?.HandleMovement(direction, Runner);
+      }
 }
 
 
