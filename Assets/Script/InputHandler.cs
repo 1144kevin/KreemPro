@@ -35,9 +35,9 @@ public class InputHandler : NetworkBehaviour
     public void OnMove(CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
-        // 先找到 GameFlowManager
+        
         var gameFlow = FindObjectOfType<GameFlowManager>();
-        // 如果找得到，且 countdown 還沒開始
+        
         if (gameFlow != null && !gameFlow.countdownStarted)
         {
             var cam = FindObjectOfType<CameraFollower>();
