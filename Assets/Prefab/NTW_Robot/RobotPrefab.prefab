@@ -16091,6 +16091,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotPrefab:
     RawGuidValue: cdf94c94bb0ec994a847e2feec437138
+  kreemPrefab:
+    RawGuidValue: 50a4e22f7a12acc45a30e01aa4928b28
 --- !u!4 &8384365897964113241 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7211767173744176321, guid: 5c85c8c3d61f73340994e1ec01d3451f,

@@ -5,6 +5,7 @@ public class KreemDespawn : NetworkBehaviour
 {
     private bool alreadyCollected = false;
     [SerializeField] private SceneAudioSetter sceneAudioSetter;
+    private ObjectSpawner objectSpawner;
 private void OnTriggerEnter(Collider other)
 {
     if (alreadyCollected) return;

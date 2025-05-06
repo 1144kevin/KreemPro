@@ -11,6 +11,8 @@ public class PlayerRespawn : NetworkBehaviour
     private NetworkCharacterController characterController;
     public GameObject KreemPrefab;
 
+    private ObjectSpawner objectSpawner;
+
     private void Awake()
     {
         characterController = GetComponent<NetworkCharacterController>();
@@ -73,7 +75,6 @@ public class PlayerRespawn : NetworkBehaviour
     public void RpcKreemSpawn(Vector3 deathPos)
     {
         if (!Object.HasStateAuthority || KreemPrefab == null) return;
-
         Runner.Spawn(KreemPrefab, deathPos, Quaternion.identity, default(PlayerRef));
     }
     public void Respawn()

@@ -34,10 +34,10 @@ Material:
     - _Shading_2: 0
     - _SpecularRange: 5
     m_Colors:
-    - _BaseColor: {r: 0.0045923153, g: 0.8113208, b: 0.035327133, a: 1}
+    - _BaseColor: {r: 0.3018868, g: 0.67392856, b: 1, a: 1}
     - _Color: {r: 0, g: 0.381132, b: 0.021264061, a: 1}
     - _LightDir: {r: 1, g: 1, b: 1, a: 0}
-    - _ShadowColor: {r: 0, g: 0.7660377, b: 0.07993446, a: 0}
+    - _ShadowColor: {r: 0.5283019, g: 0.90892184, b: 1, a: 0}
     - _SpecularColor: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

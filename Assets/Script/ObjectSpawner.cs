@@ -7,15 +7,32 @@ public class ObjectSpawner : NetworkBehaviour
 {
     [SerializeField] private NetworkPrefabRef shotPrefab;
 
+    [SerializeField] private NetworkPrefabRef kreemPrefab;
+
     private readonly HashSet<NetworkObject> spawnedObjects = new HashSet<NetworkObject>();
 
     public void SpawnKreem()//之後寫生成Kreem可以直接用
     {
         if (Runner.IsClient) return;
-
-        var obj = Runner.Spawn(shotPrefab, transform.position + Random.insideUnitSphere * 3);
+        Debug.Log("objectspawnkreem😘😘😘");
+        var obj = Runner.Spawn(kreemPrefab, transform.position + Random.insideUnitSphere * 3);
         spawnedObjects.Add(obj);
 
+    }
+
+    public void DespawnKreem()
+    {
+        if (Runner.IsClient) return; // Clients can't despawn.
+
+        if (spawnedObjects == null) return;
+        Debug.Log("objectspawnkreem😗😗😗");
+        foreach (var obj in spawnedObjects)
+        {
+            
+            Runner.Despawn(obj);
+        }
+
+        spawnedObjects.Clear();
     }
 
     public Shot SpawnShot(Vector3 position, Quaternion rotation)
