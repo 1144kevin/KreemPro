@@ -148,7 +148,7 @@ public class RankingManager : NetworkBehaviour
 
             var entryGO = Instantiate(rankingEntryPrefab, contentParent);
             entryGO.GetComponent<RankingEntryUI>()
-                   .Setup(displayName, score, prefab, isWinner);
+                   .Setup(displayName, score, prefab, isWinner, playerRef.PlayerId);
         }
     }
 
