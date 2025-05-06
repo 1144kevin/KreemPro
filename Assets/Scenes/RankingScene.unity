@@ -270,6 +270,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2651269653248703236, guid: b68191e9034addf4ea7d6e25d0f5be3f,
         type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 7b2206aef2192d545bc296c554d23518,
+        type: 2}
+    - target: {fileID: 2651269653248703236, guid: b68191e9034addf4ea7d6e25d0f5be3f,
+        type: 3}
       propertyPath: m_lineSpacing
       value: 83.55
       objectReference: {fileID: 0}
@@ -278,6 +284,12 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 2651269653248703236, guid: b68191e9034addf4ea7d6e25d0f5be3f,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -2354647212847212898, guid: 7b2206aef2192d545bc296c554d23518,
+        type: 2}
     - target: {fileID: 2651269653248703236, guid: b68191e9034addf4ea7d6e25d0f5be3f,
         type: 3}
       propertyPath: m_enableAutoSizing
@@ -292,6 +304,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_HorizontalAlignment
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2651269653248703236, guid: b68191e9034addf4ea7d6e25d0f5be3f,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5973705173521404556, guid: b68191e9034addf4ea7d6e25d0f5be3f,
         type: 3}
@@ -3055,6 +3072,8 @@ MonoBehaviour:
   dieSFX: {fileID: 0}
   ringSFX: {fileID: 0}
   rebornSFX: {fileID: 0}
+  TimeNotifySFX: {fileID: 0}
+  TenSecCountdownSFX: {fileID: 0}
   kreemSFX: {fileID: 0}
   characterAttackSFX:
   - {fileID: 0}
@@ -3073,6 +3092,7 @@ MonoBehaviour:
   wrongSFX: {fileID: 0}
   melodyVolume: 1
   rebornVolume: 1
+  TimerNotifyVolume: 1
 --- !u!4 &839273022
 Transform:
   m_ObjectHideFlags: 0
