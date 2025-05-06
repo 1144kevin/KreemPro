@@ -265,8 +265,6 @@ public class Player : NetworkBehaviour
         if (Object.HasStateAuthority)
           RpcPlayAttackAnimation(isRunning);
 
-        if (Object.HasInputAuthority)
-          AttackHandler.Attack();
 
       }
 
