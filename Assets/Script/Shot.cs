@@ -33,7 +33,6 @@ public class Shot : NetworkBehaviour
             transform.position += shootDirection * speed * Runner.DeltaTime;
         }
 
-        Debug.DrawRay(transform.position,shootDirection, Color.red, 1f);
         // Raycast from current to next position to detect hit
         if (Physics.Raycast(transform.position, shootDirection, out RaycastHit hit, speed * Runner.DeltaTime, hitLayer))
         {

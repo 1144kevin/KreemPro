@@ -59,6 +59,8 @@ MonoBehaviour:
   dieSFX: {fileID: 8300000, guid: cdb6b3c129afc1043bb7d1c313916988, type: 3}
   ringSFX: {fileID: 8300000, guid: 60ebd7b7b8121524aadf3a787076e019, type: 3}
   rebornSFX: {fileID: 8300000, guid: 1f32e6ee3bd2abe4d9f400231bc7b1cc, type: 3}
+  TimeNotifySFX: {fileID: 8300000, guid: 24e3da6caa08fb34389a9cc6d5add0f6, type: 3}
+  TenSecCountdownSFX: {fileID: 8300000, guid: 82394c5fa02baca4898b88ff61b796cc, type: 3}
   kreemSFX: {fileID: 8300000, guid: 458209799e9ca9b47a6778f479342e01, type: 3}
   characterAttackSFX:
   - {fileID: 8300000, guid: 0152535f8847bd449a5ee3a03dcfcee2, type: 3}
@@ -86,3 +88,4 @@ MonoBehaviour:
   wrongSFX: {fileID: 8300000, guid: 934e364589407ce4c8a5e076218099f4, type: 3}
   melodyVolume: 3
   rebornVolume: 1.5
+  TimerNotifyVolume: 1.5

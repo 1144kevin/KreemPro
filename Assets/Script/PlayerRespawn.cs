@@ -94,7 +94,7 @@ public class PlayerRespawn : NetworkBehaviour
         var player = GetComponent<Player>();
         if (player != null)
         {
-            player.SetHealthToMax();
+            player.playerHealth?.Revive();
         }
 
         // 播放重生粒子特效

@@ -5,106 +5,94 @@ using UnityEngine;
 
 public class TreasureBox : NetworkBehaviour
 {
-    [Header("Prefabs")]
-    public NetworkPrefabRef BrokenBoxPrefab;
-    public NetworkPrefabRef SpecialItemPrefab;
-
-    [Header("Explosion Settings")]
-    public float coinForce = 10f;
-    public float brokenUpwardForce = 5f;
-
-    [Header("Broken Box Settings")]
-    [SerializeField] private float brokenPieceDespawnTime = 3f; // 🛠️ 子物件碎片消失時間
+    [Header("爆破設定")]
+    [SerializeField] public List<NetworkObject> brokenPiecePrefabs = new List<NetworkObject>();
+    [SerializeField] private NetworkPrefabRef specialItemPrefab;
+    [SerializeField] private float explosionForce = 10f;
+    [SerializeField] private int spawnBatchSize = 10;
 
     private bool exploded = false;
 
-    private readonly List<NetworkObject> spawnedPieces = new List<NetworkObject>(); // 記錄生成的碎片們
-
     private void OnTriggerEnter(Collider other)
     {
-        if (!Runner.IsServer) return;
-        if (exploded) return;
-        if (other == null) return; // <--- 這是防呆，加這行！ if (other == null) return; // <--- 這是防呆，加這行！
+        if (!Runner || !Runner.IsServer || exploded) return;
 
-        Debug.Log($"[TreasureBox] 觸發物件: {other.gameObject.name}, Tag: {other.gameObject.tag}");
-
-        if (other.CompareTag("testBox") || other.CompareTag("Player"))
+        if (other.CompareTag("Player") || other.CompareTag("testBox"))
         {
+            Debug.Log($"[TreasureBox] 玩家觸發爆破：{other.name}");
             exploded = true;
-            Explode();
+            StartCoroutine(DelayExplode(0.3f)); // 延遲避免 Spawn 在 (0,0,0)
         }
     }
 
-    private void Explode()
+    private IEnumerator DelayExplode(float delay)
     {
-        // Spawn BrokenBox (只是用來產生子物件，不真正留著)
-        if (BrokenBoxPrefab.IsValid)
+        yield return new WaitForSeconds(delay);
+        StartCoroutine(Explode());
+    }
+
+    private IEnumerator Explode()
+    {
+        int count = 0;
+
+        foreach (var prefab in brokenPiecePrefabs)
         {
-            var brokenBox = Runner.Spawn(BrokenBoxPrefab, transform.position, transform.rotation);
+            if (prefab == null) continue;
 
-            // 把子物件逐一 Spawn 成 NetworkObject
-            foreach (Transform child in brokenBox.transform)
+            // 加入隨機位移，避免碎片重疊生成
+            Vector3 spawnOffset = new Vector3(
+                Random.Range(-0.3f, 0.3f),
+                Random.Range(0f, 0.2f),
+                Random.Range(-0.3f, 0.3f)
+            );
+
+            var piece = Runner.Spawn(prefab, transform.position + spawnOffset, Random.rotation, inputAuthority: null);
+            if (piece != null && piece.TryGetComponent<Rigidbody>(out var rb))
             {
-                if (child.TryGetComponent<NetworkObject>(out var childNetObj))
-                {
-                    // 把碎片從 brokenBox 拿出來
-                    child.SetParent(null);
+                Debug.Log($"[TreasureBox] Spawn 成功：{piece.name}, IsValid: {piece.IsValid}");
 
-                    // Spawn 成真正的 NetworkObject
-                    Runner.Spawn(childNetObj, child.position, child.rotation);
+                var col = piece.GetComponent<Collider>();
+                if (col != null) col.isTrigger = false;
 
-                    // 加入清單
-                    spawnedPieces.Add(childNetObj);
+                // 碎片物理設定
+                rb.mass = 1.5f;
+                rb.drag = 0.1f;
+                rb.angularDrag = 0.2f;
+                rb.useGravity = true;
+                rb.interpolation = RigidbodyInterpolation.Interpolate;
+                rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
 
-                    // 設定 Layer
-                    childNetObj.gameObject.layer = LayerMask.NameToLayer("BrokenPiece");
+                // 四散方向與推力
+                Vector3 randomDir = Random.insideUnitSphere;
+                randomDir.y = Mathf.Abs(randomDir.y * 0.5f) + 0.3f;
+                randomDir.x *= 1.5f;
+                randomDir.z *= 1.5f;
 
-                    // 加一點向上爆破力
-                    if (childNetObj.TryGetComponent<Rigidbody>(out var rb))
-                    {
-                        rb.AddForce(Vector3.up * brokenUpwardForce, ForceMode.Impulse);
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning($"[TreasureBox] 子物件 {child.name} 沒有 NetworkObject，無法同步Spawn");
-                }
+                float finalForce = explosionForce * 2.0f;
+                rb.AddForce(randomDir * finalForce, ForceMode.Impulse);
+                rb.AddTorque(Random.insideUnitSphere * explosionForce * 1.5f, ForceMode.Impulse);
+            }
+            else
+            {
+                Debug.LogWarning($"[TreasureBox] Spawn 碎片失敗：{prefab?.name}");
             }
 
-            // 最後把 BrokenBox本體 Despawn掉（因為已經沒用）
-            Runner.Despawn(brokenBox);
+            count++;
+            if (count % spawnBatchSize == 0)
+                yield return null;
         }
 
-        // Spawn Special Item (Kreem)
-        if (SpecialItemPrefab.IsValid)
+        // 特殊掉落物
+        if (specialItemPrefab.IsValid)
         {
-            var item = Runner.Spawn(SpecialItemPrefab, transform.position + new Vector3(0, 1f, 0), Quaternion.identity);
+            var item = Runner.Spawn(specialItemPrefab, transform.position + Vector3.up, Quaternion.identity, inputAuthority: null);
             if (item.TryGetComponent<Rigidbody>(out var itemRb))
             {
-                Vector3 forceDirection = Vector3.up + new Vector3(Random.Range(-0.5f, 0.5f), 0, Random.Range(-0.5f, 0.5f));
-                itemRb.AddForce(forceDirection.normalized * coinForce, ForceMode.Impulse);
+                Vector3 launchDir = Vector3.up + new Vector3(Random.Range(-0.5f, 0.5f), 0, Random.Range(-0.5f, 0.5f));
+                itemRb.AddForce(launchDir.normalized * explosionForce, ForceMode.Impulse);
             }
         }
 
-        // 消除自己
         Runner.Despawn(Object);
-
-        // 啟動碎片自動 Despawn
-        StartCoroutine(DespawnSpawnedPieces());
-    }
-
-    private IEnumerator DespawnSpawnedPieces()
-    {
-        yield return new WaitForSeconds(brokenPieceDespawnTime);
-
-        foreach (var piece in spawnedPieces)
-        {
-            if (piece != null && piece.IsValid)
-            {
-                Runner.Despawn(piece);
-            }
-        }
-
-        spawnedPieces.Clear();
     }
 }
