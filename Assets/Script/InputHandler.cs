@@ -35,10 +35,16 @@ public class InputHandler : NetworkBehaviour
     public void OnMove(CallbackContext context)
     {
         moveInput = context.ReadValue<Vector2>();
-        var cam = FindObjectOfType<CameraFollower>();
-        if (cam != null)
+        // 先找到 GameFlowManager
+        var gameFlow = FindObjectOfType<GameFlowManager>();
+        // 如果找得到，且 countdown 還沒開始
+        if (gameFlow != null && !gameFlow.countdownStarted)
         {
-            cam.EnableCameraClamp();  // 死亡重生時先關掉 clamp
+            var cam = FindObjectOfType<CameraFollower>();
+            if (cam != null)
+            {
+                cam.EnableCameraClamp();  // 只有在倒數還沒開始時才開啟 clamp
+            }
         }
     }
 

@@ -38,6 +38,9 @@ public class Booster : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         if (!Object.HasStateAuthority || player == null) return;
+    public override void FixedUpdateNetwork()
+    {
+        if (!Object.HasStateAuthority || player == null) return;
 
         if (!isCharged && !isBoosting)
         {
@@ -48,7 +51,26 @@ public class Booster : NetworkBehaviour
                 refillTimer = 0f;
             }
         }
+        if (!isCharged && !isBoosting)
+        {
+            refillTimer += Runner.DeltaTime;
+            if (refillTimer >= refillTime)
+            {
+                isCharged = true;
+                refillTimer = 0f;
+            }
+        }
 
+        if (isBoosting)
+        {
+            boostTimer += Runner.DeltaTime;
+            if (boostTimer >= boostTime)
+            {
+                isBoosting = false;
+                boostTimer = 0f;
+                isCharged = false;
+            }
+        }
         if (isBoosting)
         {
             boostTimer += Runner.DeltaTime;
@@ -71,6 +93,7 @@ public class Booster : NetworkBehaviour
     {
         if (!isCharged || isBoosting) return;
 
+        Debug.Log("✅ Boost ACTIVATED!");
         Debug.Log("✅ Boost ACTIVATED!");
         isBoosting = true;
         boostTimer = 0f;
