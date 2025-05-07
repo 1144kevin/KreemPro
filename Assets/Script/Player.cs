@@ -58,6 +58,8 @@ public class Player : NetworkBehaviour
   private TickTimer healTimer = TickTimer.None;
   private bool requestHeal = false;
 
+  public GameObject boosterUIPrefab; // 拖進一個預設 UI Prefab
+  private GameObject boosterUIInstance;
   private void Update()
   {
     if (!Object.HasInputAuthority || attackDirectionUI == null || AttackHandler == null) return;
@@ -128,6 +130,12 @@ public class Player : NetworkBehaviour
 
     if (respawnCanvas != null)
       respawnCanvas.SetActive(false);
+
+    if (Object.HasInputAuthority) // 只為自己的玩家產生 UI
+    {
+      boosterUIInstance = Instantiate(boosterUIPrefab);
+      boosterUIInstance.GetComponent<BoosterUI>().booster = GetComponent<Booster>();
+    }
   }
 
   private void UnlockAttack()

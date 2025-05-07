@@ -11,52 +11,67 @@ public class Booster : NetworkBehaviour
     [Networked] private float refillTimer { get; set; } = 0f;
     [Networked] private float boostTimer { get; set; } = 0f;
     [Networked] private bool isBoosting { get; set; } = false;
-    [Networked] private bool isCharged { get; set; } = true;
+    [Networked] private bool isCharged { get; set; } = false;
 
     private Player player;
+    public float refillTimerPublic => refillTimer;
+    public float refillTimePublic => refillTime;
+
+    public GameObject playerUIPrefab; // 記得在 prefab 裡指定這個 UI prefab
+    
 
     public override void Spawned()
     {
         player = GetComponent<Player>();
-    }
 
-public override void FixedUpdateNetwork()
-{
-    if (!Object.HasStateAuthority || player == null) return;
-
-    if (!isCharged && !isBoosting)
-    {
-        refillTimer += Runner.DeltaTime;
-        if (refillTimer >= refillTime)
+        if (Object.HasInputAuthority)
         {
-            isCharged = true;
-            refillTimer = 0f;
+            GameObject uiInstance = Instantiate(playerUIPrefab);
+            BoosterUI ui = FindObjectOfType<BoosterUI>();
+            if (ui != null)
+            {
+                ui.booster = this;
+            }
         }
     }
 
-    if (isBoosting)
+    public override void FixedUpdateNetwork()
     {
-        boostTimer += Runner.DeltaTime;
-        if (boostTimer >= boostTime)
+        if (!Object.HasStateAuthority || player == null) return;
+
+        if (!isCharged && !isBoosting)
         {
-            isBoosting = false;
-            boostTimer = 0f;
-            isCharged = false;
+            refillTimer += Runner.DeltaTime;
+            if (refillTimer >= refillTime)
+            {
+                isCharged = true;
+                refillTimer = 0f;
+            }
+        }
+
+        if (isBoosting)
+        {
+            boostTimer += Runner.DeltaTime;
+            if (boostTimer >= boostTime)
+            {
+                isBoosting = false;
+                boostTimer = 0f;
+                isCharged = false;
+            }
+        }
+
+        if (GetInput(out NetworkInputData data) && data.boostTrigger)
+        {
+            TryUseBoost();
         }
     }
-
-    if (GetInput(out NetworkInputData data) && data.boostTrigger)
-    {
-        TryUseBoost();
-    }
-}
 
 
     public void TryUseBoost()
     {
         if (!isCharged || isBoosting) return;
 
-         Debug.Log("✅ Boost ACTIVATED!");
+        Debug.Log("✅ Boost ACTIVATED!");
         isBoosting = true;
         boostTimer = 0f;
         // 不在這裡設定 isCharged = false，因為 boost 結束後才應該進入 refill 階段
