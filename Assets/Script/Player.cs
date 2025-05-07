@@ -38,6 +38,9 @@ public class Player : NetworkBehaviour
   [SerializeField] private float arrowHeight = 1.5f;  // 高度
   [SerializeField] private Vector3 arrowOffset = Vector3.zero; // 額外位置偏移
 
+  public GameObject boosterUIPrefab; // 拖進一個預設 UI Prefab
+  private GameObject boosterUIInstance;
+
 
   private void Update()
   {
@@ -117,6 +120,12 @@ public class Player : NetworkBehaviour
       playerCamera.gameObject.SetActive(false); ;
     }
 
+    if (Object.HasInputAuthority) // 只為自己的玩家產生 UI
+    {
+        boosterUIInstance = Instantiate(boosterUIPrefab);
+        boosterUIInstance.GetComponent<BoosterUI>().booster = GetComponent<Booster>();
+    }
+
     playerUI?.InitKreemText();
     playerHealth?.Revive();
   }
@@ -170,6 +179,11 @@ public class Player : NetworkBehaviour
       playerMovement?.HandleMovement(direction, Runner);
       playerCombat?.TickCombat(input.Value);
       playerHealth?.TickFallDeath(Runner); // ✅ 檢查邊界死亡
+    }
+
+       if (Object.HasStateAuthority)
+    {
+        playerHealth?.TickHeal(Runner);
     }
   }
 

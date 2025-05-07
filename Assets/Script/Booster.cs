@@ -4,25 +4,56 @@ using UnityEngine;
 public class Booster : NetworkBehaviour
 {
     [Header("Booster Settings")]
-    public float refillTime = 5f;      // 再充能所需時間
-    public float boostTime = 2f;       // 加速持續時間
-    public float speedMultiplier = 2f; // 加速倍數
+    public float refillTime = 5f;
+    public float boostTime = 2f;
+    public float speedMultiplier = 2f;
 
     [Networked] private float refillTimer { get; set; } = 0f;
     [Networked] private float boostTimer { get; set; } = 0f;
     [Networked] private bool isBoosting { get; set; } = false;
-    [Networked] private bool isCharged { get; set; } = true;
+    [Networked] private bool isCharged { get; set; } = false; // 一開始是空的
+
+    [Networked] private float startDelayTimer { get; set; } = 0f;
+    [Networked] private bool canStartRefill { get; set; } = false;
+    public float startDelay = 5f;
 
     private Player player;
+    private BoosterUI boosterUI; // 記錄 UI 的參考
+
+    public float refillTimerPublic => refillTimer;
+    public float refillTimePublic => refillTime;
+
+    public GameObject playerUIPrefab;
 
     public override void Spawned()
     {
         player = GetComponent<Player>();
+
+        if (Object.HasInputAuthority)
+        {
+            GameObject uiInstance = Instantiate(playerUIPrefab);
+            BoosterUI ui = FindObjectOfType<BoosterUI>();
+            if (ui != null)
+            {
+                ui.booster = this;
+                boosterUI = ui; // 儲存 UI 參考
+            }
+        }
     }
 
     public override void FixedUpdateNetwork()
     {
         if (!Object.HasStateAuthority || player == null) return;
+
+        if (!canStartRefill)
+        {
+            startDelayTimer += Runner.DeltaTime;
+            if (startDelayTimer >= startDelay)
+            {
+                canStartRefill = true;
+            }
+            return;
+        }
 
         if (!isCharged && !isBoosting)
         {
@@ -45,8 +76,7 @@ public class Booster : NetworkBehaviour
             }
         }
 
-        var input = Runner.GetInputForPlayer<NetworkInputData>(Object.InputAuthority);
-        if (input != null && input.Value.boostTrigger)
+        if (GetInput(out NetworkInputData data) && data.boostTrigger)
         {
             TryUseBoost();
         }
@@ -60,9 +90,8 @@ public class Booster : NetworkBehaviour
         Debug.Log("✅ Boost ACTIVATED!");
         isBoosting = true;
         boostTimer = 0f;
-        // 不在這裡設定 isCharged = false，因為 boost 結束後才應該進入 refill 階段
-    }
 
+    }
     public float GetSpeedMultiplier()
     {
         return isBoosting ? speedMultiplier : 1f;
@@ -78,3 +107,4 @@ public class Booster : NetworkBehaviour
         return isCharged;
     }
 }
+
