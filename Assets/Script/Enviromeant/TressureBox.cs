@@ -10,8 +10,17 @@ public class TreasureBox : NetworkBehaviour
     [SerializeField] private NetworkPrefabRef specialItemPrefab;
     [SerializeField] private float explosionForce = 10f;
     [SerializeField] private int spawnBatchSize = 10;
+    [SerializeField] private float respawnDelay = 5f;
 
     private bool exploded = false;
+    private Vector3 spawnPosition;
+    [SerializeField] private NetworkPrefabRef selfPrefabRef;
+
+    public override void Spawned()
+    {
+        if (!Runner || !Runner.IsServer) return;
+        spawnPosition = transform.position;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -21,7 +30,7 @@ public class TreasureBox : NetworkBehaviour
         {
             Debug.Log($"[TreasureBox] 玩家觸發爆破：{other.name}");
             exploded = true;
-            StartCoroutine(DelayExplode(0.3f)); // 延遲避免 Spawn 在 (0,0,0)
+            StartCoroutine(DelayExplode(0.3f));
         }
     }
 
@@ -34,47 +43,26 @@ public class TreasureBox : NetworkBehaviour
     private IEnumerator Explode()
     {
         int count = 0;
+        Vector3 boxPosition = transform.position;
+
+        SetTreasureBoxActive(false); // ✅ 隱藏自己
 
         foreach (var prefab in brokenPiecePrefabs)
         {
             if (prefab == null) continue;
 
-            // 加入隨機位移，避免碎片重疊生成
             Vector3 spawnOffset = new Vector3(
                 Random.Range(-0.3f, 0.3f),
-                Random.Range(0f, 0.2f),
+                Random.Range(0.05f, 0.15f),
                 Random.Range(-0.3f, 0.3f)
             );
 
-            var piece = Runner.Spawn(prefab, transform.position + spawnOffset, Random.rotation, inputAuthority: null);
-            if (piece != null && piece.TryGetComponent<Rigidbody>(out var rb))
+            Vector3 finalPosition = boxPosition + spawnOffset;
+            var piece = Runner.Spawn(prefab, finalPosition, Random.rotation);
+
+            if (piece != null && piece.TryGetComponent<Collider>(out var col))
             {
-                Debug.Log($"[TreasureBox] Spawn 成功：{piece.name}, IsValid: {piece.IsValid}");
-
-                var col = piece.GetComponent<Collider>();
-                if (col != null) col.isTrigger = false;
-
-                // 碎片物理設定
-                rb.mass = 1.5f;
-                rb.drag = 0.1f;
-                rb.angularDrag = 0.2f;
-                rb.useGravity = true;
-                rb.interpolation = RigidbodyInterpolation.Interpolate;
-                rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-
-                // 四散方向與推力
-                Vector3 randomDir = Random.insideUnitSphere;
-                randomDir.y = Mathf.Abs(randomDir.y * 0.5f) + 0.3f;
-                randomDir.x *= 1.5f;
-                randomDir.z *= 1.5f;
-
-                float finalForce = explosionForce * 2.0f;
-                rb.AddForce(randomDir * finalForce, ForceMode.Impulse);
-                rb.AddTorque(Random.insideUnitSphere * explosionForce * 1.5f, ForceMode.Impulse);
-            }
-            else
-            {
-                Debug.LogWarning($"[TreasureBox] Spawn 碎片失敗：{prefab?.name}");
+                col.isTrigger = true;
             }
 
             count++;
@@ -82,17 +70,44 @@ public class TreasureBox : NetworkBehaviour
                 yield return null;
         }
 
-        // 特殊掉落物
         if (specialItemPrefab.IsValid)
         {
-            var item = Runner.Spawn(specialItemPrefab, transform.position + Vector3.up, Quaternion.identity, inputAuthority: null);
-            if (item.TryGetComponent<Rigidbody>(out var itemRb))
+            Vector3 itemPosition = boxPosition + Vector3.up;
+            var item = Runner.Spawn(specialItemPrefab, itemPosition, Quaternion.identity, inputAuthority: null);
+
+            if (item != null && item.TryGetComponent<Rigidbody>(out var itemRb))
             {
                 Vector3 launchDir = Vector3.up + new Vector3(Random.Range(-0.5f, 0.5f), 0, Random.Range(-0.5f, 0.5f));
                 itemRb.AddForce(launchDir.normalized * explosionForce, ForceMode.Impulse);
             }
         }
 
-        Runner.Despawn(Object);
+        Debug.Log($"[TreasureBox] 爆炸完成，{respawnDelay} 秒後重新出現");
+        StartCoroutine(ReappearAfterDelay(respawnDelay));
+    }
+
+    private IEnumerator ReappearAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SetTreasureBoxActive(true);
+        exploded = false;
+        Debug.Log($"[TreasureBox] ✅ 已重新啟用");
+    }
+
+    private void SetTreasureBoxActive(bool active)
+    {
+        // ✅ 控制所有 MeshRenderer
+        foreach (var renderer in GetComponentsInChildren<MeshRenderer>())
+        {
+            renderer.enabled = active;
+        }
+
+        // ✅ 控制所有 Collider
+        foreach (var col in GetComponentsInChildren<Collider>())
+        {
+            col.enabled = active;
+        }
+
+        // ✅ 若有動畫/音效/特效等可加上 Enable 處理
     }
 }
