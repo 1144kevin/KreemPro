@@ -46,7 +46,7 @@ public class KreemTowerHealing : MonoBehaviour
 
     if (healTimers[player] >= healInterval)
     {
-      player.Heal(healAmount);
+      // player.Heal(healAmount);
       healTimers[player] = 0f;
       Debug.Log("每 3 秒回血一次");
     }

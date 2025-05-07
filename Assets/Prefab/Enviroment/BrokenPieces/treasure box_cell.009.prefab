@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -3190274331204811979}
   - component: {fileID: -1952352177687802439}
   - component: {fileID: 873143858611268557}
+  - component: {fileID: 1342421255057894160}
   m_Layer: 7
   m_Name: treasure box_cell.009
   m_TagString: Untagged
@@ -108,6 +109,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 873143858611268557}
+  - {fileID: 1342421255057894160}
   ForceRemoteRenderTimeframe: 0
 --- !u!65 &-3190274331204811979
 BoxCollider:
@@ -124,7 +126,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -170,5 +172,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 3
-  downwardForceDelay: 0
-  downwardForceMultiplier: 50000
+  downwardForceDelay: 1.1
+  downwardForceMultiplier: 500
+  explosionForce: 30
+  upwardRange: {x: 0.8, y: 5}
+  outwardMultiplier: 6
+--- !u!114 &1342421255057894160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7189330241028583681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateAuthorityChangeErrorCorrectionDelta: 0.15
+  SyncScale: 0
+  SyncParent: 0
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0

@@ -33,9 +33,7 @@ public class SceneAudioSetter : MonoBehaviour
     [SerializeField] private AudioClip rebornSFX;
     [SerializeField] private AudioClip TimeNotifySFX;
     [SerializeField] private AudioClip TenSecCountdownSFX;
-
-
-
+    [SerializeField] private AudioClip IntroCountdownSFX;
 
     [Header("場上物件")]
     [SerializeField] public AudioClip kreemSFX;
@@ -85,6 +83,15 @@ public class SceneAudioSetter : MonoBehaviour
             Debug.Log($"[SceneAudioSetter] 播放持續 SFX：{loopingSFX.name}");
         }
     }
+
+    public void PlayIntroCountdownSound()
+    {
+        if (IntroCountdownSFX!= null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(IntroCountdownSFX);
+        }
+    }
+
     public void PlayWrongSound()
     {
         if (wrongSFX != null && AudioManager.Instance != null)
@@ -103,7 +110,7 @@ public class SceneAudioSetter : MonoBehaviour
     {
         if (TimeNotifySFX != null && AudioManager.Instance != null)
         {
-            AudioManager.Instance.PlaySFX(TimeNotifySFX,TimerNotifyVolume);
+            AudioManager.Instance.PlaySFX(TimeNotifySFX, TimerNotifyVolume);
         }
     }
     public void PlayRebornSound()

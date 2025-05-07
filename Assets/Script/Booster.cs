@@ -20,43 +20,44 @@ public class Booster : NetworkBehaviour
         player = GetComponent<Player>();
     }
 
-public override void FixedUpdateNetwork()
-{
-    if (!Object.HasStateAuthority || player == null) return;
-
-    if (!isCharged && !isBoosting)
+    public override void FixedUpdateNetwork()
     {
-        refillTimer += Runner.DeltaTime;
-        if (refillTimer >= refillTime)
+        if (!Object.HasStateAuthority || player == null) return;
+
+        if (!isCharged && !isBoosting)
         {
-            isCharged = true;
-            refillTimer = 0f;
+            refillTimer += Runner.DeltaTime;
+            if (refillTimer >= refillTime)
+            {
+                isCharged = true;
+                refillTimer = 0f;
+            }
+        }
+
+        if (isBoosting)
+        {
+            boostTimer += Runner.DeltaTime;
+            if (boostTimer >= boostTime)
+            {
+                isBoosting = false;
+                boostTimer = 0f;
+                isCharged = false;
+            }
+        }
+
+        var input = Runner.GetInputForPlayer<NetworkInputData>(Object.InputAuthority);
+        if (input != null && input.Value.boostTrigger)
+        {
+            TryUseBoost();
         }
     }
-
-    if (isBoosting)
-    {
-        boostTimer += Runner.DeltaTime;
-        if (boostTimer >= boostTime)
-        {
-            isBoosting = false;
-            boostTimer = 0f;
-            isCharged = false;
-        }
-    }
-
-    if (GetInput(out NetworkInputData data) && data.boostTrigger)
-    {
-        TryUseBoost();
-    }
-}
 
 
     public void TryUseBoost()
     {
         if (!isCharged || isBoosting) return;
 
-         Debug.Log("✅ Boost ACTIVATED!");
+        Debug.Log("✅ Boost ACTIVATED!");
         isBoosting = true;
         boostTimer = 0f;
         // 不在這裡設定 isCharged = false，因為 boost 結束後才應該進入 refill 階段
