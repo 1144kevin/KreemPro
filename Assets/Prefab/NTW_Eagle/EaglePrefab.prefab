@@ -175,11 +175,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8697314375497070613, guid: ac0a10496a38d164cab693d5d2698ef2,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1724,6 +1719,7 @@ MonoBehaviour:
   refillTime: 5
   boostTime: 2
   speedMultiplier: 2
+  startDelay: 5
   playerUIPrefab: {fileID: 0}
 --- !u!114 &1777003565303289631
 MonoBehaviour:
@@ -1831,6 +1827,7 @@ MonoBehaviour:
   refillTime: 5
   boostTime: 2
   speedMultiplier: 2
+  startDelay: 5
   playerUIPrefab: {fileID: 0}
 --- !u!4 &5492088683996029954 stripped
 Transform:

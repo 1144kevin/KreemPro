@@ -17166,6 +17166,7 @@ MonoBehaviour:
   refillTime: 5
   boostTime: 2
   speedMultiplier: 2
+  startDelay: 5
   playerUIPrefab: {fileID: 0}
 --- !u!114 &5914424458674935291
 MonoBehaviour:

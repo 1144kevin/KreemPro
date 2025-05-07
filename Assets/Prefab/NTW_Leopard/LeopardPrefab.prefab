@@ -15347,6 +15347,11 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 2959357491404548651}
+    - target: {fileID: 4943502944977598526, guid: 2b943818a17818b4fb007a328daa456a,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5340393760719796911, guid: 2b943818a17818b4fb007a328daa456a,
         type: 3}
       propertyPath: m_Pivot.x
@@ -15460,6 +15465,12 @@ PrefabInstance:
 --- !u!224 &276073413472209818 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5340393760719796911, guid: 2b943818a17818b4fb007a328daa456a,
+    type: 3}
+  m_PrefabInstance: {fileID: 5316548400611242293}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1830071751819348898 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5813465515295898263, guid: 2b943818a17818b4fb007a328daa456a,
     type: 3}
   m_PrefabInstance: {fileID: 5316548400611242293}
   m_PrefabAsset: {fileID: 0}
@@ -16262,8 +16273,7 @@ PrefabInstance:
         type: 3}
       propertyPath: boosterUIPrefab
       value: 
-      objectReference: {fileID: 5813465515295898263, guid: 2b943818a17818b4fb007a328daa456a,
-        type: 3}
+      objectReference: {fileID: 1830071751819348898}
     - target: {fileID: 5954896813284386893, guid: aa7bd307377670c4ea064297027d0aec,
         type: 3}
       propertyPath: sharedHitEffect
@@ -16750,6 +16760,7 @@ MonoBehaviour:
   refillTime: 5
   boostTime: 2
   speedMultiplier: 2
+  startDelay: 5
   playerUIPrefab: {fileID: 0}
 --- !u!114 &5896926689732113446
 MonoBehaviour:
