@@ -13,6 +13,10 @@ public class Booster : NetworkBehaviour
     [Networked] private bool isBoosting { get; set; } = false;
     [Networked] private bool isCharged { get; set; } = false; // 一開始是空的
 
+    [Networked] private float startDelayTimer { get; set; } = 0f;
+    [Networked] private bool canStartRefill { get; set; } = false;
+    public float startDelay = 5f;
+
     private Player player;
     private BoosterUI boosterUI; // 記錄 UI 的參考
 
@@ -41,6 +45,16 @@ public class Booster : NetworkBehaviour
     {
         if (!Object.HasStateAuthority || player == null) return;
 
+        if (!canStartRefill)
+        {
+            startDelayTimer += Runner.DeltaTime;
+            if (startDelayTimer >= startDelay)
+            {
+                canStartRefill = true;
+            }
+            return;
+        }
+
         if (!isCharged && !isBoosting)
         {
             refillTimer += Runner.DeltaTime;
@@ -67,6 +81,7 @@ public class Booster : NetworkBehaviour
             TryUseBoost();
         }
     }
+
 
     public void TryUseBoost()
     {
