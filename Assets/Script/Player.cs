@@ -180,6 +180,11 @@ public class Player : NetworkBehaviour
       playerCombat?.TickCombat(input.Value);
       playerHealth?.TickFallDeath(Runner); // ✅ 檢查邊界死亡
     }
+
+       if (Object.HasStateAuthority)
+    {
+        playerHealth?.TickHeal(Runner);
+    }
   }
 
   public void TakeDamage(int damage)
