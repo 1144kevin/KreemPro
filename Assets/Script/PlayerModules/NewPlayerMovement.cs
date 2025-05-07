@@ -20,27 +20,32 @@ public class NewPlayerMovement : NetworkBehaviour
         player = GetComponent<Player>(); // ✅ 補上初始化，避免 null
     }
 
-    public void HandleMovement(Vector3 direction, NetworkRunner runner)
+public void HandleMovement(Vector3 direction, NetworkRunner runner)
+{
+    direction.Normalize(); // 確保方向標準化
+    float boosterMultiplier = booster?.GetSpeedMultiplier() ?? 1f;
+    float actualSpeed = ((debugSpeedOverride > 0f) ? debugSpeedOverride : baseSpeed) * boosterMultiplier;
+
+    // ✅ 核心修正：設定 controller 的 maxSpeed
+    characterController.maxSpeed = actualSpeed;
+
+    Vector3 moveDelta = actualSpeed * direction * runner.DeltaTime;
+    characterController.Move(moveDelta);
+
+    bool nowMoving = direction.magnitude > 0.1f;
+    if (nowMoving != isMoving)
     {
-        float boosterMultiplier = booster?.GetSpeedMultiplier() ?? 1f;
-        float actualSpeed = ((debugSpeedOverride > 0f) ? debugSpeedOverride : baseSpeed) * boosterMultiplier;
-        Vector3 moveDelta = actualSpeed * direction * runner.DeltaTime;
+        isMoving = nowMoving;
 
-        characterController.Move(moveDelta);
+        // ✅ 本地立即動畫
+        animationHandler?.PlayerAnimation(direction);
 
-        bool nowMoving = direction.magnitude > 0.1f;
-        if (nowMoving != isMoving)
+        // ✅ 廣播動畫給其他 Client
+        if (Object.HasStateAuthority && player != null)
         {
-            isMoving = nowMoving;
-
-            // ✅ 自己立即播放動畫
-            animationHandler?.PlayerAnimation(direction);
-
-            // ✅ Host 廣播動畫更新（給其他 Client）
-            if (Object.HasStateAuthority && player != null)
-            {
-                player.RpcUpdateAnimationState(direction);
-            }
+            player.RpcUpdateAnimationState(direction);
         }
     }
+}
+
 }

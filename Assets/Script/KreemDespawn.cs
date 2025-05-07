@@ -16,7 +16,7 @@ private void OnTriggerEnter(Collider other)
 
         if (Runner.IsServer)
         {
-            player.playerAudio?.PlayKreemSound();  // ✅ 改用模組化播放音效
+           player.RpcPlayKreemSound(); // ✅ 改用模組化播放音效
             player.ServerAddKreem();     // Server 端加分
             alreadyCollected = true;
             Runner.Despawn(Object);      // Server 端移除 Kreem

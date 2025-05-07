@@ -1,10 +1,5 @@
 using Fusion;
 using UnityEngine;
-using TMPro;
-using System.Collections;
-using UnityEngine.SceneManagement;
-using ExitGames.Client.Photon.StructWrapping; // ← 加這個
-
 public class Player : NetworkBehaviour
 {
   // PlayerModule
@@ -34,7 +29,7 @@ public class Player : NetworkBehaviour
 
   [Header("Audio")]
   [SerializeField] private SceneAudioSetter sceneAudioSetter;
-  [SerializeField] private int characterSoundIndex = 0; // 攻擊音效用的角色 ID
+  [SerializeField] public int characterSoundIndex = 0; // 攻擊音效用的角色 ID
 
   [Header("Attack Direction UI")]
   [SerializeField] public Transform CharacterTrans;
@@ -60,11 +55,8 @@ public class Player : NetworkBehaviour
     attackDirectionUI.position = charTrans.position + offset + adjustedOffset;
   }
 
-
-
   private void Awake()
   {
-    //NEW
     CharacterController = GetComponent<NetworkCharacterController>();
     playerRespawn = GetComponent<PlayerRespawn>();
     inputHandler = GetComponent<PlayerInputControl>();
@@ -78,7 +70,6 @@ public class Player : NetworkBehaviour
       Debug.LogError("PlayerRespawn component not found!");
     if (inputHandler == null)
       Debug.LogError("PlayerInputHandler not found on Player!");
-    //
 
     CharacterController = GetComponent<NetworkCharacterController>();
     playerRespawn = GetComponent<PlayerRespawn>();
@@ -130,7 +121,6 @@ public class Player : NetworkBehaviour
     playerHealth?.Revive();
   }
 
-  // ✅ Health UI handled by PlayerHealth}
 
   private void OnInputReceived(NetworkInputData input, NetworkButtons pressed)
   {
@@ -162,30 +152,26 @@ public class Player : NetworkBehaviour
       cam.DisableCameraClamp();
   }
 
-  public void Heal(int amount)
-  {
-    playerHealth?.Heal(amount);
-  }
-public override void FixedUpdateNetwork()
-{
-    if (Object.HasInputAuthority)
-        inputHandler?.HandleInput(Runner, Object.InputAuthority);
 
-    if (Object.HasStateAuthority)
-        playerHealth?.TickHeal(Runner);
+  public override void FixedUpdateNetwork()
+  {
+
+    if (Object.HasInputAuthority)
+      inputHandler?.HandleInput(Runner, Object.InputAuthority);
 
     if (Object.HasInputAuthority && !HasGameEnded)
-        playerUI?.RefreshRespawnUI();
+      playerUI?.RefreshRespawnUI();
 
     // ✅ 統一處理移動
-      var input = Runner.GetInputForPlayer<NetworkInputData>(Object.InputAuthority);
-      if (input != null)
-      {
-          Vector3 direction = input.Value.direction.normalized;
-          playerMovement?.HandleMovement(direction, Runner);
-      }
-}
-
+    var input = Runner.GetInputForPlayer<NetworkInputData>(Object.InputAuthority);
+    if (input != null)
+    {
+      Vector3 direction = input.Value.direction.normalized;
+      playerMovement?.HandleMovement(direction, Runner);
+      playerCombat?.TickCombat(input.Value);
+      playerHealth?.TickFallDeath(Runner); // ✅ 檢查邊界死亡
+    }
+  }
 
   public void TakeDamage(int damage)
   {
@@ -211,61 +197,12 @@ public override void FixedUpdateNetwork()
     }
   }
 
-  //以下關於攻擊特效
-  private void PlayEffect(ParticleSystem effect)
-  {
-    if (effect == null) return;
-
-    // 確保不疊加播放
-    if (effect.isPlaying)
-    {
-      effect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-      effect.Clear(true);
-    }
-
-    effect.Play();
-    StartCoroutine(ClearEffectAfterDelay(effect, effect.main.duration));
-  }
-
-  private IEnumerator ClearEffectAfterDelay(ParticleSystem effect, float delay)
-  {
-    yield return new WaitForSeconds(delay);
-    StopAllParticles(effect);
-  }
-
-
-  private void StopAllParticles(ParticleSystem root)
-  {
-    foreach (var ps in root.GetComponentsInChildren<ParticleSystem>())
-    {
-      ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-      ps.Clear(true);
-    }
-  }
-
-  private void PlaySharedHitEffectLocal()
-  {
-    PlayEffect(sharedHitEffect);
-  }
-
-
-  private void PlayHitEffectLocal()
-  {
-    PlayEffect(getHitEffect);
-  }
-
-
   [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
-  public void RpcPlayHitEffect()
-  {
-    PlayHitEffectLocal();
-  }
 
-
-  [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-  public void RpcPlaySharedHitEffect()
+  //音效RPC
+  public void RpcPlayKreemSound()
   {
-    PlaySharedHitEffectLocal();
+    playerAudio?.PlayKreemSound(); // ✅ 這樣才由 Client 播音效
   }
 }
 

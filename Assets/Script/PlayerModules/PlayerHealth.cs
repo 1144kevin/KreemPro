@@ -1,5 +1,6 @@
 using Fusion;
 using UnityEngine;
+using System.Collections;
 
 public class PlayerHealth : NetworkBehaviour
 {
@@ -34,6 +35,7 @@ public class PlayerHealth : NetworkBehaviour
             playerRespawn = GetComponent<PlayerRespawn>();
     }
 
+    //自動回血 
     public void TickHeal(NetworkRunner runner)
     {
         if (!Object.HasStateAuthority || IsDead || Health >= maxHealth) return;
@@ -51,6 +53,24 @@ public class PlayerHealth : NetworkBehaviour
         }
     }
 
+    //掉出邊界
+    public void TickFallDeath(NetworkRunner runner)
+    {
+        if (!Object.HasStateAuthority || IsDead) return;
+
+        if (transform.position.y < -400f)
+        {
+            RpcPlayDieSound();
+            IsDead = true;
+
+            if (playerRespawn == null)
+                playerRespawn = GetComponent<PlayerRespawn>();
+
+            playerRespawn?.RpcSetPlayerVisibility(false);
+        }
+    }
+
+    //吃傷害
     public void TakeDamage(int amount)
     {
         if (!Object.HasStateAuthority) return;
@@ -69,6 +89,8 @@ public class PlayerHealth : NetworkBehaviour
         RpcPlayHitEffect();
         RpcPlaySharedHitEffect();
     }
+
+    //死亡控制
     private void HandleDeath()
     {
         IsDead = true;
@@ -116,16 +138,23 @@ public class PlayerHealth : NetworkBehaviour
         }
     }
 
-
-
-    public void Heal(int amount)
+    //重生
+    public void Revive()
     {
-        if (!Object.HasStateAuthority || IsDead) return;
-        Health = Mathf.Clamp(Health + amount, 0, maxHealth);
+        if (!Object.HasStateAuthority) return;
+        Health = maxHealth;
+        IsDead = false;
         RpcUpdateHealth(Health);
+        playerRespawn?.RpcSetPlayerVisibility(true);
     }
 
-
+    //KreemTower自動回血
+    // public void Heal(int amount)
+    // {
+    //     if (!Object.HasStateAuthority || IsDead) return;
+    //     Health = Mathf.Clamp(Health + amount, 0, maxHealth);
+    //     RpcUpdateHealth(Health);
+    // }
 
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -144,23 +173,42 @@ public class PlayerHealth : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
     private void RpcPlayHitEffect()
     {
-        var player = GetComponent<Player>();
-        player?.RpcPlayHitEffect(); // ✅ 呼叫 Player.cs 裡那個會幫你清的版本
+        PlayEffect(getHitEffect);
     }
-
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RpcPlaySharedHitEffect()
     {
-        var player = GetComponent<Player>();
-        player?.RpcPlaySharedHitEffect(); // ✅ 同樣交給 Player 管
+        PlayEffect(sharedHitEffect);
     }
 
-    public void Revive()
+    private void PlayEffect(ParticleSystem effect)
     {
-        if (!Object.HasStateAuthority) return;
-        Health = maxHealth;
-        IsDead = false;
-        RpcUpdateHealth(Health);
-        playerRespawn?.RpcSetPlayerVisibility(true);
+        if (effect == null) return;
+
+        if (effect.isPlaying)
+        {
+            effect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            effect.Clear(true);
+        }
+
+        effect.Play();
+        StartCoroutine(ClearEffectAfterDelay(effect, effect.main.duration));
     }
+
+    private IEnumerator ClearEffectAfterDelay(ParticleSystem effect, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        StopAllParticles(effect);
+    }
+
+    private void StopAllParticles(ParticleSystem root)
+    {
+        foreach (var ps in root.GetComponentsInChildren<ParticleSystem>())
+        {
+            ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            ps.Clear(true);
+        }
+    }
+
+
 }
