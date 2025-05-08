@@ -165,6 +165,7 @@ MonoBehaviour:
   rebornSFX: {fileID: 0}
   TimeNotifySFX: {fileID: 0}
   TenSecCountdownSFX: {fileID: 0}
+  IntroCountdownSFX: {fileID: 0}
   kreemSFX: {fileID: 0}
   characterAttackSFX: []
   RobotOneShotSFX: {fileID: 0}
@@ -611,7 +612,7 @@ MonoBehaviour:
   playerNetworkDataPrefab: {fileID: 5894058967169537029, guid: 56385ed42574d054f8ac8a487ebd4b2c,
     type: 3}
   CharacterPrefabs:
-  - {fileID: 1926343973159323948, guid: 0cf7125ea7594f74ea9e876e282711f1, type: 3}
+  - {fileID: 9142598267335151591, guid: 8326e6c65d2f2394a817263774a6b805, type: 3}
   - {fileID: 6661695535180145100, guid: 3297a6a5ce8249246ada7ef4f16895fb, type: 3}
   - {fileID: 885158983813326049, guid: 5ee10cba20a8e964d90784d86d520a8a, type: 3}
   - {fileID: 1926343973159323948, guid: 0cf7125ea7594f74ea9e876e282711f1, type: 3}

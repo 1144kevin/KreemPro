@@ -62,11 +62,7 @@ public class PlayerHealth : NetworkBehaviour
         {
             RpcPlayDieSound();
             IsDead = true;
-
-            if (playerRespawn == null)
-                playerRespawn = GetComponent<PlayerRespawn>();
-
-            playerRespawn?.RpcSetPlayerVisibility(false);
+            HandleDeath();
         }
     }
 

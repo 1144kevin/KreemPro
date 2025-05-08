@@ -15397,6 +15397,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6448422995937268965, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0558
+      objectReference: {fileID: 0}
     - target: {fileID: 6639531013594945046, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: startDelay.scalar
@@ -15788,6 +15793,12 @@ ParticleSystem:
     type: 3}
   m_PrefabInstance: {fileID: 1174903303303389592}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &5274699058594313597 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6448422995937268965, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1174903303303389592}
+  m_PrefabAsset: {fileID: 0}
 --- !u!198 &5506286144361396110 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 6639531013594945046, guid: 5c85c8c3d61f73340994e1ec01d3451f,
@@ -16018,6 +16029,12 @@ MonoBehaviour:
     type: 3}
   characterSoundIndex: 0
   attackRange: {x: 200, y: 200, z: 400}
+  robotShootPoint1: {fileID: 9044832419487689614}
+  robotShootPoint2: {fileID: 5274699058594313597}
+  robotShootPoint3: {fileID: 0}
+  robotShootPoint4: {fileID: 0}
+  visualBulletPrefab: {fileID: 6611746220143071387, guid: cdf94c94bb0ec994a847e2feec437138,
+    type: 3}
 --- !u!114 &2998856429226848935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16033,9 +16050,9 @@ MonoBehaviour:
   Type: 1
   SphereRadius: 50.31
   CapsuleRadius: 100
-  BoxExtents: {x: 90, y: 110, z: 100}
+  BoxExtents: {x: 90, y: 150, z: 100}
   CapsuleExtents: 0
-  Offset: {x: 0, y: 100, z: 41.2}
+  Offset: {x: 0, y: 150, z: 41.2}
   Root: {fileID: 8049165696522912852}
   GizmosColor: {r: 1, g: 0.8791481, b: 0.015686274, a: 1}
 --- !u!114 &8049165696522912852
@@ -16284,6 +16301,12 @@ Transform:
 --- !u!198 &8843386339979927189 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 7706817099437408013, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1174903303303389592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &9044832419487689614 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7911605726690462230, guid: 5c85c8c3d61f73340994e1ec01d3451f,
     type: 3}
   m_PrefabInstance: {fileID: 1174903303303389592}
   m_PrefabAsset: {fileID: 0}
