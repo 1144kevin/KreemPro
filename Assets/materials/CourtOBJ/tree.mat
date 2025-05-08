@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3149996342540924199
+--- !u!114 &-1196941482066497142
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,16 +20,15 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: KTowerLight
-  m_Shader: {fileID: -6465566751694194690, guid: 114908582ab7a19459c4a04a5fddc4d5,
+  m_Name: tree
+  m_Shader: {fileID: -6465566751694194690, guid: 3e54bb07e34687647ac69e48c9a52503,
     type: 3}
-  m_Parent: {fileID: -876546973899608171, guid: 114908582ab7a19459c4a04a5fddc4d5,
+  m_Parent: {fileID: -876546973899608171, guid: 3e54bb07e34687647ac69e48c9a52503,
     type: 3}
-  m_ModifiedSerializedProperties: 2
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _EMISSION
-  m_LightmapFlags: 2
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -43,8 +42,15 @@ Material:
     m_Ints: []
     m_Floats:
     - _QueueControl: 0
+    - _Shading: 0.5
+    - _Shading_1: 0.01
+    - _Shading_2: 0
+    - _SpecularRange: 5
     m_Colors:
-    - _BaseColor: {r: 0.6987611, g: 0.7199023, b: 0.94716984, a: 1}
-    - _Color: {r: 0.34509802, g: 0.7333333, b: 0.7411765, a: 1}
+    - _BaseColor: {r: 0.8490566, g: 0.59517264, b: 0.39569238, a: 1}
+    - _Color: {r: 0.07169801, g: 0.07169801, b: 0.07169801, a: 1}
+    - _LightDir: {r: 1, g: 1, b: 1, a: 0}
+    - _ShadowColor: {r: 0.4113207, g: 0.4113207, b: 0.4113207, a: 0}
+    - _SpecularColor: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
