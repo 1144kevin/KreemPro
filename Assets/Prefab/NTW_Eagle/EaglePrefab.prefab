@@ -1574,6 +1574,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8953749999587203104, guid: bcad2930877ef234385009e80bb8a24c,
         type: 3}
+      propertyPath: HitLayer.m_Bits
+      value: 1025
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953749999587203104, guid: bcad2930877ef234385009e80bb8a24c,
+        type: 3}
       propertyPath: sceneAudioSetter
       value: 
       objectReference: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,

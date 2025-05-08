@@ -8,20 +8,20 @@ public class NetworkDespawnAfterDelayFForBrokenBox : NetworkBehaviour
     [SerializeField] private float delay = 3f;
 
     [Header("向下壓力設定")]
-    [SerializeField] private float downwardForceDelay = 0.5f;
-    [SerializeField] private float downwardForceMultiplier = 100f;
+    private float downwardForceDelay = 0.5f;
+    private float downwardForceMultiplier = 300f;
 
     [Header("爆破力設定")]
-    [SerializeField] private float explosionForce = 30f;
-    [SerializeField] private Vector2 upwardRange = new Vector2(0.8f, 5f);
-    [SerializeField] private float outwardMultiplier = 1.2f;
+    private float explosionForce = 20000f;
+    private Vector2 upwardRange = new Vector2(200f, 300f);
+    private float outwardMultiplier = 250f;
 
     public override void Spawned()
     {
         if (Object.HasStateAuthority)
         {
-            ApplyExplosionForce(); // 💥 Spawn 時立即施加爆破力
-            StartCoroutine(ApplyDownwardForceAfterDelay());
+            // ApplyExplosionForce();
+            // StartCoroutine(ApplyDownwardForceAfterDelay());
             StartCoroutine(DespawnLater());
         }
     }
@@ -55,7 +55,7 @@ public class NetworkDespawnAfterDelayFForBrokenBox : NetworkBehaviour
 
         if (TryGetComponent<Rigidbody>(out var rb) && rb.gameObject.activeInHierarchy)
         {
-            rb.WakeUp(); // 保證 Rigidbody 醒著
+            rb.WakeUp();
             rb.velocity = Vector3.down * downwardForceMultiplier;
             Debug.Log($"[BrokenBox] ⬇ 向下壓力套用：{rb.name}");
         }
@@ -71,6 +71,7 @@ public class NetworkDespawnAfterDelayFForBrokenBox : NetworkBehaviour
 
         if (Object != null && Object.IsValid)
         {
+            Debug.Log("[BrokenBox] 🧹 Despawn 執行");
             Runner.Despawn(Object);
         }
         else
@@ -79,3 +80,4 @@ public class NetworkDespawnAfterDelayFForBrokenBox : NetworkBehaviour
         }
     }
 }
+

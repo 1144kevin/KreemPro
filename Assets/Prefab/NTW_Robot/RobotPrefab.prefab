@@ -16031,7 +16031,7 @@ MonoBehaviour:
   CharacterTrans: {fileID: 8384365897964113241}
   HitLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 1025
   HitOptions: 13
   damage: 25
   attackDistance: 700

@@ -102,7 +102,7 @@ public class AttackHandler : NetworkBehaviour
     public void OnAttackHitEvent()
     {
         if (!Object.HasStateAuthority) return;
-        Rpc_RequestAttack(); 
+        Rpc_RequestAttack();
     }
 
 
@@ -147,6 +147,11 @@ public class AttackHandler : NetworkBehaviour
                         hitPlayer.TakeDamage(damage);
                     }
                 }
+
+                if (hit.GameObject.TryGetComponent<TreasureBox>(out var hitTreasureBox))
+                {
+                    hitTreasureBox.TriggerExplosion(Object.InputAuthority);
+                }
             }
         }
         else
@@ -157,7 +162,7 @@ public class AttackHandler : NetworkBehaviour
 
             DrawDebugBox(
                 center: center,
-                size: attackRange * 2f,       
+                size: attackRange * 2f,
                 rotation: attackQuaternion,
                 color: Color.green,
                 duration: 0.5f
@@ -184,11 +189,16 @@ public class AttackHandler : NetworkBehaviour
                             hitPlayer.TakeDamage(damage);
                         }
                     }
+                    if (hit.GameObject.TryGetComponent<TreasureBox>(out var hitTreasureBox))
+                    {
+                        hitTreasureBox.TriggerExplosion(Object.InputAuthority);
+                    }
                 }
 
-            };
+            }
+            ;
         }
-        
+
     }
     private void DrawDebugBox(Vector3 center, Vector3 size, Quaternion rotation, Color color, float duration = 0f)
     {
