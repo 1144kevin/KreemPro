@@ -172,11 +172,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 3
-  downwardForceDelay: 1.1
-  downwardForceMultiplier: 500
-  explosionForce: 30
-  upwardRange: {x: 0.8, y: 5}
-  outwardMultiplier: 6
 --- !u!114 &7185665295263367769
 MonoBehaviour:
   m_ObjectHideFlags: 0

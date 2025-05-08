@@ -5,47 +5,74 @@ using UnityEngine;
 
 public class TreasureBox : NetworkBehaviour
 {
-    [Header("爆破設定")]
-    [SerializeField] public List<NetworkObject> brokenPiecePrefabs = new List<NetworkObject>();
+    [Header("設定")]
+    [SerializeField] private List<NetworkObject> brokenPiecePrefabs;
     [SerializeField] private NetworkPrefabRef specialItemPrefab;
-    [SerializeField] private float explosionForce = 10f;
-    [SerializeField] private int spawnBatchSize = 10;
     [SerializeField] private float respawnDelay = 5f;
+    [SerializeField] private int spawnBatchSize = 10;
+    [SerializeField] private SceneAudioSetter sceneAudioSetter;
+    [SerializeField] private ParticleSystem explosionEffect;
+
+    [Networked]
+    private bool IsVisible { get; set; }
 
     private bool exploded = false;
-    private Vector3 spawnPosition;
-    [SerializeField] private NetworkPrefabRef selfPrefabRef;
+    private bool lastVisibleState = false;
+    private float explosionForce = 10000f;
+
+    private Vector3 boxPos;
 
     public override void Spawned()
     {
-        if (!Runner || !Runner.IsServer) return;
-        spawnPosition = transform.position;
+        if (Object.HasStateAuthority)
+        {
+            IsVisible = true;
+            boxPos = transform.position;
+        }
+
+        lastVisibleState = IsVisible;
+        SetTreasureBoxActive(IsVisible);
+        explosionEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // 重置
     }
 
-    private void OnTriggerEnter(Collider other)
+    public override void Render()
     {
-        if (!Runner || !Runner.IsServer || exploded) return;
-
-        if (other.CompareTag("Player") || other.CompareTag("testBox"))
+        // 手動比對可視狀態變化
+        if (lastVisibleState != IsVisible)
         {
-            Debug.Log($"[TreasureBox] 玩家觸發爆破：{other.name}");
-            exploded = true;
-            StartCoroutine(DelayExplode(0.3f));
+            lastVisibleState = IsVisible;
+            SetTreasureBoxActive(IsVisible);
         }
     }
-
-    private IEnumerator DelayExplode(float delay)
+    public void TriggerExplosion(PlayerRef attacker)
     {
-        yield return new WaitForSeconds(delay);
-        StartCoroutine(Explode());
+        if (!Object.HasStateAuthority || exploded) return;
+        StartCoroutine(Explode(attacker));
     }
-
-    private IEnumerator Explode()
+    private IEnumerator Explode(PlayerRef attacker)
     {
-        int count = 0;
-        Vector3 boxPosition = transform.position;
+        exploded = true;
+        IsVisible = false;
 
-        SetTreasureBoxActive(false); // ✅ 隱藏自己
+        // 播放爆炸粒子特效
+
+        if (explosionEffect != null)
+        {
+            Debug.Log("😊😊");
+            explosionEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // 重置
+            explosionEffect.Play();
+        }
+
+        // 等一小段時間讓特效能顯示出來（避免還沒開始就被隱藏）
+        //yield return new WaitForSeconds(0.3f);
+
+        // 僅在攻擊者本地端播放音效
+        if (attacker == Runner.LocalPlayer)
+        {
+            sceneAudioSetter?.PlayBoxExplodeSound();
+        }
+
+        int count = 0;
 
         foreach (var prefab in brokenPiecePrefabs)
         {
@@ -57,57 +84,46 @@ public class TreasureBox : NetworkBehaviour
                 Random.Range(-0.3f, 0.3f)
             );
 
-            Vector3 finalPosition = boxPosition + spawnOffset;
+            Vector3 finalPosition = boxPos + spawnOffset;
             var piece = Runner.Spawn(prefab, finalPosition, Random.rotation);
-
-            if (piece != null && piece.TryGetComponent<Collider>(out var col))
+            if (piece && piece.TryGetComponent<Rigidbody>(out var col))
             {
-                col.isTrigger = true;
+                Vector3 dir = Vector3.up + Random.insideUnitSphere;
+                col.AddForce(dir.normalized * explosionForce, ForceMode.Impulse);
+            }
+            if (piece && piece.TryGetComponent<Collider>(out var coll))
+            {
+                coll.isTrigger = true;
             }
 
             count++;
             if (count % spawnBatchSize == 0)
+            {
                 yield return null;
+            }
         }
 
         if (specialItemPrefab.IsValid)
         {
-            Vector3 itemPosition = boxPosition + Vector3.up;
-            var item = Runner.Spawn(specialItemPrefab, itemPosition, Quaternion.identity, inputAuthority: null);
-
-            if (item != null && item.TryGetComponent<Rigidbody>(out var itemRb))
+            var item = Runner.Spawn(specialItemPrefab, boxPos + Vector3.up, Quaternion.identity);
+            if (item && item.TryGetComponent<Rigidbody>(out var rb))
             {
-                Vector3 launchDir = Vector3.up + new Vector3(Random.Range(-0.5f, 0.5f), 0, Random.Range(-0.5f, 0.5f));
-                itemRb.AddForce(launchDir.normalized * explosionForce, ForceMode.Impulse);
+                Vector3 dir = Vector3.up + Random.insideUnitSphere;
+                rb.AddForce(dir.normalized * explosionForce, ForceMode.Impulse);
             }
         }
 
-        Debug.Log($"[TreasureBox] 爆炸完成，{respawnDelay} 秒後重新出現");
-        StartCoroutine(ReappearAfterDelay(respawnDelay));
-    }
-
-    private IEnumerator ReappearAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        SetTreasureBoxActive(true);
+        yield return new WaitForSeconds(respawnDelay);
+        IsVisible = true;
         exploded = false;
-        Debug.Log($"[TreasureBox] ✅ 已重新啟用");
     }
 
     private void SetTreasureBoxActive(bool active)
     {
-        // ✅ 控制所有 MeshRenderer
-        foreach (var renderer in GetComponentsInChildren<MeshRenderer>())
-        {
-            renderer.enabled = active;
-        }
+        foreach (var r in GetComponentsInChildren<Renderer>(true))
+            r.enabled = active;
 
-        // ✅ 控制所有 Collider
-        foreach (var col in GetComponentsInChildren<Collider>())
-        {
-            col.enabled = active;
-        }
-
-        // ✅ 若有動畫/音效/特效等可加上 Enable 處理
+        foreach (var c in GetComponentsInChildren<Collider>(true))
+            c.enabled = active;
     }
 }

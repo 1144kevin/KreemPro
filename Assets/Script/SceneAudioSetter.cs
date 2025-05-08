@@ -37,6 +37,8 @@ public class SceneAudioSetter : MonoBehaviour
 
     [Header("場上物件")]
     [SerializeField] public AudioClip kreemSFX;
+    [SerializeField] public AudioClip BoxEplodeSFX;
+
 
     [Header("各角色攻擊 SFX（依角色 index）")]
     [SerializeField] private AudioClip[] characterAttackSFX;
@@ -89,6 +91,13 @@ public class SceneAudioSetter : MonoBehaviour
         if (IntroCountdownSFX!= null && AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX(IntroCountdownSFX);
+        }
+    }
+    public void PlayBoxExplodeSound()
+    {
+        if (BoxEplodeSFX!= null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(BoxEplodeSFX);
         }
     }
 

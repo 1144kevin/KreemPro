@@ -63,6 +63,7 @@ MonoBehaviour:
   TenSecCountdownSFX: {fileID: 8300000, guid: 82394c5fa02baca4898b88ff61b796cc, type: 3}
   IntroCountdownSFX: {fileID: 8300000, guid: c0ea3e12d6c6cb8499e27e0f203ebad8, type: 3}
   kreemSFX: {fileID: 8300000, guid: 458209799e9ca9b47a6778f479342e01, type: 3}
+  BoxEplodeSFX: {fileID: 8300000, guid: 127785a2494ef30478f8ee58e7c9b90c, type: 3}
   characterAttackSFX:
   - {fileID: 8300000, guid: 0152535f8847bd449a5ee3a03dcfcee2, type: 3}
   - {fileID: 8300000, guid: fe556c8a7562f6544ad12a1d79351eb9, type: 3}

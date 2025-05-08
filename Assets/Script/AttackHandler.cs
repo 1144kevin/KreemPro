@@ -95,7 +95,7 @@ public class AttackHandler : NetworkBehaviour
     public void OnAttackHitEvent()
     {
         if (!Object.HasStateAuthority) return;
-        Rpc_RequestAttack(); 
+        Rpc_RequestAttack();
     }
 
 
@@ -138,6 +138,11 @@ public class AttackHandler : NetworkBehaviour
                         hitPlayer.TakeDamage(damage);
                     }
                 }
+
+                if (hit.GameObject.TryGetComponent<TreasureBox>(out var hitTreasureBox))
+                {
+                    hitTreasureBox.TriggerExplosion(Object.InputAuthority);
+                }
             }
         }
         else
@@ -148,7 +153,7 @@ public class AttackHandler : NetworkBehaviour
 
             DrawDebugBox(
                 center: center,
-                size: attackRange * 2f,       
+                size: attackRange * 2f,
                 rotation: attackQuaternion,
                 color: Color.green,
                 duration: 0.5f
@@ -175,11 +180,16 @@ public class AttackHandler : NetworkBehaviour
                             hitPlayer.TakeDamage(damage);
                         }
                     }
+                    if (hit.GameObject.TryGetComponent<TreasureBox>(out var hitTreasureBox))
+                    {
+                        hitTreasureBox.TriggerExplosion(Object.InputAuthority);
+                    }
                 }
 
-            };
+            }
+            ;
         }
-        
+
     }
     private void DrawDebugBox(Vector3 center, Vector3 size, Quaternion rotation, Color color, float duration = 0f)
     {
@@ -255,7 +265,7 @@ public class AttackHandler : NetworkBehaviour
             if (leftBullet != null)
             {
                 leftBullet.Fire(direction);
-                leftShotOrigin=leftShotOrigin-direction * 150f;
+                leftShotOrigin = leftShotOrigin - direction * 150f;
                 PerformAttack(leftShotOrigin, direction);
             }
 
@@ -264,7 +274,7 @@ public class AttackHandler : NetworkBehaviour
         }
         else if (playerName == "Mushroom")
         {
-            Vector3 shotOrigin = CharacterTrans.position + Vector3.up * 100f;
+            Vector3 shotOrigin = CharacterTrans.position + Vector3.up * 50f;
             var bullet = objectSpawner.SpawnShot(shotOrigin, Quaternion.LookRotation(direction));
             if (bullet != null)
             {
@@ -276,7 +286,7 @@ public class AttackHandler : NetworkBehaviour
         }
         else
         {
-            Vector3 shotOrigin = CharacterTrans.position+Vector3.up * 100f;
+            Vector3 shotOrigin = CharacterTrans.position + Vector3.up * 100f;
             PerformAttack(shotOrigin, direction);
         }
 

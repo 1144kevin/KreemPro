@@ -175,6 +175,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8697314375497070613, guid: ac0a10496a38d164cab693d5d2698ef2,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1556,6 +1561,11 @@ PrefabInstance:
         type: 3}
       propertyPath: attackDistance
       value: 350
+      objectReference: {fileID: 0}
+    - target: {fileID: 8953749999587203104, guid: bcad2930877ef234385009e80bb8a24c,
+        type: 3}
+      propertyPath: HitLayer.m_Bits
+      value: 1025
       objectReference: {fileID: 0}
     - target: {fileID: 8953749999587203104, guid: bcad2930877ef234385009e80bb8a24c,
         type: 3}

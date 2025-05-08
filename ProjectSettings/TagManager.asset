@@ -23,6 +23,7 @@ TagManager:
   - Mushroom
   - Robot
   - testBox
+  - TreasureBox
   layers:
   - Default
   - TransparentFX
