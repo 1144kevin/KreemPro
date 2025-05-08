@@ -47,7 +47,7 @@ Material:
     - _Shading_2: 0
     - _SpecularRange: 5
     m_Colors:
-    - _BaseColor: {r: 0.70837307, g: 0.8792453, b: 0.72057825, a: 1}
+    - _BaseColor: {r: 0.87169814, g: 0.66891277, b: 0.50492704, a: 1}
     - _Color: {r: 0.07169801, g: 0.07169801, b: 0.07169801, a: 1}
     - _LightDir: {r: 1, g: 1, b: 1, a: 0}
     - _ShadowColor: {r: 0.4113207, g: 0.4113207, b: 0.4113207, a: 0}
