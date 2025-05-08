@@ -23,7 +23,6 @@ public class Booster : NetworkBehaviour
     public float refillTimerPublic => refillTimer;
     public float refillTimePublic => refillTime;
 
-    public GameObject playerUIPrefab;
 
     public override void Spawned()
     {
@@ -31,7 +30,6 @@ public class Booster : NetworkBehaviour
 
         if (Object.HasInputAuthority)
         {
-            GameObject uiInstance = Instantiate(playerUIPrefab);
             BoosterUI ui = FindObjectOfType<BoosterUI>();
             if (ui != null)
             {

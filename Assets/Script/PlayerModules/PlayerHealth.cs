@@ -62,7 +62,22 @@ public class PlayerHealth : NetworkBehaviour
         {
             RpcPlayDieSound();
             IsDead = true;
-            HandleDeath();
+            LastDeathPosition = transform.position;
+
+            if (playerRespawn == null)
+                playerRespawn = GetComponent<PlayerRespawn>();
+
+            playerRespawn?.RpcSetPlayerVisibility(false);
+            // ✅ 整合 Kreem 掉落
+            if (Object.HasStateAuthority)
+            {
+                var player = GetComponent<Player>();
+                player.kreemCollect = 0;
+            }
+            if (Object.HasInputAuthority)
+            {
+                playerRespawn?.RpcSetPlayerVisibility(false); // ✅ 觸發 復活UI 模組
+            }
         }
     }
 

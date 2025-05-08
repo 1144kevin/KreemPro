@@ -157,4 +157,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 2000
-  lifetime: 0.5
+  lifetime: 0.3
+  maxDistance: 100
+  hitLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295

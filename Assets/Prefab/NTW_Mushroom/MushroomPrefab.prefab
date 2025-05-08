@@ -15664,6 +15664,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 457072990483336745, guid: 47aa3751db49736479bd9b865887c590,
         type: 3}
+      propertyPath: animator
+      value: 
+      objectReference: {fileID: 8089367387799358553}
+    - target: {fileID: 457072990483336745, guid: 47aa3751db49736479bd9b865887c590,
+        type: 3}
       propertyPath: attackDistance
       value: 1000
       objectReference: {fileID: 0}
@@ -15672,6 +15677,17 @@ PrefabInstance:
       propertyPath: sceneAudioSetter
       value: 
       objectReference: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+        type: 3}
+    - target: {fileID: 457072990483336745, guid: 47aa3751db49736479bd9b865887c590,
+        type: 3}
+      propertyPath: mushroomShootPoint
+      value: 
+      objectReference: {fileID: 8293710128744500499}
+    - target: {fileID: 457072990483336745, guid: 47aa3751db49736479bd9b865887c590,
+        type: 3}
+      propertyPath: visualBulletPrefab
+      value: 
+      objectReference: {fileID: 7731386595278410357, guid: 87b4d314c07f8644cb570873892f6b6a,
         type: 3}
     - target: {fileID: 457072990483336745, guid: 47aa3751db49736479bd9b865887c590,
         type: 3}
@@ -17313,6 +17329,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71a83a605a3dfa64295abccc1fca38e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &8089367387799358553 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 1232573554722125271, guid: 47aa3751db49736479bd9b865887c590,
+    type: 3}
+  m_PrefabInstance: {fileID: 7014866428736682382}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8293710128744500499 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1315300346167932061, guid: 47aa3751db49736479bd9b865887c590,
+    type: 3}
+  m_PrefabInstance: {fileID: 7014866428736682382}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8765252827225483801
 PrefabInstance:
   m_ObjectHideFlags: 0

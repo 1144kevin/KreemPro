@@ -24,10 +24,12 @@ public class AttackHandler : NetworkBehaviour
     [SerializeField] private SceneAudioSetter sceneAudioSetter;
     [SerializeField] private int characterSoundIndex = 0; // 攻擊音效用的角色 ID
     [SerializeField] private Vector3 attackRange = new Vector3(200f, 200f, 400f);
+    [SerializeField] private Animator animator;
     [SerializeField] private Transform robotShootPoint1;
     [SerializeField] private Transform robotShootPoint2;
     [SerializeField] private Transform robotShootPoint3;
     [SerializeField] private Transform robotShootPoint4;
+    [SerializeField] private Transform mushroomShootPoint;
     [SerializeField] private GameObject visualBulletPrefab; // 新增：拖刚才做好的 VisualBullet Prefab
 
     // 將攻擊動畫類型定義成 enum，更直覺：
@@ -250,30 +252,54 @@ public class AttackHandler : NetworkBehaviour
         Vector3 direction = CharacterTrans.forward;
         Vector3 origin;
 
-        // Robot 雙發範例
         if (gameObject.name == "Robot")
         {
-            origin = robotShootPoint1.position;
-            // ① 客戶端本地生成第一顆視覺子彈
-            if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
-            // ② 伺服端命中判定
-            PerformAttack(origin, direction);
+            // 讀動畫狀態
+            var state = animator.GetCurrentAnimatorStateInfo(0);
+            if (state.IsName("Robot_Attack"))
+            {
+                // 第一種攻擊動畫 → 用前兩個發射點
+                origin = robotShootPoint1.position;
+                if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
+                PerformAttack(origin, direction);
 
-            yield return new WaitForSeconds(0.2f);
+                yield return new WaitForSeconds(0.2f);
 
-            origin = robotShootPoint2.position;
-            if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
-            PerformAttack(origin, direction);
+                origin = robotShootPoint2.position;
+                if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
+                PerformAttack(origin, direction);
+            }
+            else if (state.IsName("Robot_RunAttack"))
+            {
+                // 第二種攻擊動畫 → 用後兩個發射點
+                origin = robotShootPoint3.position;
+                if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
+                PerformAttack(origin, direction);
+
+                yield return new WaitForSeconds(0.2f);
+
+                origin = robotShootPoint4.position;
+                if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
+                PerformAttack(origin, direction);
+            }
+            else
+            {
+                // 預設：還是用第1種方式
+                origin = robotShootPoint1.position;
+                if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
+                PerformAttack(origin, direction);
+            }
         }
-        // Mushroom 單發範例
         else if (gameObject.name == "Mushroom")
         {
-            origin = CharacterTrans.position + Vector3.up * 100f;
+            // Mushroom 統一一組發射點
+            origin = mushroomShootPoint.position;
             if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
             PerformAttack(origin, direction);
         }
         else
         {
+            // 其他角色也可以自己分支
             origin = CharacterTrans.position + Vector3.up * 100f;
             if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
             PerformAttack(origin, direction);

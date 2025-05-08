@@ -15781,6 +15781,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7897214894906332452}
   m_SourcePrefab: {fileID: 100100000, guid: 5c85c8c3d61f73340994e1ec01d3451f, type: 3}
+--- !u!4 &1455801255227578820 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 322592120801900636, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1174903303303389592}
+  m_PrefabAsset: {fileID: 0}
 --- !u!198 &1694015185722347255 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 561896081656246127, guid: 5c85c8c3d61f73340994e1ec01d3451f,
@@ -15790,6 +15796,12 @@ ParticleSystem:
 --- !u!198 &3044351593331608372 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 4211338375778020012, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1174903303303389592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4787900972358743694 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5925631848974931734, guid: 5c85c8c3d61f73340994e1ec01d3451f,
     type: 3}
   m_PrefabInstance: {fileID: 1174903303303389592}
   m_PrefabAsset: {fileID: 0}
@@ -16029,10 +16041,12 @@ MonoBehaviour:
     type: 3}
   characterSoundIndex: 0
   attackRange: {x: 200, y: 200, z: 400}
+  animator: {fileID: 4357079154756045290}
   robotShootPoint1: {fileID: 9044832419487689614}
   robotShootPoint2: {fileID: 5274699058594313597}
-  robotShootPoint3: {fileID: 0}
-  robotShootPoint4: {fileID: 0}
+  robotShootPoint3: {fileID: 4787900972358743694}
+  robotShootPoint4: {fileID: 1455801255227578820}
+  mushroomShootPoint: {fileID: 0}
   visualBulletPrefab: {fileID: 6611746220143071387, guid: cdf94c94bb0ec994a847e2feec437138,
     type: 3}
 --- !u!114 &2998856429226848935
