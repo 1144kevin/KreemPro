@@ -35,8 +35,11 @@ public class SceneAudioSetter : MonoBehaviour
     [SerializeField] private AudioClip TenSecCountdownSFX;
     [SerializeField] private AudioClip IntroCountdownSFX;
 
-    [Header("場上物件")]
+    [Header("場上角色相關物件")]
+    [SerializeField] public AudioClip gotHitSFX;
     [SerializeField] public AudioClip kreemSFX;
+    [SerializeField] public AudioClip speedUpSFX;
+
 
     [Header("各角色攻擊 SFX（依角色 index）")]
     [SerializeField] private AudioClip[] characterAttackSFX;
@@ -86,7 +89,7 @@ public class SceneAudioSetter : MonoBehaviour
 
     public void PlayIntroCountdownSound()
     {
-        if (IntroCountdownSFX!= null && AudioManager.Instance != null)
+        if (IntroCountdownSFX != null && AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX(IntroCountdownSFX);
         }
@@ -113,6 +116,14 @@ public class SceneAudioSetter : MonoBehaviour
             AudioManager.Instance.PlaySFX(TimeNotifySFX, TimerNotifyVolume);
         }
     }
+    public void PlaySpeedupSound()
+    {
+        if (speedUpSFX != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(speedUpSFX);
+        }
+    }
+    
     public void PlayRebornSound()
     {
         if (rebornSFX != null && AudioManager.Instance != null)
@@ -126,6 +137,13 @@ public class SceneAudioSetter : MonoBehaviour
         if (kreemSFX != null && AudioManager.Instance != null)
         {
             AudioManager.Instance.PlaySFX(kreemSFX);
+        }
+    }
+    public void PlayGotHitSound()
+    {
+        if (gotHitSFX != null && AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlaySFX(gotHitSFX);
         }
     }
     public void PlayHoverSound()

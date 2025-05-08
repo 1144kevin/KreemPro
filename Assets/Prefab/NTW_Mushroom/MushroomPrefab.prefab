@@ -17166,6 +17166,8 @@ MonoBehaviour:
   refillTime: 5
   boostTime: 2
   speedMultiplier: 2
+  sceneAudioSetter: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
+    type: 3}
   startDelay: 5
   playerUIPrefab: {fileID: 0}
 --- !u!114 &5914424458674935291

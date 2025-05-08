@@ -62,7 +62,9 @@ MonoBehaviour:
   TimeNotifySFX: {fileID: 8300000, guid: 24e3da6caa08fb34389a9cc6d5add0f6, type: 3}
   TenSecCountdownSFX: {fileID: 8300000, guid: 82394c5fa02baca4898b88ff61b796cc, type: 3}
   IntroCountdownSFX: {fileID: 8300000, guid: c0ea3e12d6c6cb8499e27e0f203ebad8, type: 3}
+  gotHitSFX: {fileID: 8300000, guid: a99d4beed77e72c4c87dff9d6a2f67d2, type: 3}
   kreemSFX: {fileID: 8300000, guid: 458209799e9ca9b47a6778f479342e01, type: 3}
+  speedUpSFX: {fileID: 8300000, guid: 9557073c5b43fe948b021e950b18c277, type: 3}
   characterAttackSFX:
   - {fileID: 8300000, guid: 0152535f8847bd449a5ee3a03dcfcee2, type: 3}
   - {fileID: 8300000, guid: fe556c8a7562f6544ad12a1d79351eb9, type: 3}
