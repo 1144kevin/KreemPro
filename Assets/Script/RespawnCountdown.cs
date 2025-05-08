@@ -6,8 +6,8 @@ using System.Collections;
 public class RespawnCountdown : NetworkBehaviour
 {
     [SerializeField] private TMP_Text countdownText;
-    [SerializeField] private float extraTime = 3f;
-    public float countdownTime = 3.5f;
+    [SerializeField] private float extraTime = 4f;
+    public float countdownTime = 4.5f;
     private float timer;
     public float RemainingTime
     {
@@ -62,7 +62,7 @@ public class RespawnCountdown : NetworkBehaviour
 
     public void OnInputError()
     {
-        timer += extraTime;
+        timer = extraTime;
         isCounting = true;
         StartCoroutine(TweenCountdownText(0.5f));
     }

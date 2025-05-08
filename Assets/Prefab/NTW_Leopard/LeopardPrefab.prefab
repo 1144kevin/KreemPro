@@ -15039,6 +15039,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8182727989198694733, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
+      propertyPath: extraTime
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182727989198694733, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
       propertyPath: countdownTime
       value: 4.5
       objectReference: {fileID: 0}
@@ -16194,6 +16199,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5659947617770189377, guid: aa7bd307377670c4ea064297027d0aec,
+        type: 3}
+      propertyPath: Offset.y
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 5659947617770189377, guid: aa7bd307377670c4ea064297027d0aec,
+        type: 3}
+      propertyPath: BoxExtents.y
+      value: 150
+      objectReference: {fileID: 0}
     - target: {fileID: 5765278331916206994, guid: aa7bd307377670c4ea064297027d0aec,
         type: 3}
       propertyPath: m_Layer
@@ -16761,7 +16776,6 @@ MonoBehaviour:
   boostTime: 2
   speedMultiplier: 2
   startDelay: 5
-  playerUIPrefab: {fileID: 0}
 --- !u!114 &5896926689732113446
 MonoBehaviour:
   m_ObjectHideFlags: 0

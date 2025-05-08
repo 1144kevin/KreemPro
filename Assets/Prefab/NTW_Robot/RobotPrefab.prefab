@@ -16214,7 +16214,6 @@ MonoBehaviour:
   boostTime: 2
   speedMultiplier: 2
   startDelay: 5
-  playerUIPrefab: {fileID: 0}
 --- !u!114 &3200769004117793132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16631,7 +16630,7 @@ PrefabInstance:
     - target: {fileID: 8182727989198694733, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
       propertyPath: extraTime
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8182727989198694733, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}

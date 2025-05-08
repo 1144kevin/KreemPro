@@ -175,6 +175,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8697314375497070613, guid: ac0a10496a38d164cab693d5d2698ef2,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -920,6 +925,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875404874980950714, guid: bcad2930877ef234385009e80bb8a24c,
+        type: 3}
+      propertyPath: Offset.y
+      value: 150
+      objectReference: {fileID: 0}
+    - target: {fileID: 4875404874980950714, guid: bcad2930877ef234385009e80bb8a24c,
+        type: 3}
+      propertyPath: BoxExtents.y
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 4913503321225821818, guid: bcad2930877ef234385009e80bb8a24c,
         type: 3}
@@ -1720,7 +1735,6 @@ MonoBehaviour:
   boostTime: 2
   speedMultiplier: 2
   startDelay: 5
-  playerUIPrefab: {fileID: 0}
 --- !u!114 &1777003565303289631
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1828,7 +1842,6 @@ MonoBehaviour:
   boostTime: 2
   speedMultiplier: 2
   startDelay: 5
-  playerUIPrefab: {fileID: 0}
 --- !u!4 &5492088683996029954 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7003373622784767317, guid: bcad2930877ef234385009e80bb8a24c,
@@ -2398,6 +2411,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8182727989198694733, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: extraTime
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8182727989198694733, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
