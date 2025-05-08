@@ -15397,6 +15397,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6448422995937268965, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.0558
+      objectReference: {fileID: 0}
     - target: {fileID: 6639531013594945046, guid: 5c85c8c3d61f73340994e1ec01d3451f,
         type: 3}
       propertyPath: startDelay.scalar
@@ -15776,6 +15781,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7897214894906332452}
   m_SourcePrefab: {fileID: 100100000, guid: 5c85c8c3d61f73340994e1ec01d3451f, type: 3}
+--- !u!4 &1455801255227578820 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 322592120801900636, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1174903303303389592}
+  m_PrefabAsset: {fileID: 0}
 --- !u!198 &1694015185722347255 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 561896081656246127, guid: 5c85c8c3d61f73340994e1ec01d3451f,
@@ -15785,6 +15796,18 @@ ParticleSystem:
 --- !u!198 &3044351593331608372 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 4211338375778020012, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1174903303303389592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4787900972358743694 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5925631848974931734, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1174903303303389592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5274699058594313597 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6448422995937268965, guid: 5c85c8c3d61f73340994e1ec01d3451f,
     type: 3}
   m_PrefabInstance: {fileID: 1174903303303389592}
   m_PrefabAsset: {fileID: 0}
@@ -16018,6 +16041,14 @@ MonoBehaviour:
     type: 3}
   characterSoundIndex: 0
   attackRange: {x: 200, y: 200, z: 400}
+  animator: {fileID: 4357079154756045290}
+  robotShootPoint1: {fileID: 9044832419487689614}
+  robotShootPoint2: {fileID: 5274699058594313597}
+  robotShootPoint3: {fileID: 4787900972358743694}
+  robotShootPoint4: {fileID: 1455801255227578820}
+  mushroomShootPoint: {fileID: 0}
+  visualBulletPrefab: {fileID: 6611746220143071387, guid: cdf94c94bb0ec994a847e2feec437138,
+    type: 3}
 --- !u!114 &2998856429226848935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16033,9 +16064,9 @@ MonoBehaviour:
   Type: 1
   SphereRadius: 50.31
   CapsuleRadius: 100
-  BoxExtents: {x: 90, y: 110, z: 100}
+  BoxExtents: {x: 90, y: 150, z: 100}
   CapsuleExtents: 0
-  Offset: {x: 0, y: 100, z: 41.2}
+  Offset: {x: 0, y: 150, z: 41.2}
   Root: {fileID: 8049165696522912852}
   GizmosColor: {r: 1, g: 0.8791481, b: 0.015686274, a: 1}
 --- !u!114 &8049165696522912852
@@ -16185,7 +16216,6 @@ MonoBehaviour:
   sceneAudioSetter: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
     type: 3}
   startDelay: 5
-  playerUIPrefab: {fileID: 0}
 --- !u!114 &3200769004117793132
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16286,6 +16316,12 @@ Transform:
 --- !u!198 &8843386339979927189 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 7706817099437408013, guid: 5c85c8c3d61f73340994e1ec01d3451f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1174903303303389592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &9044832419487689614 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7911605726690462230, guid: 5c85c8c3d61f73340994e1ec01d3451f,
     type: 3}
   m_PrefabInstance: {fileID: 1174903303303389592}
   m_PrefabAsset: {fileID: 0}
@@ -16596,7 +16632,7 @@ PrefabInstance:
     - target: {fileID: 8182727989198694733, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
       propertyPath: extraTime
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8182727989198694733, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}

@@ -37,8 +37,6 @@ public class PlayerCombat : NetworkBehaviour
                 // 播音效
                 // player?.playerAudio?.PlayAttackSound(player.characterSoundIndex);
 
-                animationHandler?.TriggerAttack(isRunning); // ✅ 自己立即看到
-
                 // ✅ 請求 Host 廣播動畫（這樣 Host 與其他 Client 才會看到）
                 RpcRequestPlayAttackAnimation(isRunning);
             }

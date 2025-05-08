@@ -18,13 +18,14 @@ public class ObjectSpawner : NetworkBehaviour
 
     }
 
-    public Shot SpawnShot(Vector3 position, Quaternion rotation)
+    public Shot SpawnShot(Vector3 position, Quaternion rotation, Vector3 dir)
     {
-        if (Runner.IsClient) return null;
+        // if (Runner.IsClient) return null;
 
-        var obj = Runner.Spawn(shotPrefab, position, rotation);
-        //spawnedObjects.Add(obj);
-        return obj.GetComponent<Shot>();
+        var netObj = Runner.Spawn(shotPrefab, position, rotation);
+        var shot = netObj.GetComponent<Shot>();
+        shot.Fire(dir);
+        return shot;
     }
 
     // public void DespawnShot(NetworkObject shot)

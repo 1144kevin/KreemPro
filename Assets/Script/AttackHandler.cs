@@ -24,6 +24,13 @@ public class AttackHandler : NetworkBehaviour
     [SerializeField] private SceneAudioSetter sceneAudioSetter;
     [SerializeField] private int characterSoundIndex = 0; // 攻擊音效用的角色 ID
     [SerializeField] private Vector3 attackRange = new Vector3(200f, 200f, 400f);
+    [SerializeField] private Animator animator;
+    [SerializeField] private Transform robotShootPoint1;
+    [SerializeField] private Transform robotShootPoint2;
+    [SerializeField] private Transform robotShootPoint3;
+    [SerializeField] private Transform robotShootPoint4;
+    [SerializeField] private Transform mushroomShootPoint;
+    [SerializeField] private GameObject visualBulletPrefab; // 新增：拖刚才做好的 VisualBullet Prefab
 
     // 將攻擊動畫類型定義成 enum，更直覺：
     public enum AttackAnimType { Anim1 = 0, Anim2 = 1 }
@@ -39,10 +46,10 @@ public class AttackHandler : NetworkBehaviour
     }
 
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void Rpc_RequestAttack()
     {
-        StartCoroutine(spawnBullet());
+        StartCoroutine(SpawnAndAttack());
     }
 
     public void PlayEffect_Anim1()
@@ -114,6 +121,8 @@ public class AttackHandler : NetworkBehaviour
 
     private void PerformAttack(Vector3 rayorigin, Vector3 direction)
     {
+        if (!Object.HasStateAuthority) return;   // ← 一定要先加这个
+
         Quaternion attackQuaternion = Quaternion.LookRotation(CharacterTrans.forward);
         string playerName = gameObject.name;
         if (playerName == "Robot" || playerName == "Mushroom")
@@ -224,63 +233,77 @@ public class AttackHandler : NetworkBehaviour
     //     Gizmos.DrawWireCube(Vector3.zero, size);
     // }
 
+    // 廣播到所有人本地生成純視覺子彈
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void Rpc_SpawnVisualBullet(Vector3 pos, Vector3 dir)
+    {
+        if (visualBulletPrefab == null) return;
+        var go = Instantiate(visualBulletPrefab, pos, Quaternion.LookRotation(dir));
+        var vb = go.GetComponent<VisualBullet>();
+        if (vb != null) vb.Init(dir);
+    }
 
-    private IEnumerator spawnBullet()
+
+    // 攻擊協程：延遲 → 觸發視覺子彈 → 伺服端命中判定
+    private IEnumerator SpawnAndAttack()
     {
         yield return new WaitForSeconds(attackDelay);
 
-        string playerName = gameObject.name;
         Vector3 direction = CharacterTrans.forward;
+        Vector3 origin;
 
-        if (playerName == "Robot")
+        if (gameObject.name == "Robot")
         {
-            Vector3 shotOrigin = CharacterTrans.position + Vector3.up * 150f + direction * 150f;
-            Vector3 right = Vector3.Cross(Vector3.up, direction).normalized;
-            float offsetDistance = 70f;
-            // 再打右邊子彈
-            Vector3 rightShotOrigin = shotOrigin + right * offsetDistance;
-            var rightBullet = objectSpawner.SpawnShot(rightShotOrigin, Quaternion.LookRotation(direction));
-            if (rightBullet != null)
+            // 讀動畫狀態
+            var state = animator.GetCurrentAnimatorStateInfo(0);
+            if (state.IsName("Robot_Attack"))
             {
-                rightBullet.Fire(direction);
-                rightShotOrigin = rightShotOrigin - direction * 150f;
-                PerformAttack(rightShotOrigin, direction);
+                // 第一種攻擊動畫 → 用前兩個發射點
+                origin = robotShootPoint1.position;
+                if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
+                PerformAttack(origin, direction);
+
+                yield return new WaitForSeconds(0.2f);
+
+                origin = robotShootPoint2.position;
+                if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
+                PerformAttack(origin, direction);
             }
-
-            yield return new WaitForSeconds(0.2f);
-
-            // 先打左邊子彈
-            Vector3 leftShotOrigin = shotOrigin - right * offsetDistance;
-            var leftBullet = objectSpawner.SpawnShot(leftShotOrigin, Quaternion.LookRotation(direction));
-            if (leftBullet != null)
+            else if (state.IsName("Robot_RunAttack"))
             {
-                leftBullet.Fire(direction);
-                leftShotOrigin=leftShotOrigin-direction * 150f;
-                PerformAttack(leftShotOrigin, direction);
+                // 第二種攻擊動畫 → 用後兩個發射點
+                origin = robotShootPoint3.position;
+                if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
+                PerformAttack(origin, direction);
+
+                yield return new WaitForSeconds(0.2f);
+
+                origin = robotShootPoint4.position;
+                if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
+                PerformAttack(origin, direction);
             }
-
-
-
+            else
+            {
+                // 預設：還是用第1種方式
+                origin = robotShootPoint1.position;
+                if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
+                PerformAttack(origin, direction);
+            }
         }
-        else if (playerName == "Mushroom")
+        else if (gameObject.name == "Mushroom")
         {
-            Vector3 shotOrigin = CharacterTrans.position + Vector3.up * 100f;
-            var bullet = objectSpawner.SpawnShot(shotOrigin, Quaternion.LookRotation(direction));
-            if (bullet != null)
-            {
-                bullet.Fire(direction);
-                PerformAttack(shotOrigin, direction);
-            }
-
-            //DespawnAfterDelay(5f);
+            // Mushroom 統一一組發射點
+            origin = mushroomShootPoint.position;
+            if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
+            PerformAttack(origin, direction);
         }
         else
         {
-            Vector3 shotOrigin = CharacterTrans.position+Vector3.up * 100f;
-            PerformAttack(shotOrigin, direction);
+            // 其他角色也可以自己分支
+            origin = CharacterTrans.position + Vector3.up * 100f;
+            if (Object.HasStateAuthority) Rpc_SpawnVisualBullet(origin, direction);
+            PerformAttack(origin, direction);
         }
-
-
     }
     public Transform GetCharacterTrans()
     {
