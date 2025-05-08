@@ -137,7 +137,7 @@ public class Player : NetworkBehaviour
     playerCombat?.HandleAttack(input, pressed, Runner);
     if (input.boostTrigger)
     {
-        GetComponent<Booster>()?.RpcRequestBoost();
+        GetComponent<Booster>()?.TryUseBoost();
     }
   }
 

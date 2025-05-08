@@ -173,6 +173,7 @@ public class PlayerHealth : NetworkBehaviour
     [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
     private void RpcPlayHitEffect()
     {
+        sceneAudioSetter?.PlayGotHitSound();//被打音效
         PlayEffect(getHitEffect);
     }
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

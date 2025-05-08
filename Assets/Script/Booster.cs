@@ -7,6 +7,7 @@ public class Booster : NetworkBehaviour
     public float refillTime = 5f;
     public float boostTime = 2f;
     public float speedMultiplier = 2f;
+    [SerializeField] private SceneAudioSetter sceneAudioSetter;
 
     [Networked] private float refillTimer { get; set; } = 0f;
     [Networked] private float boostTimer { get; set; } = 0f;
@@ -76,19 +77,31 @@ public class Booster : NetworkBehaviour
                 isCharged = false;
             }
         }
+
+        if (GetInput(out NetworkInputData data) && data.boostTrigger)
+        {
+            bool boostActivated = TryUseBoost();
+
+            // ✅ 只有在真的啟動加速、而且是自己這台機器，才播放音效
+            if (boostActivated )
+            {
+                Rpc_PlaySpeedUpSound();
+            }
+        }
     }
 
-
-
-    public void TryUseBoost()
+    public bool TryUseBoost()
     {
-        if (!isCharged || isBoosting) return;
+        if (!isCharged || isBoosting) return false;
 
         Debug.Log("✅ Boost ACTIVATED!");
         isBoosting = true;
         boostTimer = 0f;
+        isCharged = false;
 
+        return true; // ✅ 成功啟動加速
     }
+
     public float GetSpeedMultiplier()
     {
         return isBoosting ? speedMultiplier : 1f;
@@ -103,6 +116,14 @@ public class Booster : NetworkBehaviour
     {
         return isCharged;
     }
+[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+private void Rpc_PlaySpeedUpSound()
+{
+    if (Object.HasStateAuthority || Object.HasInputAuthority)
+    {
+        sceneAudioSetter?.PlaySpeedupSound();
+    }
+}
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
     public void RpcRequestBoost()
     {
