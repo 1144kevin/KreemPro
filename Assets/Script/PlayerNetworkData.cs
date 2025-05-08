@@ -1,4 +1,5 @@
 using Fusion;
+using UnityEngine.SceneManagement;
 
 public class PlayerNetworkData : NetworkBehaviour
 {
@@ -29,6 +30,8 @@ public class PlayerNetworkData : NetworkBehaviour
     }
     private void OnPlayerNameChanged()
     {
+        if (SceneManager.GetActiveScene().name != "Menu")
+            return;
         GameManager.Instance.UpdatePlayerList();
     }
     // private void OnSelectedCharacterNameChanged()

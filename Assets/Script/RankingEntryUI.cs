@@ -1,12 +1,16 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using UnityEngine.UI;
+using Fusion;
 
 public class RankingEntryUI : MonoBehaviour
 {
+  [SerializeField] private Image playerImage;
   [SerializeField] private TMP_Text playerNameText;
   [SerializeField] private TMP_Text scoreText;
   [SerializeField] private Transform iconContainer;
+  private int _entryPlayerId;         // ← 在這裡宣告
 
   [SerializeField] private UnityEngine.UI.Image crownIcon;
 
@@ -34,8 +38,10 @@ public class RankingEntryUI : MonoBehaviour
 
   };
 
-  public void Setup(string displayName, int score, GameObject characterPrefab, bool isWinner)
+  public void Setup(string displayName, int score, GameObject characterPrefab, bool isWinner, int entryPlayerId)
   {
+
+    _entryPlayerId = entryPlayerId;
     playerNameText.text = displayName;
     scoreText.text = $"Kreem:{score}";
 
@@ -64,24 +70,29 @@ public class RankingEntryUI : MonoBehaviour
     var animator = model.GetComponent<Animator>();
     if (animator != null)
     {
-        if (isWinner)
-                animator.Play("win");
-            else
-                animator.Play("lose");
+      if (isWinner)
+        animator.Play("win");
+      else
+        animator.Play("lose");
     }
 
     if (crownIcon != null)
-        crownIcon.gameObject.SetActive(isWinner);
+      crownIcon.gameObject.SetActive(isWinner);
+
+    var runner = FindObjectOfType<NetworkRunner>();
+    int localId = runner.LocalPlayer.PlayerId;
+    bool isMe = _entryPlayerId == localId;
+    playerImage.gameObject.SetActive(isMe);
 
   }
 
   private void Update()
-{
+  {
     if (crownIcon != null && crownIcon.gameObject.activeSelf)
     {
-        float scale = 1f + 0.1f * Mathf.Sin(Time.time * 2f); // 讓 scale 在 0.9~1.1 之間震盪
-        crownIcon.transform.localScale = new Vector3(scale, scale, 1f);
+      float scale = 1f + 0.1f * Mathf.Sin(Time.time * 2f); // 讓 scale 在 0.9~1.1 之間震盪
+      crownIcon.transform.localScale = new Vector3(scale, scale, 1f);
     }
-}
+  }
 
 }

@@ -182,6 +182,7 @@ public class GameFlowManager : NetworkBehaviour
     private IEnumerator StartCountdown()
     {
         countdownStarted = true;
+        RpcPlayIntroCountdownSound();
         RpcDisableAllPlayerInput();
         SetCameraClampEnabled(false); // ✅ 關閉邊界限制
 
@@ -194,7 +195,7 @@ public class GameFlowManager : NetworkBehaviour
         RpcUpdateCountdownText(""); // 清空
         RpcStartGame();
     }
-    
+
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RpcUpdateCountdownText(string text)
     {
@@ -204,7 +205,7 @@ public class GameFlowManager : NetworkBehaviour
             countdownText.gameObject.SetActive(!string.IsNullOrEmpty(text));
         }
     }
-    
+
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void RpcStartGame()
     {
@@ -212,8 +213,8 @@ public class GameFlowManager : NetworkBehaviour
         foreach (var handler in FindObjectsOfType<InputHandler>())
         {
             handler.inputEnabled = true;
+            countdownStarted = false;
         }
-        SetCameraClampEnabled(true); // ✅ 開啟邊界限制
 
         // ✅ 顯示 StartGame UI，1 秒後自動淡出
         if (startGameUI != null)
@@ -230,8 +231,9 @@ public class GameFlowManager : NetworkBehaviour
                     .setOnComplete(() => startGameUI.SetActive(false));
             });
         }
-        if (timerText != null){
-           timerText.gameObject.SetActive(true);
+        if (timerText != null)
+        {
+            timerText.gameObject.SetActive(true);
         }
 
         // ✅ 開始計時
@@ -248,6 +250,11 @@ public class GameFlowManager : NetworkBehaviour
             else
                 cam.DisableCameraClamp();
         }
+    }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RpcPlayIntroCountdownSound()
+    {
+        sceneAudioSetter?.PlayIntroCountdownSound();
     }
 
 }

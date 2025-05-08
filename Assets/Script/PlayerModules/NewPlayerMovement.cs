@@ -22,6 +22,7 @@ public class NewPlayerMovement : NetworkBehaviour
 
 public void HandleMovement(Vector3 direction, NetworkRunner runner)
 {
+    if (characterController == null || !characterController.enabled) return;
     direction.Normalize(); // 確保方向標準化
     float boosterMultiplier = booster?.GetSpeedMultiplier() ?? 1f;
     float actualSpeed = ((debugSpeedOverride > 0f) ? debugSpeedOverride : baseSpeed) * boosterMultiplier;

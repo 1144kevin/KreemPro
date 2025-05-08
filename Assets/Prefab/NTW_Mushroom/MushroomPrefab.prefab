@@ -14749,17 +14749,17 @@ PrefabInstance:
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 150
+      value: 70.00001
       objectReference: {fileID: 0}
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 150
+      value: 70.00001
       objectReference: {fileID: 0}
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 150
+      value: 70.00001
       objectReference: {fileID: 0}
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
@@ -14769,7 +14769,7 @@ PrefabInstance:
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
@@ -15039,6 +15039,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AttackDirectionUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7187066571118290727, guid: 17091630fe2b65e44850e2f1de417a45,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -15510,10 +15515,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7553729597932901928, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 7b2206aef2192d545bc296c554d23518,
+        type: 2}
+    - target: {fileID: 7553729597932901928, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8182727989198694733, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
       propertyPath: countdownTime
-      value: 3.5
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
@@ -16666,6 +16682,16 @@ PrefabInstance:
       propertyPath: InitialModule.maxNumParticles
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 6409633207072088128, guid: 47aa3751db49736479bd9b865887c590,
+        type: 3}
+      propertyPath: Offset.z
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 6409633207072088128, guid: 47aa3751db49736479bd9b865887c590,
+        type: 3}
+      propertyPath: BoxExtents.z
+      value: 101.07
+      objectReference: {fileID: 0}
     - target: {fileID: 6475809215266341497, guid: 47aa3751db49736479bd9b865887c590,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -17140,6 +17166,7 @@ MonoBehaviour:
   refillTime: 5
   boostTime: 2
   speedMultiplier: 2
+  startDelay: 5
   playerUIPrefab: {fileID: 0}
 --- !u!114 &5914424458674935291
 MonoBehaviour:
@@ -17181,7 +17208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcf8c39278eeb5642ad9905d6c3cfa3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackCooldown: 0.5
+  attackCooldown: 0.8
 --- !u!114 &5354095401504646323
 MonoBehaviour:
   m_ObjectHideFlags: 0

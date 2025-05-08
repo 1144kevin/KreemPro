@@ -15026,10 +15026,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7553729597932901928, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 7b2206aef2192d545bc296c554d23518,
+        type: 2}
+    - target: {fileID: 7553729597932901928, guid: a412f1d0a5c47ec48b609dc5f85c788e,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8182727989198694733, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
       propertyPath: countdownTime
-      value: 3.5
+      value: 4.5
       objectReference: {fileID: 0}
     - target: {fileID: 8927267939032146618, guid: a412f1d0a5c47ec48b609dc5f85c788e,
         type: 3}
@@ -15225,7 +15236,7 @@ PrefabInstance:
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 1205021609740332654, guid: b99922c2f59b1a542bdd06ae8bee47ae,
         type: 3}
@@ -15277,6 +15288,41 @@ PrefabInstance:
       propertyPath: m_Name
       value: AimingDots
       objectReference: {fileID: 0}
+    - target: {fileID: 2955197092750843386, guid: b99922c2f59b1a542bdd06ae8bee47ae,
+        type: 3}
+      propertyPath: VelocityModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955197092750843386, guid: b99922c2f59b1a542bdd06ae8bee47ae,
+        type: 3}
+      propertyPath: VelocityModule.x.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955197092750843386, guid: b99922c2f59b1a542bdd06ae8bee47ae,
+        type: 3}
+      propertyPath: InheritVelocityModule.m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955197092750843386, guid: b99922c2f59b1a542bdd06ae8bee47ae,
+        type: 3}
+      propertyPath: InheritVelocityModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955197092750843386, guid: b99922c2f59b1a542bdd06ae8bee47ae,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955197092750843386, guid: b99922c2f59b1a542bdd06ae8bee47ae,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.a
+      value: 0.44313726
+      objectReference: {fileID: 0}
+    - target: {fileID: 2955197092750843386, guid: b99922c2f59b1a542bdd06ae8bee47ae,
+        type: 3}
+      propertyPath: InheritVelocityModule.m_Curve.scalar
+      value: 56.24
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15301,6 +15347,11 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 2959357491404548651}
+    - target: {fileID: 4943502944977598526, guid: 2b943818a17818b4fb007a328daa456a,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5340393760719796911, guid: 2b943818a17818b4fb007a328daa456a,
         type: 3}
       propertyPath: m_Pivot.x
@@ -15414,6 +15465,12 @@ PrefabInstance:
 --- !u!224 &276073413472209818 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5340393760719796911, guid: 2b943818a17818b4fb007a328daa456a,
+    type: 3}
+  m_PrefabInstance: {fileID: 5316548400611242293}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1830071751819348898 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5813465515295898263, guid: 2b943818a17818b4fb007a328daa456a,
     type: 3}
   m_PrefabInstance: {fileID: 5316548400611242293}
   m_PrefabAsset: {fileID: 0}
@@ -15589,6 +15646,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: AttackDirectionUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7187066571118290727, guid: 17091630fe2b65e44850e2f1de417a45,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -16154,6 +16216,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5954896813284386893, guid: aa7bd307377670c4ea064297027d0aec,
         type: 3}
+      propertyPath: MaxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5954896813284386893, guid: aa7bd307377670c4ea064297027d0aec,
+        type: 3}
       propertyPath: hitEffect
       value: 
       objectReference: {fileID: 470829604183481322}
@@ -16206,8 +16273,7 @@ PrefabInstance:
         type: 3}
       propertyPath: boosterUIPrefab
       value: 
-      objectReference: {fileID: 5813465515295898263, guid: 2b943818a17818b4fb007a328daa456a,
-        type: 3}
+      objectReference: {fileID: 1830071751819348898}
     - target: {fileID: 5954896813284386893, guid: aa7bd307377670c4ea064297027d0aec,
         type: 3}
       propertyPath: sharedHitEffect
@@ -16241,7 +16307,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5998134493558846215, guid: aa7bd307377670c4ea064297027d0aec,
         type: 3}
+      propertyPath: attackRange.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5998134493558846215, guid: aa7bd307377670c4ea064297027d0aec,
+        type: 3}
       propertyPath: attackRange.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5998134493558846215, guid: aa7bd307377670c4ea064297027d0aec,
+        type: 3}
+      propertyPath: attackRange.z
       value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 5998134493558846215, guid: aa7bd307377670c4ea064297027d0aec,
@@ -16684,6 +16760,7 @@ MonoBehaviour:
   refillTime: 5
   boostTime: 2
   speedMultiplier: 2
+  startDelay: 5
   playerUIPrefab: {fileID: 0}
 --- !u!114 &5896926689732113446
 MonoBehaviour:
@@ -16725,7 +16802,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcf8c39278eeb5642ad9905d6c3cfa3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackCooldown: 0.5
+  attackCooldown: 0.7
 --- !u!114 &3804762525658447838
 MonoBehaviour:
   m_ObjectHideFlags: 0

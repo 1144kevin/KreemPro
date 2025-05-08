@@ -26,12 +26,13 @@ public class Shot : NetworkBehaviour
         }
     }
 
-     public override void FixedUpdateNetwork()
+    public override void FixedUpdateNetwork()
     {
-        if (isFlying)
-        {
+        // 如果還沒飛、LifeTimer 也還沒設定，就不碰它
+        if (!isFlying)
+            return;
+
             transform.position += shootDirection * speed * Runner.DeltaTime;
-        }
 
         // Raycast from current to next position to detect hit
         if (Physics.Raycast(transform.position, shootDirection, out RaycastHit hit, speed * Runner.DeltaTime, hitLayer))
@@ -47,6 +48,7 @@ public class Shot : NetworkBehaviour
             // 停止飛行並回收
             isFlying = false;
             Runner.Despawn(Object);
+            return;
         }
 
         if (lifeTimer.Expired(Runner))
