@@ -20,10 +20,9 @@ public class Booster : NetworkBehaviour
 
     private Player player;
     private BoosterUI boosterUI; // 記錄 UI 的參考
-
     public float refillTimerPublic => refillTimer;
     public float refillTimePublic => refillTime;
-
+    public GameObject playerUIPrefab;
 
     public override void Spawned()
     {
@@ -31,6 +30,7 @@ public class Booster : NetworkBehaviour
 
         if (Object.HasInputAuthority)
         {
+            GameObject uiInstance = Instantiate(playerUIPrefab);
             BoosterUI ui = FindObjectOfType<BoosterUI>();
             if (ui != null)
             {
@@ -81,7 +81,7 @@ public class Booster : NetworkBehaviour
             bool boostActivated = TryUseBoost();
 
             // ✅ 只有在真的啟動加速、而且是自己這台機器，才播放音效
-            if (boostActivated )
+            if (boostActivated)
             {
                 Rpc_PlaySpeedUpSound();
             }
@@ -114,14 +114,14 @@ public class Booster : NetworkBehaviour
     {
         return isCharged;
     }
-[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-private void Rpc_PlaySpeedUpSound()
-{
-    if (Object.HasStateAuthority || Object.HasInputAuthority)
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void Rpc_PlaySpeedUpSound()
     {
-        sceneAudioSetter?.PlaySpeedupSound();
+        if (Object.HasStateAuthority || Object.HasInputAuthority)
+        {
+            sceneAudioSetter?.PlaySpeedupSound();
+        }
     }
-}
     [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
     public void RpcRequestBoost()
     {
