@@ -49,13 +49,13 @@ public class PlayerCombat : NetworkBehaviour
 
         }
     }
-    public void TickCombat(NetworkInputData input)
-    {
-        if (input.damageTrigger && playerHealth != null && !playerHealth.IsDead)
-        {
-            playerHealth.TakeDamage(10);
-        }
-    }
+    // public void TickCombat(NetworkInputData input)
+    // {
+    //     if (input.damageTrigger && playerHealth != null && !playerHealth.IsDead)
+    //     {
+    //         playerHealth.TakeDamage(10);
+    //     }
+    // }
 
     private void UnlockAttack()
     {
