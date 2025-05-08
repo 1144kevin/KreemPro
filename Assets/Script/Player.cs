@@ -122,8 +122,8 @@ public class Player : NetworkBehaviour
 
     if (Object.HasInputAuthority) // 只為自己的玩家產生 UI
     {
-        boosterUIInstance = Instantiate(boosterUIPrefab);
-        boosterUIInstance.GetComponent<BoosterUI>().booster = GetComponent<Booster>();
+      boosterUIInstance = Instantiate(boosterUIPrefab);
+      boosterUIInstance.GetComponent<BoosterUI>().booster = GetComponent<Booster>();
     }
 
     playerUI?.InitKreemText();
@@ -135,6 +135,10 @@ public class Player : NetworkBehaviour
   {
     // playerMovement?.HandleMove(input, Runner);
     playerCombat?.HandleAttack(input, pressed, Runner);
+    if (input.boostTrigger)
+    {
+        GetComponent<Booster>()?.RpcRequestBoost();
+    }
   }
 
   // 透過 RPC 同步更新所有客戶端的 HealthBar
@@ -179,11 +183,12 @@ public class Player : NetworkBehaviour
       playerMovement?.HandleMovement(direction, Runner);
       playerCombat?.TickCombat(input.Value);
       playerHealth?.TickFallDeath(Runner); // ✅ 檢查邊界死亡
+      GetComponent<Booster>()?.Tick(Runner); // ✅ 新增這一行
     }
 
-       if (Object.HasStateAuthority)
+    if (Object.HasStateAuthority)
     {
-        playerHealth?.TickHeal(Runner);
+      playerHealth?.TickHeal(Runner);
     }
   }
 

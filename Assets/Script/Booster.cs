@@ -41,13 +41,14 @@ public class Booster : NetworkBehaviour
         }
     }
 
-    public override void FixedUpdateNetwork()
+
+    public void Tick(NetworkRunner runner)
     {
         if (!Object.HasStateAuthority || player == null) return;
 
         if (!canStartRefill)
         {
-            startDelayTimer += Runner.DeltaTime;
+            startDelayTimer += runner.DeltaTime;
             if (startDelayTimer >= startDelay)
             {
                 canStartRefill = true;
@@ -57,7 +58,7 @@ public class Booster : NetworkBehaviour
 
         if (!isCharged && !isBoosting)
         {
-            refillTimer += Runner.DeltaTime;
+            refillTimer += runner.DeltaTime;
             if (refillTimer >= refillTime)
             {
                 isCharged = true;
@@ -67,7 +68,7 @@ public class Booster : NetworkBehaviour
 
         if (isBoosting)
         {
-            boostTimer += Runner.DeltaTime;
+            boostTimer += runner.DeltaTime;
             if (boostTimer >= boostTime)
             {
                 isBoosting = false;
@@ -75,12 +76,8 @@ public class Booster : NetworkBehaviour
                 isCharged = false;
             }
         }
-
-        if (GetInput(out NetworkInputData data) && data.boostTrigger)
-        {
-            TryUseBoost();
-        }
     }
+
 
 
     public void TryUseBoost()
@@ -105,6 +102,11 @@ public class Booster : NetworkBehaviour
     public bool IsCharged()
     {
         return isCharged;
+    }
+    [Rpc(RpcSources.InputAuthority, RpcTargets.StateAuthority)]
+    public void RpcRequestBoost()
+    {
+        TryUseBoost(); // ✅ 僅由 StateAuthority 呼叫才有效
     }
 }
 
