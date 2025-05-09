@@ -67,17 +67,17 @@ public class PlayerHealth : NetworkBehaviour
             if (playerRespawn == null)
                 playerRespawn = GetComponent<PlayerRespawn>();
 
-            // playerRespawn?.RpcSetPlayerVisibility(false);
+            playerRespawn?.RpcSetPlayerVisibility(false);
             // ✅ 整合 Kreem 掉落
             if (Object.HasStateAuthority)
             {
                 var player = GetComponent<Player>();
                 player.kreemCollect = 0;
             }
-            if (Object.HasInputAuthority)
-            {
-                playerRespawn?.RpcSetPlayerVisibility(false); // ✅ 觸發 復活UI 模組
-            }
+            // if (Object.HasInputAuthority)
+            // {
+            //     playerRespawn?.RpcSetPlayerVisibility(false); // ✅ 觸發 復活UI 模組
+            // }
         }
     }
 
