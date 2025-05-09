@@ -53,7 +53,7 @@ public class PlayerCombat : NetworkBehaviour
     // {
     //     if (input.damageTrigger && playerHealth != null && !playerHealth.IsDead)
     //     {
-    //         playerHealth.TakeDamage(50);
+    //         playerHealth.TakeDamage(10);
     //     }
     // }
 

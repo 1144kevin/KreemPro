@@ -76,16 +76,22 @@ public class Booster : NetworkBehaviour
             }
         }
 
-        if (GetInput(out NetworkInputData data) && data.boostTrigger)
-        {
-            bool boostActivated = TryUseBoost();
+if (GetInput(out NetworkInputData data) && data.boostTrigger)
+{
+    bool boostActivated = TryUseBoost();
 
-            // ✅ 只有在真的啟動加速、而且是自己這台機器，才播放音效
-            if (boostActivated)
-            {
-                Rpc_PlaySpeedUpSound();
-            }
-        }
+    // ✅ Client 播音效（透過 RPC）
+    if (boostActivated)
+    {
+        Rpc_PlaySpeedUpSound();
+    }
+
+    // ✅ Host 一定要另外手動檢查是否實際執行 Boost 過（因為 boostActivated 對 Host 是錯的）
+    if (Object.HasStateAuthority && Object.HasInputAuthority && isBoosting)
+    {
+        sceneAudioSetter?.PlaySpeedupSound();
+    }
+}
     }
 
     public bool TryUseBoost()

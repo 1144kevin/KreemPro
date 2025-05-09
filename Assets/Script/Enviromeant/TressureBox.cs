@@ -32,7 +32,7 @@ public class TreasureBox : NetworkBehaviour
 
         lastVisibleState = IsVisible;
         SetTreasureBoxActive(IsVisible);
-        explosionEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // 重置
+
     }
 
     public override void Render()
@@ -54,23 +54,10 @@ public class TreasureBox : NetworkBehaviour
         exploded = true;
         IsVisible = false;
 
-        // 播放爆炸粒子特效
 
-        if (explosionEffect != null)
-        {
-            Debug.Log("😊😊");
-            explosionEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear); // 重置
-            explosionEffect.Play();
-        }
-
-        // 等一小段時間讓特效能顯示出來（避免還沒開始就被隱藏）
-        //yield return new WaitForSeconds(0.3f);
-
+        // RpcPlayExplosionEffect();  // 所有人本地播放特效
         // 僅在攻擊者本地端播放音效
-        if (attacker == Runner.LocalPlayer)
-        {
-            sceneAudioSetter?.PlayBoxExplodeSound();
-        }
+        RpcPlayExplosionSound();
 
         int count = 0;
 
@@ -126,4 +113,17 @@ public class TreasureBox : NetworkBehaviour
         foreach (var c in GetComponentsInChildren<Collider>(true))
             c.enabled = active;
     }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void RpcPlayExplosionSound()
+    {
+        if (Runner.LocalPlayer == null) return; // 保險
+
+        sceneAudioSetter?.PlayBoxExplodeSound();
+    }
+    // [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    // private void RpcPlayExplosionEffect()
+    // {
+    //     explosionEffect?.Play();
+    // }
+
 }
