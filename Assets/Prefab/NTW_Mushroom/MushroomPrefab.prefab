@@ -17205,6 +17205,7 @@ MonoBehaviour:
   sceneAudioSetter: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
     type: 3}
   startDelay: 5
+  playerUIPrefab: {fileID: 0}
 --- !u!114 &5914424458674935291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17245,7 +17246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcf8c39278eeb5642ad9905d6c3cfa3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackCooldown: 0.8
+  attackCooldown: 0.1
 --- !u!114 &5354095401504646323
 MonoBehaviour:
   m_ObjectHideFlags: 0

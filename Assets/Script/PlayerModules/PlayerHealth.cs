@@ -67,7 +67,7 @@ public class PlayerHealth : NetworkBehaviour
             if (playerRespawn == null)
                 playerRespawn = GetComponent<PlayerRespawn>();
 
-            playerRespawn?.RpcSetPlayerVisibility(false);
+            // playerRespawn?.RpcSetPlayerVisibility(false);
             // ✅ 整合 Kreem 掉落
             if (Object.HasStateAuthority)
             {

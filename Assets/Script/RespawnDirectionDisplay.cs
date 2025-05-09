@@ -111,7 +111,7 @@ public class RespawnDirectionDisplay : NetworkBehaviour
                 }
                 else
                 {
-                    Debug.Log("延長時間後倒數歸零，自動復活");
+                    // Debug.Log("延長時間後倒數歸零，自動復活");
                     if (Object.HasInputAuthority)
                     {
                         playerRespawn.RpcRequestRespawn();

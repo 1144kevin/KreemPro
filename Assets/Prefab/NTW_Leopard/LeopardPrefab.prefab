@@ -16322,6 +16322,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5998134493558846215, guid: aa7bd307377670c4ea064297027d0aec,
         type: 3}
+      propertyPath: attackDelay
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5998134493558846215, guid: aa7bd307377670c4ea064297027d0aec,
+        type: 3}
       propertyPath: attackRange.x
       value: 100
       objectReference: {fileID: 0}
@@ -16783,6 +16788,7 @@ MonoBehaviour:
   sceneAudioSetter: {fileID: 8120351571655082247, guid: dca13af5b7f66bf45b583eb23af0d53f,
     type: 3}
   startDelay: 5
+  playerUIPrefab: {fileID: 0}
 --- !u!114 &5896926689732113446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16823,7 +16829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcf8c39278eeb5642ad9905d6c3cfa3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackCooldown: 0.7
+  attackCooldown: 0.1
 --- !u!114 &3804762525658447838
 MonoBehaviour:
   m_ObjectHideFlags: 0

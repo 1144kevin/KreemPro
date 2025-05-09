@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerCombat : NetworkBehaviour
 {
-    [SerializeField] private float attackCooldown = 0.5f;
+    [SerializeField] private float attackCooldown = 0.1f;
 
     private bool attackLocked = false;
     private AttackHandler attackHandler;
@@ -49,13 +49,13 @@ public class PlayerCombat : NetworkBehaviour
 
         }
     }
-    public void TickCombat(NetworkInputData input)
-    {
-        if (input.damageTrigger && playerHealth != null && !playerHealth.IsDead)
-        {
-            playerHealth.TakeDamage(10);
-        }
-    }
+    // public void TickCombat(NetworkInputData input)
+    // {
+    //     if (input.damageTrigger && playerHealth != null && !playerHealth.IsDead)
+    //     {
+    //         playerHealth.TakeDamage(50);
+    //     }
+    // }
 
     private void UnlockAttack()
     {

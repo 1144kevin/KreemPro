@@ -181,7 +181,7 @@ public class Player : NetworkBehaviour
     {
       Vector3 direction = input.Value.direction.normalized;
       playerMovement?.HandleMovement(direction, Runner);
-      playerCombat?.TickCombat(input.Value);
+      // playerCombat?.TickCombat(input.Value);
       playerHealth?.TickFallDeath(Runner); // ✅ 檢查邊界死亡
       GetComponent<Booster>()?.Tick(Runner); // ✅ 新增這一行
     }

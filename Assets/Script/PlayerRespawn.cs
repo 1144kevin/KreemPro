@@ -52,7 +52,7 @@ public class PlayerRespawn : NetworkBehaviour
         {
             Debug.LogWarning($"[Respawn] Canvas not found for player {Object.InputAuthority}");
         }
-            // 🔧 加這段：重新啟用 hitEffect
+        // 🔧 加這段：重新啟用 hitEffect
         var player = GetComponent<Player>();
         if (player != null && player.getHitEffect != null)
         {
@@ -79,6 +79,8 @@ public class PlayerRespawn : NetworkBehaviour
     public void Respawn()
     {
         if (!Object.HasStateAuthority) return;
+
+        RpcSetPlayerVisibility(false);
 
         Vector3 spawnPos = transform.parent.position;
         Transform parentTransform = transform.parent;
@@ -109,7 +111,7 @@ public class PlayerRespawn : NetworkBehaviour
         Respawn();
     }
     [Rpc(RpcSources.StateAuthority, RpcTargets.InputAuthority)]
-    
+
     public void RpcRequestPlayRebornSound()
     {
         PlayRebornSoundLocal();
